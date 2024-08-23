@@ -40,7 +40,7 @@
                             <label for="site" class="form-label">Favicon</label>
                         </div>
                         <div class="col-6">
-                            <img src="{{ asset($option['favicon']->value ? 'storage/'.$option['favicon']->value : 'assets/images/favicon.ico') }}" alt="favicon" height="42px" width="42px" class="me-2" id="favicon-preview">
+                            <img src="{{ asset($option['favicon']->value ? 'storage/'.$option['favicon']->value : 'assets/images/laravel.png') }}" alt="favicon" height="42px" width="42px" class="me-2" id="favicon-preview">
                             <!-- Button trigger modal -->
                             <label for="faviconUpload" class="btn btn-sm btn-outline-primary">
                                 Change icon
@@ -60,7 +60,7 @@
                             <label for="site" class="form-label">Icon</label>
                         </div>
                         <div class="col-6">
-                            <img src="{{ asset($option['sidebar-icon']->value ? 'storage/'.$option['sidebar-icon']->value : 'assets/images/favicon.ico') }}" alt="sidebar icon" height="42px" width="42px" class="me-2" id="sidebar-icon-preview">
+                            <img src="{{ asset($option['sidebar-icon']->value ? 'storage/'.$option['sidebar-icon']->value : 'assets/images/laravel.png') }}" alt="sidebar icon" height="42px" width="42px" class="me-2" id="sidebar-icon-preview">
                             <!-- Button trigger modal -->
                             <label for="siderbarIconUpload" class="btn btn-sm btn-outline-primary">
                                 Change icon

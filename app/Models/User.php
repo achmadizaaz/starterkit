@@ -73,7 +73,17 @@ class User extends Authenticatable
     // Scope
     public function scopeFilter($query, array $filters){
         $query->when($filters['search'] ?? false, function($query, $search){
-            return $query->where('username', 'like', '%' . $search . '%') 
+            return $query->where(function($query) use ($search) {
+                // Cek apakah search mengandung 'active' atau 'nonactive'
+                if (str_contains(strtolower($search), 'active')) {
+                    // Jika mengandung 'active', cek apakah pencarian adalah 'active' atau 'nonactive'
+                        if (strtolower($search) == 'active') {
+                            $query->orWhere('is_active', true);
+                        } elseif (strtolower($search) == 'nonactive' || 'non active') {
+                            $query->orWhere('is_active', false);
+                        }
+                    }
+                })->orWhere('username', 'like', '%' . $search . '%') 
                     ->orWhere('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
         });

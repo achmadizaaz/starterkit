@@ -159,7 +159,7 @@
                         <tr>
                             <td>{{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}</td>
                             <td>{{ $role->name }}</td>
-                            <td>{!! $role->is_admin ? '<span class="badge text-bg-primary">Admin</span>' : ' <span class="badge text-bg-secondary">Non admin</span>' !!}</td>
+                            <td>{!! $role->is_admin ? '<span class="btn btn-sm btn-outline-success pe-none">Admin</span>' : ' <span class="btn btn-sm btn-outline-warning pe-none">Non admin</span>' !!}</td>
                             <td>{{ $role->level }}</td>
                             <td>{{ $role->created_at }}</td>
                             <td>

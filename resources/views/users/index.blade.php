@@ -147,9 +147,9 @@
                             <td class="align-middle">{{ $user->email }}</td>
                             <td class="align-middle">
                                 @if ($user->is_active)
-                                <span class="badge text-bg-success">Active</span>
+                                <span class="btn btn-sm btn-outline-success pe-none">Active</span>
                                 @else
-                                <span class="badge text-bg-danger">Non active</span>
+                                <span class="btn btn-sm btn-outline-danger pe-none">Non active</span>
                                 @endif
                             </td>
                             <td class="align-middle">{!! $user->last_login_at ? $user->last_login_at->diffForHumans() : '<span class="fst-italic">Belum pernah login</span>'  !!}</td>

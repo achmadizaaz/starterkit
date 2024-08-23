@@ -174,7 +174,7 @@
                     Total : ({{ $roles->total()}} / Roles)
                 </div>
                 <div class="d-flex align-items-center flex-row-reverse">
-                    {{ $roles->onEachSide(0)->links('vendor.paginate') }}
+                    {{ $roles->onEachSide(0)->appends(request()->input())->links('vendor.paginate') }}
                 </div>
             </div>
         </div>

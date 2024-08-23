@@ -166,7 +166,7 @@
                     Total : ({{ $permissions->total()}} / Permissions)
                 </div>
                 <div class="d-flex align-items-center flex-row-reverse">
-                    {{ $permissions->onEachSide(0)->links('vendor.paginate') }}
+                    {{ $permissions->onEachSide(0)->appends(request()->input())->links('vendor.paginate') }}
                 </div>
             </div>
         </div>

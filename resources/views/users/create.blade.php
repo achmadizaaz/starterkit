@@ -100,17 +100,6 @@
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Enter email, ex: your@example.com"  value="{{ old('email') }}"  required>
                                 </div>
                             </div>
-                            <div class="col">
-                                {{-- <div class="mb-3">
-                                    <label for="role" class="form-label">Role<span class="fst-italic text-danger">*</span></label>
-                                    <select name="role" id="role" class="form-select">
-                                        <option value="">Choose one of the roles</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" @selected(old('role') == $role->id)>{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
-                            </div>
                             
                         </div>
                         
@@ -320,7 +309,7 @@
                                     <label for="role" class="form-label col">
                                         <i class="bi bi-fingerprint me-2"></i> Role User<span class="fst-italic text-danger">*</span>
                                     </label>
-                                    <select name="role" id="role" class="form-select col" required>
+                                    <select name="role" id="role" class="form-select col">
                                         <option value="">Choose one of the roles</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}" @selected(old('role') == $role->id)>{{ $role->name }}</option>

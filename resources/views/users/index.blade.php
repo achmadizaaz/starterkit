@@ -56,28 +56,28 @@
         <!-- start page main -->
         <div class="card p-3">
             <div class="d-flex justify-content-between mb-2">
-                <div class="d-flex align-items-center" style="width: 250px">
-                    <div class="me-2 fw-bold">
-                        Show :
-                    </div>
-                    <form action="{{ route('users.show.page')}}" method="GET">
-                        <select name="show" onchange="this.form.submit()" class="form-select form-select-sm" style="width: 100px">
-                            <option value="10" @if (session('showPageUsers') == 10)
+                <div class="d-flex">
+                    {{-- Show Page Number Date --}}
+                    <div class="d-flex align-items-center" style="width: 200px">
+                        <div class="me-2 fw-bold">
+                            Show data:
+                        </div>
+                        <form action="{{ route('users.show.page')}}" method="GET">
+                            <select name="show" onchange="this.form.submit()" class="form-select form-select-sm" style="width: 100px">
+                                <option value="10" @if (session('showPageUsers') == 10)
+                                    selected
+                                @endif>10</option>
+                                <option value="25" @if (session('showPageUsers') == 25)
                                 selected
-                            @endif>10</option>
-                            <option value="25" @if (session('showPageUsers') == 25)
-                            selected
-                            @endif>25</option>
-                            <option value="50" @if (session('showPageUsers') == 50)
-                            selected
-                            @endif>50</option>
-                            <option value="100" @if (session('showPageUsers') == 100)
-                            selected
-                            @endif>100</option>
-                        </select>
-                    </form>
-                    <div class="ms-2 fw-bold">
-                        Data
+                                @endif>25</option>
+                                <option value="50" @if (session('showPageUsers') == 50)
+                                selected
+                                @endif>50</option>
+                                <option value="100" @if (session('showPageUsers') == 100)
+                                selected
+                                @endif>100</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
                <div class="d-flex gap-1">
@@ -121,6 +121,15 @@
                     <th>Action</th>
                 </thead>
                 <tbody>
+                    @empty ($users->count())
+                        <tr>
+                            <td class="text-center" colspan="8">
+                                <div class="alert alert-warning" role="alert">
+                                    No data available.
+                                  </div>
+                            </td>
+                        </tr>
+                    @endempty
                     @foreach ($users as $user)
                         <tr>
                             <td class="align-middle">
@@ -175,7 +184,7 @@
                     Total : ({{ $users->total()}} / Users)
                 </div>
                 <div class="d-flex align-items-center flex-row-reverse">
-                    {{ $users->onEachSide(0)->links('vendor.paginate') }}
+                    {{ $users->onEachSide(0)->appends(request()->input())->links('vendor.paginate') }}
                 </div>
             </div>
         </div>
@@ -197,12 +206,9 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-2">
-                            Silakan masukan katasandi baru untuk pengguna: <span class="changePasswordUserName"></span>
+                            Silakan masukan katasandi baru pengguna
                         </div>
-                        <label for="changePasswordInput" class="form-label">
-                            New Password
-                        </label>
-                        <input type="text" class="form-control" name="change_password" id="changePasswordInput" placeholder="Enter a new password" required>
+                        <input type="text" class="form-control" name="change_password" placeholder="Enter a new password" required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -249,7 +255,7 @@
         
             $('.changePasswordUserName').html(username);
             
-            // Route delete user
+            // Route change password user
             let url = "{{ route('users.change.password', ':id') }}";
             route = url.replace(':id', id);
             // Action route for delete user

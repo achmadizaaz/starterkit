@@ -67,5 +67,32 @@ $(".role-group").on("change", function () {
 
 // End Checklist Role
 
+
+
+
+// Checklist Option
+let optionUnChecked = document.querySelectorAll(".option-group").length,
+    optionChecked = document.querySelectorAll(".option-group:checked").length;
+function checkAllOption(e) {
+    document
+        .querySelectorAll(".option-group")
+        .forEach((n) => (n.checked = e.checked));
+}
+function setCheckAllOption() {
+    document.querySelector("input.checkAllOption").checked =
+        optionUnChecked == optionChecked;
+}
+$(".option-group").on("change", function () {
+    let e;
+    document.querySelectorAll(".option-group").length ==
+    document.querySelectorAll(".option-group:checked").length
+        ? (document.getElementById("all-option").checked = !0)
+        : (document.getElementById("all-option").checked = !1);
+}),
+    optionUnChecked == optionChecked &&
+        (document.getElementById("all-option").checked = !0);
+
+// End Checklist Option
+
 // Tambahkan log untuk memastikan script ter-load
 // console.log("Script loaded successfully");

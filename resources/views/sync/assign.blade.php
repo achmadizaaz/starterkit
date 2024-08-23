@@ -124,7 +124,76 @@
                                 </label>
                             </td>
                             <td>
-                                -
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#otherUserModal">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="otherUserModal" tabindex="-1" aria-labelledby="otherUserModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="otherUserModalLabel">Other User</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                @php
+                                                    $permission = $permissions->where('name', 'read-trashed-users')->first();
+                                                @endphp
+                                                <input class="form-check-input me-2 checkbox user-group" type="checkbox" id="trashedUser" value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('read-trashed-users'))>
+                                                <label class="form-check-label" for="trashedUser">
+                                                    Read Trashed
+                                                </label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <div class="col-6">
+                                                    @php
+                                                        $permission = $permissions->where('name', 'restore-trashed-users')->first();
+                                                    @endphp
+                                                    <input class="form-check-input me-2 checkbox user-group" type="checkbox" id="restoreTrashedUser" value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('restore-trashed-users'))>
+                                                    <label class="form-check-label" for="restoreTrashedUser">
+                                                        Restore User
+                                                    </label>
+                                                </div>
+                                                <div class="col-6">
+                                                    @php
+                                                        $permission = $permissions->where('name', 'restore-all-trashed-users')->first();
+                                                    @endphp
+                                                    <input class="form-check-input me-2 checkbox user-group" type="checkbox" id="restoreAllTrashedUser" value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('restore-all-trashed-users'))>
+                                                    <label class="form-check-label" for="restoreAllTrashedUser">
+                                                        Restore All Users
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <div class="col-6">
+                                                    @php
+                                                        $permission = $permissions->where('name', 'delete-trashed-users')->first();
+                                                    @endphp
+                                                    <input class="form-check-input me-2 checkbox user-group" type="checkbox" id="deleteTrashedUser" value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('delete-trashed-users'))>
+                                                    <label class="form-check-label" for="deleteTrashedUser">
+                                                        Delete Permanent
+                                                    </label>
+                                                </div>
+                                                <div class="col-6">
+                                                    @php
+                                                        $permission = $permissions->where('name', 'delete-all-trashed-users')->first();
+                                                    @endphp
+                                                    <input class="form-check-input me-2 checkbox user-group" type="checkbox" id="deleteAllTrashedUser" value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('delete-all-trashed-users'))>
+                                                    <label class="form-check-label" for="deleteAllTrashedUser">
+                                                        Delete All Permanent
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         {{-- End Modul User --}}
@@ -179,6 +248,58 @@
                             </td>
                         </tr>
                         {{-- End Modul Role --}}
+
+                        
+                        {{-- Modul Options --}}
+                        <tr>
+                            <td class="fw-bold">Options</td>
+                            <td>
+                                <input class="form-check-input me-2 checkbox checkAllOption" type="checkbox" id="all-option" onclick="checkAllOption(this)">
+                                <label class="form-check-label" for="all-option">
+                                    All Options
+                                </label>
+                            </td>
+                            <td>
+                                @php
+                                    $permission = $permissions->where('name', 'create-options')->first();
+                                @endphp
+                                <input class="form-check-input me-2 checkbox option-group" type="checkbox" id="createOption" value="{{ $permission->id }}"  name="permission[]" @checked($currentRole->hasPermissionTo('create-options'))>
+                                <label class="form-check-label" for="createOption">
+                                    Create
+                                </label>
+                            </td>
+                            <td>
+                                @php
+                                    $permission = $permissions->where('name', 'read-options')->first();
+                                @endphp
+                                <input class="form-check-input me-2 checkbox option-group" type="checkbox" id="readOption"  value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('read-options'))>
+                                <label class="form-check-label" for="readOption">
+                                    Read
+                                </label>
+                            </td>
+                            <td>
+                                @php
+                                    $permission = $permissions->where('name', 'update-options')->first();
+                                @endphp
+                                <input class="form-check-input me-2 checkbox option-group" type="checkbox" id="updateOption"  value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('update-options'))>
+                                <label class="form-check-label" for="updateOption">
+                                    Update
+                                </label>
+                            </td>
+                            <td>
+                                @php
+                                    $permission = $permissions->where('name', 'delete-options')->first();
+                                @endphp
+                                <input class="form-check-input me-2 checkbox option-group" type="checkbox" id="deleteOption"  value="{{ $permission->id }}" name="permission[]" @checked($currentRole->hasPermissionTo('update-options'))>
+                                <label class="form-check-label" for="deleteOption">
+                                    Delete
+                                </label>
+                            </td>
+                            <td>
+                                -
+                            </td>
+                        </tr>
+                        {{-- End Modul Options --}}
                     </tbody>
                 </table>
             </div>

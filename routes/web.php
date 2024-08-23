@@ -98,11 +98,7 @@ Route::prefix('dashboard')->middleware(['auth', 'active'])->group(function () {
             ->middleware('can:read-roles')
             ->name('roles.show');
 
-        Route::get('create', 'create')
-            ->middleware('can:create-roles')
-            ->name('roles.create');
-
-        Route::post('store', 'store')
+        Route::post('/', 'store')
             ->middleware('can:create-roles')
             ->name('roles.store');
 

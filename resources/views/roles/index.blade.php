@@ -33,7 +33,7 @@
                                             <div class="mb-3">
                                                 <label for="isAdmin" class="form-label me-1">Is admin</label>
                                                 <select name="admin" id="isAdmin" class="form-select">
-                                                    <option value="nonAdmin">Non Admin</option>
+                                                    <option value="non_admin">Non Admin</option>
                                                     <option value="admin">Admin</option>
                                                 </select>
                                             </div>
@@ -144,9 +144,20 @@
                     <th>Action</th>
                 </thead>
                 <tbody>
+                    {{-- Jika tidak ada data role --}}
+                    @empty ($roles->count())
+                        <tr>
+                            <td class="text-center" colspan="8">
+                                <div class="alert alert-warning" role="alert">
+                                    No data available.
+                                  </div>
+                            </td>
+                        </tr>
+                    @endempty
+
                     @foreach ($roles as $role)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ ($roles->currentPage() - 1) * $roles->perPage() + $loop->iteration }}</td>
                             <td>{{ $role->name }}</td>
                             <td>{!! $role->is_admin ? '<span class="badge text-bg-primary">Admin</span>' : ' <span class="badge text-bg-secondary">Non admin</span>' !!}</td>
                             <td>{{ $role->level }}</td>
@@ -200,7 +211,7 @@
                         <div class="mb-3">
                             <label for="editAdmin" class="form-lavel">Admin <span class="fst-italic">*</span></label>
                             <select name="admin" id="editAdmin" class="form-select">
-                                <option value="non-admin">Non admin</option>
+                                <option value="non_admin">Non admin</option>
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
@@ -261,7 +272,7 @@
             // Insert Value Role
             $('#editName').val(name);
             $('#editLevel').val(level);
-            $('#editAdmin').val(isAdmin ? 'admin' : 'non-admin');
+            $('#editAdmin').val(isAdmin ? 'admin' : 'non_admin');
             $('#editAdmin').trigger('change');
 
             // Route update

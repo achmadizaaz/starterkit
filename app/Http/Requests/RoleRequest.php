@@ -25,7 +25,7 @@ class RoleRequest extends FormRequest
         return [
             'name'  => ['required', Rule::unique('roles')->ignore($this->id, 'id')],
             'level' => ['required','numeric','min:1','max:10'],
-            'admin' => ['required', 'in:admin,non-admin'],
+            'admin' => ['required', 'in:admin,non_admin'],
         ];
     }
 }

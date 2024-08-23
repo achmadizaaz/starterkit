@@ -16,8 +16,19 @@ class Role extends SpatieRole
     // Scope
     public function scopeFilter($query, array $filters){
     $query->when($filters['search'] ?? false, function($query, $search){
-        return $query->where('name', 'like', '%' . $search . '%') 
-                ->orWhere('level', 'like', '%' . $search . '%');
+        return $query->where(function($query) use ($search) {
+            // Cek apakah search mengandung 'admin' atau 'nonadmin'
+            if (str_contains(strtolower($search), 'admin')) {
+                // Jika mengandung 'admin', cek apakah pencarian adalah 'admin' atau 'nonadmin'
+                    if (strtolower($search) == 'admin') {
+                        $query->orWhere('is_admin', true);
+                    } elseif (strtolower($search) == 'nonadmin' || 'non admin') {
+                        $query->orWhere('is_admin', false);
+                    }
+                }
+            })->orWhere('name', 'like', '%' . $search . '%') 
+            ->orWhere('level', 'like', '%' . $search . '%')
+            ->orWhere('created_at', 'like', '%' . $search . '%');
     });
 }
 }

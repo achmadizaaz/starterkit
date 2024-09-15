@@ -29,7 +29,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $showPage = Session::get('showPageUsers');
+        $showPage = Session::get('showPages');
         $users = $this->model->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
         $trashed = $this->model->onlyTrashed()->count();
         return view('users.index', compact('users', 'trashed'));
@@ -66,27 +66,18 @@ class UserController extends Controller
             // Relation addtional informasi user
             $this->userProfile->create([
                 'user_id'   => $user->id,
-                // General
-                'phone'     => $request->phone,
-                'mobile'    => $request->mobile,
-                'country'   => $request->country,
-                'address'   => $request->address,
-                'bio'       => $request->bio,
-                'date_of_birth' => $request->date_of_birth,
-                'place_of_birth' => $request->place_of_birth,
                 'gender' => $request->gender,
-                'religion' => $request->religion,
-                // Media Social
-                'website'   => $request->website,
-                'instagram' => $request->instagram,
-                'facebook'  => $request->facebook,
-                'twitter'   => $request->twitter,
-                'youtube'   => $request->youtube,
-                'other'     => $request->other,
+                'date_of_birth' => $request->date_of_birth,
+                'phone'     => $request->phone,
+                'address'   => $request->address,
+
             ]);
 
             // Assign role user
-            $user->assignRole($request->role);
+            if($request->role){
+                $user->assignRole($request->role);
+            }
+
             DB::commit();
         }catch(\Exception $exception){
             DB::rollBack();
@@ -141,23 +132,11 @@ class UserController extends Controller
             $this->userProfile->updateOrInsert(
                 ['user_id'  => $user->id],
                 [// Update profile user
-                // General
-                'phone'     => $request->phone,
-                'mobile'    => $request->mobile,
-                'country'   => $request->country,
-                'address'   => $request->address,
-                'bio'       => $request->bio,
-                'date_of_birth' => $request->date_of_birth,
-                'place_of_birth' => $request->place_of_birth,
+               'user_id'   => $user->id,
                 'gender' => $request->gender,
-                'religion' => $request->religion,
-                // Media Social
-                'website'   => $request->website,
-                'instagram' => $request->instagram,
-                'facebook'  => $request->facebook,
-                'twitter'   => $request->twitter,
-                'youtube'   => $request->youtube,
-                'other'     => $request->other,
+                'date_of_birth' => $request->date_of_birth,
+                'phone'     => $request->phone,
+                'address'   => $request->address,
                 'updated_at'=> now(),]
             );
             // Change role user
@@ -209,7 +188,7 @@ class UserController extends Controller
     public function showPage(Request $request)
     {
         // Add session show page users
-        Session::put('showPageUsers', $request->show);
+        Session::put('showPages', $request->show);
         return back();
     }
 

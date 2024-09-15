@@ -1,6 +1,4 @@
-
-<!-- resources/views/vendor/paginate.blade.php -->
-<link rel="stylesheet" href="{{ asset('css/paginate-custom.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/paginate.css') }}">
 
 @if ($paginator->hasPages())
     <nav aria-label="Page navigation example">

@@ -24,20 +24,21 @@ class UserRequest extends FormRequest
     {
         return [
             'image' => $this->image ? 'mimes:png,jpg,jpeg|max:2048':'',
-            'username' => ['required', Rule::unique('users', 'username')->ignore($this->id)],
+            'username' => ['required', Rule::unique('users', 'username')->ignore($this->id), 'string', 'min:5', 'regex:/^\S*$/'],
             'email' => $this->method() == 'POST' ? 'required|email' : '',
             'is_active' => 'required|boolean',
-            'password' => $this->method() == 'POST' ? 'required|string|min:5|max:16' :'',
-            'religion' => 'nullable|in:Islam,Kristen,Katolik,Hindu,Buddha,Khonghucu',
+            'password' => $this->method() == 'POST' ? 'required|string|min:7|max:16' :'',
             'gender' => 'boolean',
-            'date_of_birth' => 'date',
+            'date_of_birth' => 'nullable|date',
+            'phone' => 'nullable|numeric|digits_between:5,15',
         ];
     }
 
     public function messages()
     {
         return [
-            'is_active.boolean' => 'The is active field must be active or non-active.'
+            'is_active.boolean' => 'The is active field must be active or non-active.',
+            'username.regex' => 'The username field format invalid and cannot contain spaces.',
         ];
     }
 }

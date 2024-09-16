@@ -9,11 +9,11 @@
             <div class="d-sm-flex align-items-center justify-content-between">
                 <h4 class="mb-sm-0 font-size-18">{{ $user->name }}</h4>
                 <div class="page-title-right d-flex gap-1">
-                    <button type="submit" class="btn btn-warning" form="updateForm">
-                        <i class="bi bi-pencil-square me-2"></i> Update
+                    <button type="submit" class="btn text-bg-warning" form="updateForm">
+                        <i class="bi bi-pencil-square me-1"></i> Update
                     </button>
                     <a href="{{ route('profile') }}" class="btn btn-secondary">
-                        <i class="bi bi-arrow-bar-left me-2"></i> Back
+                        <i class="bi bi-arrow-bar-left me-1"></i> Back
                     </a>
                 </div>
             </div>

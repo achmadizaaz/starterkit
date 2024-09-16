@@ -30,9 +30,16 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $showPage = Session::get('showPages');
-        $users = $this->model->with(['roles'])->whereHas('roles', function($query){
-            $query->orWhere('level', '<', '10');
+        $currentUser = Auth::user();
+
+        $users = $this->model->with(['roles'])->whereHas('roles', function($query) use ($currentUser){
+            if($currentUser->roles->max('is_admin') == 1 || $currentUser->hasRole('Super Administrator')){
+                $query->orWhere('level', '<=', $currentUser->roles->max('level'));
+            }
+            $query->orWhere('level', '<=', $currentUser->roles->max('level'));
+            
         })->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
+
         $trashed = $this->model->onlyTrashed()->count();
         return view('users.index', compact('users', 'trashed'));
     }
@@ -99,6 +106,8 @@ class UserController extends Controller
     {
         // Get user
         $user = $this->model->where('slug', $slug)->first();
+
+        // dd($user->roles->pluck('name')[0]);
         // Get all roles
         $roles = $this->role->all();
 
@@ -109,6 +118,11 @@ class UserController extends Controller
     {
         try{
             $user = $this->model->findOrFail($id);
+            // Check level role user
+            if(Auth::user()->roles()->max('level') < $user->roles()->max('level')){
+                return  back()->with('failed', 'Users cannot be edit, because the user is of a higher level.');
+            }
+
             $image = $user->image;
             // Jika terdapat file upload image
             // Update image 

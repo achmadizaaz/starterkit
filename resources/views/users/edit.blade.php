@@ -21,20 +21,10 @@
             </div>
         </div>
         <!-- end page title -->
-
-        {{-- Alert errors --}}
-        @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <h4 class="alert-heading">Errors:</h4>
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{$error}}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
-        {{-- End Alert errors --}}
+        
+        <!-- Alert Component-->
+        <x-alert/>
+        <!-- end Alert Component -->
 
         <!-- start page main -->
         <div class="card p-3">
@@ -87,7 +77,7 @@
                                     <select name="role" id="role" class="form-select col">
                                         <option value="">Choose one of the roles</option>
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" @selected(isset($user->roles->pluck('name')[0]) == $role->name)>{{ $role->name }}</option>
+                                            <option value="{{ $role->id }}" @selected( old('role', $user->roles->pluck('id')[0] ?? '') == $role->id)>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -150,8 +140,8 @@
                                     <div class="col-8">
                                         <select name="gender" id="gender" class="form-select">
                                             <option value="">Choose a one</option>
-                                            <option value="1" @selected(old('gender', $user->profile->gender) === '1')>Man</option>
-                                            <option value="0" @selected(old('gender', $user->profile->gender) === '0')>Woman</option>
+                                            <option value="1" @selected(old('gender', $user->profile->gender) == '1')>Man</option>
+                                            <option value="0" @selected(old('gender', $user->profile->gender) == '0')>Woman</option>
                                         </select>
                                     </div>
                                 </div>

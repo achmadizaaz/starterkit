@@ -170,9 +170,9 @@
                                     <i class="bi bi-gender-ambiguous me-2"></i> Gender
                                 </div>
                                 <div class="col-8">
-                                    @if (isset($user->profile->gender) === 1)
+                                    @if (isset($user->profile->gender) == 1)
                                         Man
-                                        @elseif(isset($user->profile->gender) === 0)
+                                        @elseif(isset($user->profile->gender) == 0)
                                         Woman
                                         @else
                                         Tidak tersedia

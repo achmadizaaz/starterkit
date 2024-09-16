@@ -39,6 +39,7 @@ class UserRequest extends FormRequest
         return [
             'is_active.boolean' => 'The is active field must be active or non-active.',
             'username.regex' => 'The username field format invalid and cannot contain spaces.',
+            'gender.boolean' => 'The is gender field must be man or woman.',
         ];
     }
 }

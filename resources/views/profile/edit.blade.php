@@ -21,43 +21,9 @@
         </div>
         <!-- end page title -->
 
-        <!-- start alert -->
-        {{-- Success --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Successfully</h4>
-                <hr>
-                <p class="mb-0">{{ session('success') }}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        {{-- Failed --}}
-        @if (session('failed'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <h4 class="alert-heading">Failed</h4>
-                <hr>
-                <p class="mb-0">{{ session('failed') }}</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <!-- end alert -->
-
-        @if ($errors->any())
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <h5 class="alert-heading">
-                    <i class="bi bi-exclamation-circle me-2"></i>  Errors:
-                </h5>
-                {{-- Button close --}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <hr>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        <!-- Alert Component-->
+        <x-alert/>
+        <!-- end Alert Component -->
 
         <!-- start page main -->
         <div class="row">

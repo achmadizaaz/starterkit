@@ -22,7 +22,7 @@
             <form class="app-search d-none d-lg-block">
                 <div class="position-relative">
                     <input type="text" class="form-control" placeholder="Search..." name="search" value="{{ request('search') }}">
-                    <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
+                    <button class="btn btn-primary" type="submit"><i class="bx bx-search-alt align-middle"></i></button>
                 </div>
             </form>
         </div>

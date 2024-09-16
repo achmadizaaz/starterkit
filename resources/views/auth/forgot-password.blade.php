@@ -125,20 +125,7 @@ body {
                     <img src="{{ asset('assets/images/laravel.png') }}" alt="{{ config('app.name', 'Laravel') }}" height="28"> <span class="logo-txt">{{ config('app.name', 'Laravel') }}</span>
                 </div>
             </div>
-            @if($errors->any())
-                <div class="alert alert-danger" role="alert">
-                    <div class="d-flex justify-content-between border-bottom border-danger mb-2">
-                        <h5 class="alert-heading">Errors:</h5>
-                        <button type="button" class="btn-close small" data-bs-dismiss="alert" aria-label="Close" style="padding: 12px;"></button>
-                    </div>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            
+            <x-alert/>
             <!-- Email Address -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email<span class="text-danger fst-italic">*</span></label>

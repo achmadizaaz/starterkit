@@ -72,9 +72,9 @@
                                 <div class="col-md-3 text-center">
                                     <div class="mb-3">
                                        @if (isset($user->image))
-                                        <img src="{{ asset('storage/'.$user->image) }}" alt="Upload a image" class="rounded-3 img-cover" width="100%" max-width="265%" height="100%" max-height="300px" id="preview-image">
+                                        <img src="{{ asset('storage/'.$user->image) }}" alt="Upload a image" class="rounded-3 img-cover" width="100%" max-width="265%" height="100%" max-height="300px" id="img-preview">
                                        @else
-                                        <img src="{{ asset('assets/images/no-image.webp') }}" alt="Upload a image" class="rounded-3 img-cover" width="100%" max-width="265%" height="100%" max-height="300px" id="preview-image">
+                                        <img src="{{ asset('assets/images/no-image.webp') }}" alt="Upload a image" class="rounded-3 img-cover" width="100%" max-width="265%" height="100%" max-height="300px" id="img-preview">
                                        @endif
                                     </div>
                                     <label for="uploadImage" class="btn btn-sm btn-info rounded-3 px-4">
@@ -104,6 +104,10 @@
                                                 {!! $user->is_active ? '<span class="badge text-bg-success">Active</span>' : '<span class="badge text-bg-danger">Non Active</span>' !!}
                                             </div>
 
+                                            <div class="mb-4">
+                                                <h6>Roles</h6>
+                                                {{ $user->roles->pluck('name')[0] ?? 'Tidak memiliki role' }}
+                                            </div>
                                            
                                             <div class="mb-4">
                                                 <h6>Last login at</h6>
@@ -125,18 +129,7 @@
                                     <i class="bi bi-person-lines-fill me-1"></i> General<span class="text-danger fst-italic">*</span>
                                   </button>
                                 </li>
-                                {{-- For tab media social --}}
-                                <li class="nav-item py-2" role="presentation">
-                                  <button class="nav-link" id="media-tab" data-bs-toggle="tab" data-bs-target="#media-tab-pane" type="button" role="tab" aria-controls="media-tab-pane" aria-selected="false">
-                                    <i class="bi bi-globe me-1"></i>  Media Social
-                                </button>
-                                </li>
-                                {{-- For tab homebase --}}
-                                <li class="nav-item py-2" role="presentation">
-                                    <button class="nav-link" id="homebase-tab" data-bs-toggle="tab" data-bs-target="#homebase-tab-pane" type="button" role="tab" aria-controls="homebase-tab-pane" aria-selected="false">
-                                        <i class="bi bi-database-lock me-1"></i> Role
-                                </button>
-                                </li>
+                                
                             </ul>
                             <div class="tab-content" id="myTabContentUser">
                                 {{-- Tab Additional --}}
@@ -155,32 +148,12 @@
                                             </div>
                                             <div class="row mb-3 align-items-center">
                                                 <div class="col-4">
-                                                    <label for="mobile" class="form-label">
-                                                        <i class="bi bi-phone me-2"></i> Mobile
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="mobile" id="mobile" value="{{ old('mobile', $user->profile->mobile ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
                                                     <label for="address" class="form-label">
                                                         <i class="bi bi-person-vcard me-2"></i> Address
                                                     </label>
                                                 </div>
                                                 <div class="col-8">
                                                     <input type="text" class="form-control" name="address" id="address" value="{{ old('address', $user->profile->address ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="bio" class="form-label">
-                                                        <i class="bi bi-bookmark me-2"></i> Bio
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <textarea name="bio" id="bio" cols="30" rows="5" class="form-control">{{ old('bio', $user->profile->bio ?? '') }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,19 +168,9 @@
                                                 <div class="col-7">
                                                     <select name="gender" id="gender" class="form-select">
                                                         <option value="">Choose a one</option>
-                                                        <option value="man" @selected(old('gender', $user->profile->gender) == 1)>Laki-laki</option>
-                                                        <option value="woman" @selected(old('gender', $user->profile->gender) == 0)>Perempuan</option>
+                                                        <option value="man" @selected(old('gender', $user->profile->gender ?? '') == 1)>Laki-laki</option>
+                                                        <option value="woman" @selected(old('gender', $user->profile->gender ?? '') == 0)>Perempuan</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-5">
-                                                    <label for="place_of_birth" class="form-label">
-                                                        <i class="bi bi-globe-asia-australia me-2"></i> Place of Birth
-                                                    </label>
-                                                </div>
-                                                <div class="col-7">
-                                                    <input type="text" class="form-control" name="place_of_birth" id="place_of_birth" value="{{ old('place_of_birth', $user->profile->place_of_birth ?? '') }}">
                                                 </div>
                                             </div>
                                             <div class="row mb-3 align-items-center">
@@ -220,110 +183,8 @@
                                                     <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $user->profile->date_of_birth ?? '') }}">
                                                 </div>
                                             </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-5">
-                                                    <label for="religion" class="form-label">
-                                                        <i class="bi bi-ui-radios me-2"></i> Religion<span class="text-danger fst-italic">*</span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-7">
-                                                    <select name="religion" id="religion" class="form-select">
-                                                        <option value="">Choose a one</option>
-                                                        <option value="Islam" @selected(old('religion', $user->profile->religion) == 'Islam')>Islam</option>
-                                                        <option value="Kristen" @selected(old('religion', $user->profile->religion) == 'Kristen')>Kristen</option>
-                                                        <option value="Katolik" @selected(old('religion', $user->profile->religion) == 'Katolik')>Katolik</option>
-                                                        <option value="Hindu" @selected(old('religion', $user->profile->religion) == 'Hindu')>Hindu</option>
-                                                        <option value="Buddha" @selected(old('religion', $user->profile->religion) == 'Buddha')>Buddha</option>
-                                                        <option value="Khonghucu" @selected(old('religion', $user->profile->religion) == 'Khonghucu')>Khonghucu</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                         </div>
                                         
-                                    </div>
-                                </div>
-                                {{-- Tab Media --}}
-                                <div class="tab-pane fade" id="media-tab-pane" role="tabpanel" aria-labelledby="media-tab" tabindex="0">
-                                     <div class="row py-4">
-                                        <div class="col-6">
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="website" class="form-label">
-                                                        <i class="bi bi-globe me-2"></i> Website
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="website" id="website" value="{{ old('website', $user->profile->website ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="instagram" class="form-label">
-                                                        <i class="bi bi-instagram me-2"></i> Instagram
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="instagram" id="instagram" value="{{ old('instagram', $user->profile->instagram ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="facebook" class="form-label">
-                                                        <i class="bi bi-facebook me-2"></i> Facebook
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="facebook" id="facebook" value="{{ old('facebook', $user->profile->facebook ?? '') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="col-6">
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="twitter" class="form-label">
-                                                        <i class="bi bi-twitter me-2"></i> Twitter
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="twitter" id="twitter" value="{{ old('twitter', $user->profile->twitter ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="youtube" class="form-label">
-                                                        <i class="bi bi-youtube me-2"></i> Youtube
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="youtube" id="youtube" value="{{ old('youtube', $user->profile->youtube ?? '') }}">
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-4">
-                                                    <label for="other" class="form-label">
-                                                        <i class="bi bi-three-dots me-2"></i> Other
-                                                    </label>
-                                                </div>
-                                                <div class="col-8">
-                                                    <input type="text" class="form-control" name="other" id="other" value="{{ old('other', $user->profile->other ?? '') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-            
-                                {{-- Tab Pane Homebase  --}}
-                                <div class="tab-pane fade" id="homebase-tab-pane" role="tabpanel" aria-labelledby="homebase-tab" tabindex="0">
-                                    <div class="row  py-4 mb-3">
-                                        <div class="col-6">
-                                            <div class="d-flex gap-3">
-                                                <div>
-                                                    <i class="bi bi-fingerprint me-2"></i> Role User:
-                                                </div>
-                                               <div>{{ $user->roles->pluck('name')[0] ?? 'Tidak memiliki role' }}</div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -403,10 +264,10 @@
 @push('scripts')
     <script>
         // PREVIEW IMAGE
-        $('#changeImageProfile').change(function(){
+        $('#uploadImage').change(function(){
             let reader = new FileReader();
             reader.onload = (e) => {
-                $('#image-preview').attr('src', e.target.result); 
+                $('#img-preview').attr('src', e.target.result); 
             }
             reader.readAsDataURL(this.files[0]); 
         });

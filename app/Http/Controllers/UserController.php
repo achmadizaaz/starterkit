@@ -30,7 +30,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $showPage = Session::get('showPages');
-        $users = $this->model->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
+        $users = $this->model->with(['roles'])->whereHas('roles', function($query){
+            $query->orWhere('level', '<', '10');
+        })->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
         $trashed = $this->model->onlyTrashed()->count();
         return view('users.index', compact('users', 'trashed'));
     }

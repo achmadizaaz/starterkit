@@ -32,13 +32,15 @@ class UserController extends Controller
         $showPage = Session::get('showPages');
         $currentUser = Auth::user();
 
-        $users = $this->model->with(['roles'])->whereHas('roles', function($query) use ($currentUser){
-            if($currentUser->roles->max('is_admin') == 1 || $currentUser->hasRole('Super Administrator')){
-                $query->orWhere('level', '<=', $currentUser->roles->max('level'));
-            }
-            $query->orWhere('level', '<=', $currentUser->roles->max('level'));
+        $users = $this->model->with(['roles'])
+        // ->whereHas('roles', function($query) use ($currentUser){
+        //     if($currentUser->roles->max('is_admin') == 1 || $currentUser->hasRole('Super Administrator')){
+        //         $query->orWhere('level', '<=', $currentUser->roles->max('level'));
+        //     }
+        //     $query->orWhere('level', '<=', $currentUser->roles->max('level'));
             
-        })->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
+        // })
+        ->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
 
         $trashed = $this->model->onlyTrashed()->count();
         return view('users.index', compact('users', 'trashed'));

@@ -137,7 +137,7 @@
                             <td>
                                 <div class="d-flex gap-1">
                                     {{-- Edit Button --}}
-                                    <button type="button" class="btn btn-sm btn-warning confirm_edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $role->id }}" data-name="{{ $role->name }}" data-level="{{ $role->level }}" data-admin="{{ $role->is_admin }}" title="Edit role">
+                                    <button type="button" class="btn btn-sm text-bg-warning confirm_edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $role->id }}" data-name="{{ $role->name }}" data-level="{{ $role->level }}" data-admin="{{ $role->is_admin }}" title="Edit role">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
 

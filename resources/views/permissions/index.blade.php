@@ -117,7 +117,7 @@
                             <td>
                                 <div class="d-flex gap-1">
                                     {{-- Edit Button --}}
-                                    <button type="button" class="btn btn-sm btn-warning confirm_edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $permission->id }}" data-name="{{ $permission->name }}" title="Edit permission">
+                                    <button type="button" class="btn btn-sm text-bg-warning confirm_edit" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $permission->id }}" data-name="{{ $permission->name }}" title="Edit permission">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
 

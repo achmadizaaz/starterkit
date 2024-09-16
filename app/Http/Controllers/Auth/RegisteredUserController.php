@@ -33,11 +33,12 @@ class RegisteredUserController extends Controller
     {
 
         $request->validate([
+            'username' => ['required', 'unique:users,username,', 'string', 'min:5', 'regex:/^\S*$/'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             // User Profile
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => 'nullable|numeric|digits_between:5,15',
             'date_of_birth' => ['required', 'date'],
             'gender' => ['required', 'boolean'],
         ]);
@@ -59,21 +60,10 @@ class RegisteredUserController extends Controller
             [// Update profile user
             // General
             'phone'     => $request->phone,
-            'mobile'    => $request->mobile,
-            'country'   => $request->country,
             'address'   => $request->address,
-            'bio'       => $request->bio,
             'date_of_birth' => $request->date_of_birth,
-            'place_of_birth' => $request->place_of_birth,
             'gender' => $request->gender,
-            'religion' => $request->religion,
-            // Media Social
-            'website'   => $request->website,
-            'instagram' => $request->instagram,
-            'facebook'  => $request->facebook,
-            'twitter'   => $request->twitter,
-            'youtube'   => $request->youtube,
-            'other'     => $request->other,
+
             'updated_at'=> now(),]
         );
 

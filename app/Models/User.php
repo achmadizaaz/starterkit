@@ -83,9 +83,7 @@ class User extends Authenticatable
                             $query->orWhere('is_active', false);
                         }
                     }
-                })->orWhere('username', 'like', '%' . $search . '%') 
-                    ->orWhere('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
+                })->orWhereAny(['username', 'name', 'email'], 'like', '%' . $search . '%');
         });
     }
 

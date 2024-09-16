@@ -26,9 +26,7 @@ class Role extends SpatieRole
                         $query->orWhere('is_admin', false);
                     }
                 }
-            })->orWhere('name', 'like', '%' . $search . '%') 
-            ->orWhere('level', 'like', '%' . $search . '%')
-            ->orWhere('created_at', 'like', '%' . $search . '%');
+            })->orWhereAny(['name', 'level', 'created_at'], 'like', '%' . $search . '%');
     });
 }
 }

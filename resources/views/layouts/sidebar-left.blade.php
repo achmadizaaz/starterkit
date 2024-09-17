@@ -56,7 +56,7 @@
                 </li>
                 @endcanany
 
-                <li class="menu-title" data-key="t-reports">Reports</li>
+                <li class="menu-title" data-key="t-reports">Report</li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="bi bi-bar-chart-line"></i>

@@ -33,14 +33,16 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         $users = $this->model->with(['roles'])
-        // ->whereHas('roles', function($query) use ($currentUser){
-        //     if($currentUser->roles->max('is_admin') == 1 || $currentUser->hasRole('Super Administrator')){
-        //         $query->orWhere('level', '<=', $currentUser->roles->max('level'));
-        //     }
-        //     $query->orWhere('level', '<=', $currentUser->roles->max('level'));
-            
-        // })
-        ->latest()->filter(request(['search']))->paginate( $showPage ?? 10);
+            ->when(!$currentUser->roles->max('is_admin') && !$currentUser->hasRole('Super Administrator'), function($query) use ($currentUser) {
+                // Jika pengguna memiliki peran tapi bukan admin, tampilkan user dengan level yang sesuai
+                $maxLevel = $currentUser->roles->max('level');
+                $query->whereHas('roles', function($subQuery) use ($maxLevel) {
+                    $subQuery->where('level', '<=', $maxLevel);
+                });
+            })
+            ->latest()
+            ->filter(request(['search']))
+            ->paginate( $showPage ?? 10);
 
         $trashed = $this->model->onlyTrashed()->count();
         return view('users.index', compact('users', 'trashed'));
@@ -108,10 +110,16 @@ class UserController extends Controller
     {
         // Get user
         $user = $this->model->where('slug', $slug)->first();
-
-        // dd($user->roles->pluck('name')[0]);
+        $currentUser = Auth::user();
         // Get all roles
-        $roles = $this->role->all();
+        $roles = $this->role->when(!$currentUser->roles->max('is_admin') && !$currentUser->hasRole('Super Administrator'), function($query) use ($currentUser) {
+            // Jika pengguna memiliki peran tapi bukan admin, tampilkan user dengan level yang sesuai
+            $maxLevel = $currentUser->roles->max('level');
+           $query->where('level', '<=', $maxLevel);
+        })->get();
+
+        // Show role berdasarkan level user, kecuali untuk superr admin
+        $currentUser->hasRole('Super Administrator') ? $roles = $this->role->get() : $roles = $this->role->where('level', '<=', $currentUser->roles->max('level'))->get();
 
         return view('users.edit', compact('user', 'roles'));
     }
@@ -121,7 +129,7 @@ class UserController extends Controller
         try{
             $user = $this->model->findOrFail($id);
             // Check level role user
-            if(Auth::user()->roles()->max('level') < $user->roles()->max('level')){
+            if(Auth::user()->roles->max('level') <= $user->roles->max('level') && !Auth::user()->roles->max('is_admin')){
                 return  back()->with('failed', 'Users cannot be edit, because the user is of a higher level.');
             }
 

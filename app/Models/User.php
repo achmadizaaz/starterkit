@@ -77,13 +77,17 @@ class User extends Authenticatable
                 // Cek apakah search mengandung 'active' atau 'nonactive'
                 if (str_contains(strtolower($search), 'active')) {
                     // Jika mengandung 'active', cek apakah pencarian adalah 'active' atau 'nonactive'
-                        if (strtolower($search) == 'active') {
+                        if (strtolower($search) === 'active') {
+                            // Jika pencarian adalah 'active', cari user yang aktif
                             $query->orWhere('is_active', true);
-                        } elseif (strtolower($search) == 'nonactive' || 'non active') {
+                        } elseif (strtolower($search) === 'nonactive' || strtolower($search) === 'non active') {
+                            // Jika pencarian adalah 'nonactive' atau 'non active', cari user yang tidak aktif
                             $query->orWhere('is_active', false);
                         }
+                    }else{
+                        $query->whereAny(['username', 'name', 'email'], 'like', '%' . $search . '%');
                     }
-                })->orWhereAny(['username', 'name', 'email'], 'like', '%' . $search . '%');
+                });
         });
     }
 

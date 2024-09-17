@@ -60,8 +60,12 @@ class OptionController extends Controller
         $this->model->upsert([
             ['name' => 'site-title', 'value'=> $request->siteTitle],
             ['name' => 'favicon', 'value' => $pathFavicon],
+            ['name' => 'address', 'value' => $request->address],
+            ['name' => 'contact', 'value' => $request->contact],
+
             ['name' => 'sidebar-icon', 'value' => $pathSidebarIcon],
             ['name' => 'sidebar-text-icon', 'value' => $request->sidebarTextIcon],
+
             ['name' => 'can-register', 'value' => $request->canRegister == 'on' ? 'yes' : 'no'],
             ['name' => 'default-role', 'value' => $request->defaultRole],
             ['name' => 'default-is-active', 'value' => $request->isActive],

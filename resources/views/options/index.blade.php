@@ -41,6 +41,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-3">
+                            <label for="site" class="form-label">Address</label>
+                        </div>
+                        <div class="col-6">
+                            <textarea name="address" class="form-control" cols="30" rows="5">{{ $option['address']->value ?? '' }}</textarea>
+                            <div class="small">
+                                    The address will appear in the header on the report page.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-3">
+                            <label for="site" class="form-label">Contact</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="contact" class="form-control" value="{{ $option['contact']->value ?? '' }}">
+                            <div class="small">
+                                The contact will appear in the header on the report page.
+                        </div>
+                        </div>
+                    </div>
                     <hr>
                     <div class="mb-3">
                         <h5 class="text-secondary">Sidebar</h5>

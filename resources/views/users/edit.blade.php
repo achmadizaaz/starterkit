@@ -58,7 +58,12 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label" for="email">Email</label>
-                                   <input type="email" class="form-control" value="{{$user->email }}" id="email" disabled>
+                                   <div class="input-group mb-3">
+                                    <input type="email" class="form-control" value="{{$user->email }}" id="email" disabled>
+                                    <span class="input-group-text">
+                                        <i class="bi bi-slash-circle"></i>
+                                    </span>
+                                </div>
                                 </div>
                             </div>
                             <div class="col">
@@ -74,12 +79,21 @@
                                     <label for="role" class="form-label col">
                                         Roles
                                     </label>
-                                    <select name="role" id="role" class="form-select col">
-                                        <option value="">Choose one of the roles</option>
-                                        @foreach ($roles as $role)
+                                    @if (Auth::user()->roles->max('is_admin') || Auth::user()->hasRole('Super Administrator'))
+                                        <select name="role" id="role" class="form-select col">
+                                            <option value="">Choose one of the roles</option>
+                                            @foreach ($roles as $role)
                                             <option value="{{ $role->id }}" @selected( old('role', $user->roles->pluck('id')[0] ?? '') == $role->id)>{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" id="role" value=" {{ $user->roles->pluck('name')[0] }}" disabled>
+                                            <span class="input-group-text">
+                                                <i class="bi bi-slash-circle"></i>
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="mb-4">
                                     <h6>Last login at</h6>

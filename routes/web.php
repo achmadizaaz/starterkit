@@ -170,6 +170,7 @@ Route::prefix('dashboard')->middleware(['auth', 'active'])->group(function () {
             ->name('options.update');
     });
 
+    require __DIR__.'/report.php';
 });
 
 require __DIR__.'/auth.php';

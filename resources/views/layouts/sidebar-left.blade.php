@@ -55,6 +55,26 @@
                     @endcanany
                 </li>
                 @endcanany
+
+                <li class="menu-title" data-key="t-reports">Reports</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span data-key="t-rolepermission">Reports</span>
+                    </a>
+                    @canany(['read-roles', 'read-permissions', 'read-sync-permission-roles'])
+                    <ul class="sub-menu" aria-expanded="false">
+                        @can('read-roles')
+                        <li>
+                            <a href="{{ route('report.users') }}">
+                                <span data-key="t-role">User Report</span>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                    @endcanany
+                </li>
+
                 @can('read-options')
                 {{-- Option Menu --}}
                 <li class="menu-title" data-key="t-components">Options</li>

@@ -58,14 +58,7 @@
                                 </a>
                             </div>
                         </form>
-
-                        
-
-                        <div class="text-center mt-4 text-muted small">
-                           {{ date('Y') }}  © {{ env('APP_NAME') }} - All rights reserved.
-                        </div>
                     </div>
-
                 </div>
             </div>
 

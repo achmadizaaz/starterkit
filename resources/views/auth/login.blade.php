@@ -98,9 +98,9 @@
                             </div> --}}
                         </form>
 
-                        <div class="text-center mt-4 text-muted small">
-                           {{ date('Y') }}  © {{ env('APP_NAME') }} - All rights reserved.
-                        </div>
+                        <div class="text-center text-muted">Tidak memiliki akun? <a href="{{ route('register') }}" class="text-decoration-none fst-italic fw-semibold text-primary">Register</a></div>
+
+                       
                     </div>
 
                 </div>

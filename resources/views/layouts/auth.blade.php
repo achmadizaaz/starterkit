@@ -71,6 +71,11 @@
     <body class="min-vh-100 d-flex align-items-center justify-content-center">
         @yield('content')
 
+
+         <div class="text-center mt-4 text-muted small">
+            {{ date('Y') }}  © {{ env('APP_NAME') }} - All rights reserved.
+        </div>
+
         <!-- Button Mode Color / Dark Mode -->
         <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
             <button class="btn btn-sm btn-primary  dropdown-toggle d-flex align-items-center gap-1" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (dark)">

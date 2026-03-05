@@ -102,12 +102,7 @@
    onclick="togglePassword('password_confirmation','icon-password-confirmation')" title="Tampilkan katasandi"></i>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center mb-4">
-                                <a href="{{ route('login') }}" class="text-decoration-none text-primary small fst-italic">
-                                    Sudah punya akun?
-                                </a>
+                                <small id="password_message" class="d-block mt-1"></small>
                             </div>
 
                             <button class="btn btn-primary w-100 py-2 mb-3">
@@ -116,8 +111,11 @@
                             
                         </form>
 
-                        <div class="text-center mt-4 text-muted small">
-                           {{ date('Y') }}  © {{ env('APP_NAME') }} - All rights reserved.
+                        <div class="text-center mb-4">
+                            Sudah punya akun?
+                            <a href="{{ route('login') }}" class="text-decoration-none text-primary fst-italic">
+                                Login
+                            </a>
                         </div>
                     </div>
 
@@ -130,20 +128,50 @@
 @endsection
 
 @push('scripts')
-<script>
+    <script>
 
-    function togglePassword(inputId, iconId) {
-    const input = document.getElementById(inputId);
-    const icon = document.getElementById(iconId);
+        function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
 
-        if (input.type === "password") {
-            input.type = "text";
-            icon.classList.replace('bi-lock-fill', 'bi-unlock2-fill');
-            icon.title = "Sembunyikan katasandi";
-        } else {
-            input.type = "password";
-            icon.classList.replace('bi-unlock2-fill', 'bi-lock-fill');
-            icon.title = "Tampilkan katasandi";
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace('bi-lock-fill', 'bi-unlock2-fill');
+                icon.title = "Sembunyikan katasandi";
+            } else {
+                input.type = "password";
+                icon.classList.replace('bi-unlock2-fill', 'bi-lock-fill');
+                icon.title = "Tampilkan katasandi";
+            }
         }
-    }
-</script>
+
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('password_confirmation');
+        const message = document.getElementById('password_message');
+
+        function checkPasswordMatch() {
+
+            if (confirmPassword.value.length === 0) {
+                message.innerHTML = "";
+                return;
+            }
+
+            if (password.value === confirmPassword.value) {
+                message.innerHTML = "✔ Password cocok";
+                message.classList.remove('text-danger');
+                message.classList.add('text-success');
+                confirmPassword.classList.remove('is-invalid');
+                confirmPassword.classList.add('is-valid');
+            } else {
+                message.innerHTML = "✖ Password tidak sesuai";
+                message.classList.remove('text-success');
+                message.classList.add('text-danger');
+                confirmPassword.classList.remove('is-valid');
+                confirmPassword.classList.add('is-invalid');
+            }
+        }
+
+        password.addEventListener('keyup', checkPasswordMatch);
+        confirmPassword.addEventListener('keyup', checkPasswordMatch);
+    </script>
+@endpush

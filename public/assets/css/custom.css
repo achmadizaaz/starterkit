@@ -1,0 +1,258 @@
+:root{
+    --primary:#6610f2;
+    --sidebar-width:260px;
+    --bg-white: #ffffff;
+    --bg-light: #f4f6f9;
+    --bg-dark: #1d1e1d;
+    --bg-dark-menu: #1c1b1b;
+    --card-dark: #1e1e1e;
+    --bg-body: #ececec;
+}
+
+
+body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background: var(--bg-body);
+}
+
+/* SIDEBAR */
+.btn-toggle-menu {
+    display: none;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    width:var(--sidebar-width);
+    background:var(--bg-white);
+    border-right:1px solid #eee;
+    transition:.25s;
+    z-index:1000;
+    overflow-y:auto;
+    overflow-x: hidden;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+.sidebar.collapsed{
+    transform:translateX(-100%);
+}
+
+.sidebar-header{
+    padding:18px 20px;
+    font-weight:700;
+    font-size:20px;
+    color:var(--primary);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.sidebar-close{
+    display:none;
+}
+
+
+.sidebar-menu{
+    padding:10px;
+}
+
+.sidebar-menu li a{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#444;
+    font-size:14px;
+    transition:.2s;
+    margin-bottom: 4px;
+}
+
+.sidebar-menu li a:hover{
+    background:rgba(102,16,242,.08);
+    color:var(--primary);
+}
+
+.sidebar-menu li a.active{
+    background:var(--primary);
+    color:#fff;
+}
+
+.submenu li a{
+    padding:8px 10px;
+    font-size:13px;
+}
+
+
+
+.menu-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.menu-arrow{
+    font-size:12px;
+    transition:.25s;
+}
+
+a[aria-expanded="true"] .menu-arrow{
+    transform:rotate(90deg);
+}
+
+.sidebar-menu a.active{
+    background:var(--primary);
+    color:#fff;
+}
+
+.submenu{
+    padding-left:35px;
+}
+
+.submenu a{
+    font-size:13px;
+    padding:8px 10px;
+}
+
+
+
+/* TOPBAR */
+.topbar{
+    position:fixed;
+    left:var(--sidebar-width);
+    right:0;
+    top:0;
+    height:60px;
+    background:#fff;
+    border-bottom:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    transition:.25s;
+    z-index:900;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+
+}
+
+body.sidebar-collapsed .topbar{
+    left:0;
+}
+
+/* MAIN */
+.main{
+    margin-left:var(--sidebar-width);
+    padding:90px 25px 25px;
+    transition:.25s;
+}
+
+body.sidebar-collapsed .main{
+    margin-left:0;
+}
+
+/* CARDS */
+.card{
+    border:none;
+    border-radius:14px;
+}
+
+.stat-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-icon{
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(102,16,242,.1);
+    color:var(--primary);
+    border-radius:10px;
+    font-size:20px;
+}
+
+/* USER */
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.user-box img{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+}
+
+/* MOBILE */
+@media(max-width:992px){
+.btn-toggle-menu {
+    display: block;
+}
+
+.sidebar{
+    transform:translateX(-100%);
+}
+
+.sidebar.mobile-show{
+    transform:translateX(0);
+}
+
+.sidebar-close{
+    display:block;
+}
+
+.topbar{
+    left:0;
+}
+
+.main{
+    margin-left:0;
+}
+
+}
+
+/* Darkmode */
+[data-bs-theme="dark"] body {
+    background: var(--bg-dark);
+}
+
+[data-bs-theme="dark"] .topbar {
+    background: var(--bg-dark-menu);
+    border-bottom:1px solid #252424;
+}
+
+[data-bs-theme="dark"] .sidebar {
+    background: var(--bg-dark-menu);
+    border-right:1px solid #252424;
+    color: beige;
+}
+[data-bs-theme="dark"] .sidebar-menu a {
+   
+    color: #ddd;
+}

@@ -1,17 +1,79 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@section('title','Dashboard')
+
+@section('content')
+    <!-- MAIN -->
+<div class="main">
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-4">Dashboard Overview</h4>
+    <div>Home / Dashboard</div>
+</div>
+
+<div class="row g-4">
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body stat-card">
+<div>
+<div class="text-muted small">Total Produk</div>
+<h4 class="mb-0">120</h4>
+</div>
+<div class="stat-icon">
+<i class="bi bi-box"></i>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body stat-card">
+<div>
+<div class="text-muted small">Total User</div>
+<h4 class="mb-0">25</h4>
+</div>
+<div class="stat-icon">
+<i class="bi bi-people"></i>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body stat-card">
+<div>
+<div class="text-muted small">Transaksi Hari Ini</div>
+<h4 class="mb-0">75</h4>
+</div>
+<div class="stat-icon">
+<i class="bi bi-cash"></i>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm">
+<div class="card-body stat-card">
+<div>
+<div class="text-muted small">Pendapatan</div>
+<h4 class="mb-0">Rp 5.2jt</h4>
+</div>
+<div class="stat-icon">
+<i class="bi bi-graph-up"></i>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+@endsection

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('title', config('app.name', 'Laravel') )</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,11 +13,12 @@
 
         <!-- Scripts -->
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
         
         <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/darkmode.css') }}">
         <!-- Scripts Dark Mode Bootstrap -->
         <script src="{{ asset('assets/js/darkmode.js') }}"></script>
-
 
         @yield('head')
 
@@ -27,7 +28,18 @@
         @include('layouts.sidebar')
         @include('layouts.topbar')
 
-        @yield('content')
+        <div class="main">
+            
+            <!-- Title -->
+            @yield('title-page')
+            <!-- Status & Errors -->
+            <x-status/>
+            <x-alert/>
+            <!-- Content -->
+            @yield('content')
+        </div>
+
+
 
         <x-darkmode-button/>
 

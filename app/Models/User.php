@@ -57,4 +57,19 @@ class User extends Authenticatable
             ]
         ];
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    public function loginHistories()
+    {
+        return $this->hasMany(LoginHistory::class);
+    }
 }

@@ -1,0 +1,19 @@
+/* Darkmode */
+[data-bs-theme="dark"] body {
+    background: var(--bg-dark);
+}
+
+[data-bs-theme="dark"] .topbar {
+    background: var(--bg-dark-menu);
+    border-bottom:1px solid #252424;
+}
+
+[data-bs-theme="dark"] .sidebar {
+    background: var(--bg-dark-menu);
+    border-right:1px solid #252424;
+    color: beige;
+}
+[data-bs-theme="dark"] .sidebar-menu a {
+   
+    color: #ddd;
+}

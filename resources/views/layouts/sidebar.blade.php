@@ -20,22 +20,6 @@
 
 
 <li>
-<a data-bs-toggle="collapse" href="#menuProduk">
-<span class="menu-left">
-    <i class="bi bi-box"></i> Produk
-</span>
-<i class="bi bi-chevron-right menu-arrow"></i>
-</a>
-
-<ul class="collapse submenu list-unstyled" id="menuProduk">
-<li><a href="#">Data Produk</a></li>
-<li><a href="#">Kategori</a></li>
-<li><a href="#">Stok</a></li>
-</ul>
-</li>
-
-
-<li>
 <a data-bs-toggle="collapse" href="#menuUser">
 <span class="menu-left">
 <i class="bi bi-people"></i> User Management
@@ -44,27 +28,14 @@
 </a>
 
 <ul class="collapse submenu list-unstyled" id="menuUser">
-<li><a href="#">Users</a></li>
-<li><a href="#">Roles</a></li>
-<li><a href="#">Permissions</a></li>
+    <li>
+        <a href="{{ route('user.index') }}">Users</a>
+    </li>
+    <li><a href="#">Roles</a></li>
+    <li><a href="#">Permissions</a></li>
 </ul>
 </li>
 
-
-<li>
-<a data-bs-toggle="collapse" href="#menuTransaksi">
-<span class="menu-left">
-<i class="bi bi-cash-stack"></i> Transaksi
-</span>
-<i class="bi bi-chevron-right menu-arrow"></i>
-</a>
-
-<ul class="collapse submenu list-unstyled" id="menuTransaksi">
-<li><a href="#">POS</a></li>
-<li><a href="#">Pemasukan</a></li>
-<li><a href="#">Pengeluaran</a></li>
-</ul>
-</li>
 
 
 <li>

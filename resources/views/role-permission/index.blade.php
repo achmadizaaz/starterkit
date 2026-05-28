@@ -145,6 +145,8 @@
                 function changeRole(roleId) {
                     if (roleId) {
                         window.location.href = "{{ url('/dashboard/role-permission') }}/" + encodeURIComponent(roleId);
+                    }else{
+                        window.location.href = "{{ url('/dashboard/role-permission') }}";
                     }
                 }
 

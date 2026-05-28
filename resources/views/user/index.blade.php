@@ -27,6 +27,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -48,12 +49,19 @@
                                     <td>{{ $item->username }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>
+                                        @forelse ($item->roles as $role)
+                                            <span class="badge bg-info text-dark">{{ $role->name }}</span>
+                                        @empty
+                                            <span class="text-muted">-</span>
+                                        @endforelse
+                                    </td>
+                                    <td>
                                         <span class="badge {{ $item->status ? 'bg-success' : 'bg-secondary' }}">
                                             {{ $item->status ? 'Active' : 'Inactive' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}">
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->name }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}">
@@ -63,7 +71,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-4">Belum ada data user.</td>
+                                    <td colspan="8" class="text-center py-4">Belum ada data user.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -141,6 +149,18 @@
                                     </select>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
+                                        <option value="">Pilih Role</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->name }}" {{ old('role') === $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('role')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
 
                                 <div class="col-md-6">
@@ -230,6 +250,16 @@
                                     <select name="status" id="editStatus" class="form-select">
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="editRole" class="form-label">Role</label>
+                                    <select name="role" id="editRole" class="form-select">
+                                        <option value="">Pilih Role</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -348,12 +378,14 @@
                         const userUsername = button.getAttribute('data-user-username');
                         const userEmail = button.getAttribute('data-user-email');
                         const userStatus = button.getAttribute('data-user-status');
+                        const userRole = button.getAttribute('data-user-role');
                         const userAvatar = button.getAttribute('data-user-avatar');
 
                         document.getElementById('editName').value = userName;
                         document.getElementById('editUsername').value = userUsername;
                         document.getElementById('editEmail').value = userEmail;
                         document.getElementById('editStatus').value = userStatus;
+                        document.getElementById('editRole').value = userRole;
                         document.getElementById('editUserForm').action = '/dashboard/user/' + userId;
 
                         // Set avatar preview

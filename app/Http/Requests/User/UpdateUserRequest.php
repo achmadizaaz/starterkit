@@ -33,6 +33,7 @@ class UpdateUserRequest extends FormRequest
             'password_confirmation' => 'nullable|min:7',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'status' => 'nullable|boolean',
+            'role' => 'required|exists:roles,id',
         ];
     }
 }

@@ -31,8 +31,10 @@
     <li>
         <a href="{{ route('user.index') }}">Users</a>
     </li>
-    <li><a href="#">Roles</a></li>
-    <li><a href="#">Permissions</a></li>
+    <li><a href="{{ route('role.index') }}">Roles</a></li>
+    <li><a href="{{ route('permission.index') }}">Permissions</a></li>
+    <li><a href="{{ route('permission-group.index') }}">Permission Groups</a></li>
+    <li><a href="{{ route('role-permission.index') }}">Assign Permission</a></li>
 </ul>
 </li>
 

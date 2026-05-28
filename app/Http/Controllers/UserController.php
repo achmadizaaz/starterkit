@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -22,7 +23,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         return view('user.index', [
-            'users' => $this->user->paginate(10)
+            'users' => $this->user->with('roles')->paginate(10),
+            'roles' => Role::orderBy('name')->get(),
         ]);
     }
 
@@ -35,7 +37,7 @@ class UserController extends Controller
             $avatarPath = $this->fileService->upload($request->file('avatar'), 'avatars', 'public');
         }
 
-        User::create([
+        $user = User::create([
             'name'     => $request->name,
             'username' => $request->username,
             'password' => Hash::make($request->password),
@@ -43,6 +45,8 @@ class UserController extends Controller
             'status'   => $request->status,
             'avatar'   => $avatarPath,
         ]);
+
+        $user->syncRoles([$request->role]);
 
         return back()->with('success', 'User telah ditambahkan!');
     }
@@ -72,6 +76,7 @@ class UserController extends Controller
         }
 
         $user->update($updateData);
+        $user->syncRoles([$request->role]);
 
         return back()->with('success', 'User telah diperbarui!');
     }

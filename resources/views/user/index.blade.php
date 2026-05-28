@@ -61,7 +61,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->name }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}">
+                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}">
@@ -154,7 +154,7 @@
                                     <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
                                         <option value="">Pilih Role</option>
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->name }}" {{ old('role') === $role->name ? 'selected' : '' }}>{{ $role->name }}</option>
+                                            <option value="{{ $role->id }}" {{ old('role') === $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('role')

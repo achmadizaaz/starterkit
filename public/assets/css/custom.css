@@ -381,12 +381,12 @@ body{
 }
 
 /* USER MODALS */
-.user-modal .modal-dialog{
+.modern-modal .modal-dialog{
     --bs-modal-border-radius: 14px;
     max-height: calc(100vh - 3.5rem);
 }
 
-.user-modal-content{
+.modern-modal-content{
     border: 1px solid rgba(226, 232, 240, .95);
     border-radius: 14px;
     box-shadow: 0 24px 70px rgba(15, 23, 42, .18);
@@ -396,14 +396,14 @@ body{
     flex-direction: column;
 }
 
-.user-modal-content > form{
+.modern-modal-content > form{
     max-height: calc(100vh - 3.5rem);
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
 
-.user-modal-header{
+.modern-modal-header{
     padding: 22px 24px 18px;
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border-bottom: 1px solid var(--border-soft);
@@ -452,7 +452,7 @@ body{
     color: #059669;
 }
 
-.user-modal-body{
+.modern-modal-body{
     padding: 24px;
     background: #ffffff;
     overflow-y: auto;
@@ -505,7 +505,7 @@ body{
 }
 
 .avatar-upload-content .form-label,
-.user-modal .form-label{
+.modern-modal .form-label{
     color: #334155;
     font-size: 13px;
     font-weight: 600;
@@ -574,7 +574,7 @@ body{
     border-color: rgba(37, 99, 235, .25);
 }
 
-.user-modal-footer{
+.modern-modal-footer{
     padding: 18px 24px;
     background: #f8fafc;
     border-top: 1px solid var(--border-soft);
@@ -1248,9 +1248,9 @@ body.sidebar-collapsed .main{
     font-size: 14px;
 }
 
-.user-modal-header,
-.user-modal-body,
-.user-modal-footer{
+.modern-modal-header,
+.modern-modal-body,
+.modern-modal-footer{
     padding-left: 16px;
     padding-right: 16px;
 }
@@ -1273,11 +1273,11 @@ body.sidebar-collapsed .main{
     width: 96px;
 }
 
-.user-modal-footer{
+.modern-modal-footer{
     flex-direction: column-reverse;
 }
 
-.user-modal-footer .btn{
+.modern-modal-footer .btn{
     width: 100%;
 }
 

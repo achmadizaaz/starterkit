@@ -6,29 +6,17 @@
 
     <div class="container-fluid">
 
-        {{-- <div class="modern-header mb-4">
-            <div class="header-content">
-                <div>
-                    <h1 class="page-title">User Management</h1>
-                    <p class="page-subtitle">Kelola dan kontrol semua pengguna sistem</p>
-                </div>
-                <button type="button" class="btn btn-add-modern" data-bs-toggle="modal" data-bs-target="#createUserModal">
-                    <i class="bi bi-plus-lg"></i> Tambah User
-                </button>
-            </div>
-        </div> --}}
-
         <div class="mb-4 small">
              <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-modern">
-                    <li class="breadcrumb-item">Dashboard</li>
-                    <li class="breadcrumb-item" aria-current="page">User Management</li>
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item">User Management</li>
                     <li class="breadcrumb-item active" aria-current="page">Users</li>
                 </ol>
             </nav>
         </div>
 
-         <div class="dashboard-heading">
+        <div class="dashboard-heading">
             <div>
                 {{-- <span class="dashboard-kicker">Access Control</span> --}}
                 <h4 class="mb-1">User Management</h4>
@@ -36,7 +24,7 @@
             </div>
              <button type="button" class="btn btn-add-modern" data-bs-toggle="modal" data-bs-target="#createUserModal">
                     <i class="bi bi-plus-lg"></i> Tambah User
-                </button>
+            </button>
             
         </div>
         

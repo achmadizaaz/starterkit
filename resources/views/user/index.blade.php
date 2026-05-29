@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="pagination-wrapper mt-4">
-                    {{ $users->links() }}
+                    {{ $users->links('vendor.pagination.modern-bootstrap') }}
                 </div>
             </div>
         </div>

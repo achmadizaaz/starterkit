@@ -43,18 +43,22 @@
 
         <x-darkmode-button/>
 
+        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
         <script>
 
             function toggleSidebar(){
 
             if(window.innerWidth < 992){
                 document.getElementById('sidebar').classList.add('mobile-show')
+                document.getElementById('sidebarBackdrop').classList.add('show')
                 }else{
                     document.body.classList.toggle('sidebar-collapsed')
                     }
                 }
                 function closeSidebar(){
                 document.getElementById('sidebar').classList.remove('mobile-show')
+                document.getElementById('sidebarBackdrop').classList.remove('show')
             }
 
         </script>

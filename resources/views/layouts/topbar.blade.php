@@ -3,11 +3,14 @@
 
     <div class="d-flex align-items-center gap-2">
 
-        <button class="btn btn-toggle-menu" onclick="toggleSidebar()">
+        <button class="btn btn-toggle-menu" onclick="toggleSidebar()" aria-label="Toggle sidebar">
             <i class="bi bi-list" style="font-size:20px"></i>
         </button>
 
-        <input id="menuSearch" class="form-control global-search" placeholder="Search...">
+        <div class="topbar-search">
+            <i class="bi bi-search"></i>
+            <input id="menuSearch" class="form-control global-search" placeholder="Search...">
+        </div>
 
     </div>
 

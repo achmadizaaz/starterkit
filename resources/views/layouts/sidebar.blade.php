@@ -24,7 +24,7 @@
                 </span>
             </a>
         </li>
-
+        <hr class="sidebar-divider">
         <li>
             <a data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="{{ $userMenuOpen ? 'true' : 'false' }}" aria-controls="menuUser" class="{{ $userMenuOpen ? '' : 'collapsed' }}">
                 <span class="menu-left">

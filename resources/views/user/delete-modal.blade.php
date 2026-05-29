@@ -1,10 +1,10 @@
-<div class="modal fade user-modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+<div class="modal fade modern-modal" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content user-modal-content delete-modal-content">
+        <div class="modal-content modern-modal-content delete-modal-content">
             <form id="deleteUserForm" method="POST">
                 @csrf
                 @method('DELETE')
-                <div class="modal-header user-modal-header border-0 pb-0">
+                <div class="modal-header modern-modal-header border-0 pb-0">
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -18,7 +18,7 @@
                     </p>
                 </div>
 
-                <div class="modal-footer user-modal-footer delete-modal-footer">
+                <div class="modal-footer modern-modal-footer delete-modal-footer">
                     <button type="button" class="btn btn-light-modern" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger-modern">
                         <i class="bi bi-trash3"></i>

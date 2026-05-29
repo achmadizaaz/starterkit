@@ -1,9 +1,9 @@
-<div class="modal fade user-modal" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+<div class="modal fade modern-modal" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content user-modal-content">
+        <div class="modal-content modern-modal-content">
             <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-header user-modal-header">
+                <div class="modal-header modern-modal-header">
                     <div class="modal-heading">
                         <span class="modal-icon modal-icon-primary">
                             <i class="bi bi-person-plus"></i>
@@ -16,7 +16,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body user-modal-body">
+                <div class="modal-body modern-modal-body">
                     <div class="avatar-upload-card mb-4">
                         <div class="avatar-preview-box">
                             <img id="avatarPreview" src="#" alt="Preview Avatar" class="d-none">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="modal-footer user-modal-footer">
+                <div class="modal-footer modern-modal-footer">
                     <button type="button" class="btn btn-light-modern" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary-modern">
                         <i class="bi bi-check2"></i>

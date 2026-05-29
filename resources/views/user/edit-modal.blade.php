@@ -1,10 +1,10 @@
-<div class="modal fade user-modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+<div class="modal fade modern-modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content user-modal-content">
+        <div class="modal-content modern-modal-content">
             <form id="editUserForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="modal-header user-modal-header">
+                <div class="modal-header modern-modal-header">
                     <div class="modal-heading">
                         <span class="modal-icon modal-icon-emerald">
                             <i class="bi bi-pencil-square"></i>
@@ -17,7 +17,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body user-modal-body">
+                <div class="modal-body">
                     <div class="avatar-upload-card mb-4">
                         <div class="avatar-preview-box">
                             <img id="editAvatarPreview" src="#" alt="Preview Avatar" class="d-none">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
 
-                <div class="modal-footer user-modal-footer">
+                <div class="modal-footer modern-modal-footer">
                     <button type="button" class="btn btn-light-modern" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-emerald-modern">
                         <i class="bi bi-arrow-repeat"></i>

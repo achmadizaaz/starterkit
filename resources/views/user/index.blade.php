@@ -104,7 +104,6 @@
         <!-- Create User Modal -->
         @include('user.create-modal')
 
-
         <!-- Edit User Modal -->
         @include('user.edit-modal')
 

@@ -18,7 +18,7 @@
         </div>
 
         <!-- Dashboard Heading -->
-        <div class="dashboard-heading">
+        <div class="page-heading">
             <div>
                 <h4 class="mb-1">Role Management</h4>
                 <p class="text-muted mb-0">Kelola dan kontrol semua role sistem.</p>

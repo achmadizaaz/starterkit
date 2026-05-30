@@ -19,7 +19,7 @@
         </div>
         
         <!-- Page Heading -->
-        <div class="dashboard-heading">
+        <div class="page-heading">
             <div>
                 <h4 class="mb-1">Assign Role Permission</h4>
                 <p class="text-muted mb-0">Kelola dan kontrol role permission.</p>

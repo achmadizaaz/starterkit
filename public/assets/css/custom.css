@@ -1038,7 +1038,7 @@ body.sidebar-collapsed .main{
     font-weight: 500;
 }
 
-.dashboard-heading{
+.page-heading{
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -1058,7 +1058,7 @@ body.sidebar-collapsed .main{
     font-weight: 600;
 }
 
-.dashboard-heading h4{
+.page-heading h4{
     font-weight: 700;
     letter-spacing: 0;
 }
@@ -1191,7 +1191,7 @@ body.sidebar-collapsed .main{
     width: 190px;
 }
 
-.dashboard-heading{
+.page-heading{
     align-items: flex-start;
     flex-direction: column;
 }

@@ -16,7 +16,7 @@
             </nav>
         </div>
 
-        <div class="dashboard-heading">
+        <div class="page-heading">
             <div>
                 <h4 class="mb-1">Permission Group Management</h4>
                 <p class="text-muted mb-0">Kelola dan kontrol grup permission.</p>

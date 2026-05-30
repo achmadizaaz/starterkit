@@ -16,7 +16,7 @@
             </nav>
         </div>
 
-        <div class="dashboard-heading">
+        <div class="page-heading">
             <div>
                 {{-- <span class="dashboard-kicker">Access Control</span> --}}
                 <h4 class="mb-1">User Management</h4>

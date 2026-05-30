@@ -9,7 +9,7 @@
 @section('content')
 
 <div class="container-fluid dashboard-page">
-    <div class="dashboard-heading">
+    <div class="page-heading">
         <div>
             <span class="dashboard-kicker">Access Control</span>
             <h4 class="mb-1">Dashboard Overview</h4>

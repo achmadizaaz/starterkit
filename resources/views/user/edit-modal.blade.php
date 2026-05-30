@@ -41,7 +41,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="editName" class="form-label">Name</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                 <input type="text" name="name" id="editName" class="form-control" placeholder="Nama lengkap">
                             </div>
@@ -49,7 +49,7 @@
 
                         <div class="col-md-6">
                             <label for="editUsername" class="form-label">Username</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-at"></i></span>
                                 <input type="text" name="username" id="editUsername" class="form-control" placeholder="username">
                             </div>
@@ -57,7 +57,7 @@
 
                         <div class="col-md-6">
                             <label for="editEmail" class="form-label">Email</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                                 <input type="email" name="email" id="editEmail" class="form-control" placeholder="email@domain.com">
                             </div>
@@ -65,7 +65,7 @@
 
                         <div class="col-md-6">
                             <label for="editStatus" class="form-label">Status</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-toggle-on"></i></span>
                                 <select name="status" id="editStatus" class="form-select">
                                     <option value="1">Active</option>
@@ -76,7 +76,7 @@
 
                         <div class="col-md-6">
                             <label for="editRole" class="form-label">Role</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
                                 <select name="role" id="editRole" class="form-select">
                                     <option value="">Pilih Role</option>
@@ -89,7 +89,7 @@
 
                         <div class="col-md-6">
                             <label for="editPassword" class="form-label">Password Baru</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
                                 <input type="password" name="password" id="editPassword" class="form-control" placeholder="Opsional">
                                 <button class="btn btn-password-toggle" type="button" id="toggleEditPassword">
@@ -101,7 +101,7 @@
 
                         <div class="col-md-6">
                             <label for="editPasswordConfirm" class="form-label">Konfirmasi Password</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                                 <input type="password" name="password_confirmation" id="editPasswordConfirm" class="form-control" placeholder="Ulangi password baru">
                                 <button class="btn btn-password-toggle" type="button" id="toggleEditPasswordConfirm">

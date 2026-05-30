@@ -43,7 +43,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                 <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Nama lengkap">
                             </div>
@@ -54,7 +54,7 @@
 
                         <div class="col-md-6">
                             <label for="username" class="form-label">Username</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-at"></i></span>
                                 <input type="text" name="username" id="username" value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" placeholder="username">
                             </div>
@@ -65,7 +65,7 @@
 
                         <div class="col-md-6">
                             <label for="email" class="form-label">Email</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="email@domain.com">
                             </div>
@@ -76,7 +76,7 @@
 
                         <div class="col-md-6">
                             <label for="status" class="form-label">Status</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-toggle-on"></i></span>
                                 <select name="status" id="status" class="form-select">
                                     <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>Active</option>
@@ -87,7 +87,7 @@
 
                         <div class="col-md-6">
                             <label for="role" class="form-label">Role</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
                                 <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
                                     <option value="">Pilih Role</option>
@@ -103,7 +103,7 @@
 
                         <div class="col-md-6">
                             <label for="password" class="form-label">Password</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
                                 <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
                                 <button class="btn btn-password-toggle" type="button" id="togglePassword">
@@ -117,7 +117,7 @@
 
                         <div class="col-md-6">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <div class="input-group input-group-modern">
+                            <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                                 <input type="password" name="password_confirmation" id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Ulangi password">
                                 <button class="btn btn-password-toggle" type="button" id="togglePasswordConfirm">

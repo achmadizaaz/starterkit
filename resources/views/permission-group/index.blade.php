@@ -57,9 +57,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#permissionListModal" data-group-id="{{ $item->id }}">
+                                        <span class="badge badge-modern badge-role" data-bs-toggle="modal" data-bs-target="#permissionListModal" data-group-id="{{ $item->id }}">
                                             {{ $item->permissions_count }}
-                                        </button>
+                                        </span>
                                     </td>
                                     <td>
                                         <!-- Edit Button -->

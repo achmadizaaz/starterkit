@@ -6,25 +6,40 @@
 
     <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+         <!-- Breadcrumb -->
+        <div class="mb-4 small">
+             <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-modern">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item" aria-current="page">User Management</li>
+                    <li class="breadcrumb-item" aria-current="page">Permissions</li>
+                    <li class="breadcrumb-item active" aria-current="page">Permission List</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Dashboard Heading -->
+        <div class="dashboard-heading">
             <div>
-                <h4 class="mb-4">Permission Management</h4>
+                <h4 class="mb-1">Permission Management</h4>
+                <p class="text-muted mb-0">Kelola dan kontrol semua permission sistem.</p>
             </div>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createPermissionModal">
-                Tambah Permission
+             <button type="button" class="btn btn-add-modern" data-bs-toggle="modal" data-bs-target="#createPermissionModal">
+                    <i class="bi bi-plus-lg"></i> Tambah Permission
             </button>
         </div>
+
 
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table modern-table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nama Permission</th>
                                 <th scope="col">Permission Group</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,15 +49,18 @@
                                     <td>{{ $item->name }}</td>
                                     <td><span class="badge bg-info">{{ $item->permissionGroup?->name ?? 'No Group' }}</span></td>
                                     <td>
-                                        <!-- Edit Button -->
-                                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPermissionModal" data-permission-id="{{ $item->id }}" data-permission-name="{{ $item->name }}" data-permission-group-id="{{ $item->permission_group_id }}">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
+                                        <div class="action-buttons">
+                                            <!-- Edit Button -->
+                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editPermissionModal" data-permission-id="{{ $item->id }}" data-permission-name="{{ $item->name }}" data-permission-group-id="{{ $item->permission_group_id }}">
+                                                 <i class="bi bi-pencil-square"></i>
+                                            </button>
 
-                                        <!-- Delete Button -->
-                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePermissionModal" data-permission-id="{{ $item->id }}" data-permission-name="{{ $item->name }}">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                            <!-- Delete Button -->
+                                            <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deletePermissionModal" data-permission-id="{{ $item->id }}" data-permission-name="{{ $item->name }}">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @empty
@@ -53,116 +71,23 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- Pagination -->
+                <div class="pagination-wrapper mt-4">
+                    {{ $permissions->links('vendor.pagination.modern-bootstrap') }}
+                </div>
             </div>
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-3">
-            {{ $permissions->links() }}
-        </div>
 
         <!-- Create Permission Modal -->
-        <div class="modal fade" id="createPermissionModal" tabindex="-1" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <form action="{{ route('permission.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="createPermissionModalLabel">Tambah Permission Baru</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama Permission</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Masukkan nama permission">
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="permission_group_id" class="form-label">Permission Group</label>
-                                <select name="permission_group_id" id="permission_group_id" class="form-select @error('permission_group_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Permission Group --</option>
-                                    @foreach ($permissionGroups as $group)
-                                        <option value="{{ $group->id }}" {{ old('permission_group_id') == $group->id ? 'selected' : '' }}>
-                                            {{ $group->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('permission_group_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Simpan Permission</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        @include('permission.create-modal')
 
         <!-- Edit Permission Modal -->
-        <div class="modal fade" id="editPermissionModal" tabindex="-1" aria-labelledby="editPermissionModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <form id="editPermissionForm" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editPermissionModalLabel">Edit Permission</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="editName" class="form-label">Nama Permission</label>
-                                <input type="text" name="name" id="editName" class="form-control" placeholder="Masukkan nama permission">
-                            </div>
-                            <div class="mb-3">
-                                <label for="editPermissionGroupId" class="form-label">Permission Group</label>
-                                <select name="permission_group_id" id="editPermissionGroupId" class="form-select">
-                                    <option value="">-- Pilih Permission Group --</option>
-                                    @foreach ($permissionGroups as $group)
-                                        <option value="{{ $group->id }}">
-                                            {{ $group->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-warning btn-sm">Update Permission</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        @include('permission.edit-modal')
 
         <!-- Delete Permission Modal -->
-        <div class="modal fade" id="deletePermissionModal" tabindex="-1" aria-labelledby="deletePermissionModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <form id="deletePermissionForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deletePermissionModalLabel">Konfirmasi Hapus Permission</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menghapus permission <strong id="deletePermissionName"></strong>?</p>
-                            <p class="text-danger"><small>Tindakan ini tidak dapat dibatalkan.</small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger btn-sm">Hapus Permission</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        @include('permission.delete-modal')
+
 
         @push('scripts')
             <script>

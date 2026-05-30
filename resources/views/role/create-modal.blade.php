@@ -1,9 +1,9 @@
-<div class="modal fade modern-modal" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createRoleModal" tabindex="-1" aria-labelledby="createRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modern-modal-content">
+        <div class="modal-content">
             <form action="{{ route('role.store') }}" method="POST">
                 @csrf
-                <div class="modal-header modern-modal-header">
+                <div class="modal-header">
                     <div class="modal-heading">
                         <span class="modal-icon modal-icon-primary">
                             <i class="bi bi-plus-lg"></i>
@@ -32,7 +32,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="modal-footer modern-modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-light-modern" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary-modern">
                         <i class="bi bi-check2"></i>

@@ -6,6 +6,7 @@
 
     <div class="container-fluid">
 
+        <!-- Breadcrumb -->
         <div class="mb-4 small">
              <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-modern">
@@ -16,6 +17,7 @@
             </nav>
         </div>
 
+        <!-- Dashboard Heading -->
         <div class="dashboard-heading">
             <div>
                 <h4 class="mb-1">Role Management</h4>
@@ -24,19 +26,19 @@
              <button type="button" class="btn btn-add-modern" data-bs-toggle="modal" data-bs-target="#createRoleModal">
                     <i class="bi bi-plus-lg"></i> Tambah Role
             </button>
-            
         </div>
 
         <!-- Role Table -->
-         <div class="card card-modern">
+         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table modern-table align-middle mb-0">
+                    <table class="table modern-table table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Role</th>
                                 <th scope="col">Nama Role</th>
+                                <th scope="col">Juml. Permission</th>
                                 <th scope="col" class="text-end">Action</th>
                             </tr>
                         </thead>
@@ -46,6 +48,12 @@
                                     <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
                                     <td><code>{{ $item->code }}</code></td>
                                     <td>{{ $item->name }}</td>
+                                    <td>
+                                        <span class="badge badge-modern badge-role" data-bs-toggle="modal" data-bs-target="#permissionListModal" data-group-id="{{ $item->id }}">
+                                            {{ $item->permissions->count() }} Permission
+                                        </span>
+                                        
+                                    </td>
                                     <td>
                                         <div class="action-buttons">
                                             <!-- Edit Button -->
@@ -86,8 +94,6 @@
         @include('role.edit-modal')
         <!-- Delete Role Modal -->
         @include('role.delete-modal')
-
-
 
         @push('scripts')
             <script>

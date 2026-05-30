@@ -6,16 +6,33 @@
 
     <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-4">Assign Role Permission</h4>
+        <!-- Breadcrumb -->
+        <div class="mb-4 small">
+             <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-modern">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item" aria-current="page">User Management</li>
+                    <li class="breadcrumb-item" aria-current="page">Permissions</li>
+                    <li class="breadcrumb-item active" aria-current="page">Assign Permission</li>
+                </ol>
+            </nav>
         </div>
+        
+        <!-- Page Heading -->
+        <div class="dashboard-heading">
+            <div>
+                <h4 class="mb-1">Assign Role Permission</h4>
+                <p class="text-muted mb-0">Kelola dan kontrol role permission.</p>
+            </div>
+        </div>
+
         
         <div class="card">
             <div class="card-body">
                 <!-- Select Role Section -->
-                <div class="row mb-4">
+                <div class="row mb-4 align-items-center">
                     <div class="col-md-6">
-                        <label for="roleSelect" class="form-label">Pilih Role</label>
+                        <label for="roleSelect" class="form-label fw-bold">Pilih Role</label>
                         <select id="roleSelect" class="form-select" onchange="changeRole(this.value)">
                             <option value="">-- Pilih Role --</option>
                             @foreach ($roles as $role)
@@ -25,16 +42,28 @@
                             @endforeach
                         </select>
                     </div>
+                    @if ($selectedRole)
+                       <div class="col-md-6">
+                            <div class="d-flex justify-content-end  gap-2">
+                                <button type="submit" class="btn btn-primary-modern" form="syncPermissionsForm">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                    Sync Permissions
+                                </button>
+
+                                <a href="{{ route('role-permission.index') }}" class="btn btn-light-modern">Kembali</a>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 @if ($selectedRole)
-                    <form action="{{ route('role-permission.update', (string) $selectedRole->id) }}" method="POST">
+                    <form id="syncPermissionsForm" action="{{ route('role-permission.update', (string) $selectedRole->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <!-- Permissions Table -->
                         <div class="table-responsive mb-4">
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table modern-table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col">Nama Resource</th>
@@ -111,12 +140,16 @@
                         </div>
 
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary btn-sm">Simpan Permission</button>
-                            <a href="{{ route('role.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
+                             <button type="submit" class="btn btn-primary-modern">
+                                <i class="bi bi-arrow-repeat"></i>
+                                Sync Permissions
+                            </button>
+
+                            <a href="{{ route('role-permission.index') }}" class="btn btn-light-modern">Kembali</a>
                         </div>
                     </form>
                 @else
-                    <div class="alert alert-info">
+                    <div class="alert alert-info small">
                         Pilih role terlebih dahulu untuk mengatur permissions.
                     </div>
                 @endif

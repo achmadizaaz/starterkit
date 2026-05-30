@@ -528,6 +528,11 @@ body{
     color: var(--primary);
 }
 
+.form-check-input {
+    background-color: #dedede;
+    /* border: 1px solid #eee !important; */
+}
+
 .input-group{
     border-radius: 10px;
 }

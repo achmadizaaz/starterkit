@@ -3,13 +3,18 @@
 @section('title','Login')
 
 @section('content')
+    @php
+        $authBrandName = \App\Models\AppSetting::getValue('app_name', env('APP_NAME', config('app.name', 'Starterkit')));
+        $authBrandDescription = \App\Models\AppSetting::getValue('app_description', env('APP_DESCRIPTION', 'Kelola akses dan data sistem dengan pengalaman yang bersih dan profesional.'));
+    @endphp
+
     <div class="auth-card">
         <div class="row g-0">
             <div class="col-lg-5 d-none d-lg-block">
                 <div class="auth-brand-panel">
                     <div class="auth-brand-mark"><i class="bi bi-shield-lock"></i></div>
-                    <h1>{{ env('APP_NAME') }}</h1>
-                    <p>{{ env('APP_DESCRIPTION', 'Kelola akses dan data sistem dengan pengalaman yang bersih dan profesional.') }}</p>
+                    <h1>{{ $authBrandName }}</h1>
+                    <p>{{ $authBrandDescription }}</p>
                 </div>
             </div>
 

@@ -884,3 +884,78 @@ html[data-bs-theme="dark"] body .profile-modal .input-group-text{
     background-color: #172033 !important;
     color: #94a3b8 !important;
 }
+
+/* Settings page dark mode */
+html[data-bs-theme="dark"] body .settings-tabs,
+html[data-bs-theme="dark"] body .settings-panel,
+html[data-bs-theme="dark"] body .settings-main-card,
+html[data-bs-theme="dark"] body .settings-media-card{
+    background: #111827 !important;
+    border-color: #263244 !important;
+    color: #f8fafc !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .28);
+}
+
+html[data-bs-theme="dark"] body .settings-panel-header{
+    background: linear-gradient(180deg, #172033 0%, #111827 100%) !important;
+    border-color: #263244 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-panel-header h5,
+html[data-bs-theme="dark"] body .settings-preview-card strong{
+    color: #f8fafc !important;
+}
+
+html[data-bs-theme="dark"] body .settings-panel-header p,
+html[data-bs-theme="dark"] body .settings-preview-card p{
+    color: #94a3b8 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-tab{
+    color: #e2e8f0 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-tab.active{
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #2563eb, #10b981) !important;
+}
+
+html[data-bs-theme="dark"] body .settings-tab:disabled{
+    color: #64748b !important;
+    background: #172033 !important;
+    border-color: #263244 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-upload-card,
+html[data-bs-theme="dark"] body .settings-preview{
+    background: #172033 !important;
+    border-color: #263244 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-preview-card{
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, .18), rgba(16, 185, 129, .12)),
+        #172033 !important;
+    border-color: #263244 !important;
+}
+
+html[data-bs-theme="dark"] body .settings-preview-card small{
+    color: #86efac !important;
+}
+
+html[data-bs-theme="dark"] body .settings-preview-card span{
+    color: #bfdbfe !important;
+    background: rgba(37, 99, 235, .18) !important;
+}
+
+html[data-bs-theme="dark"] body .settings-page .form-control,
+html[data-bs-theme="dark"] body .settings-page .settings-textarea{
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+html[data-bs-theme="dark"] body .settings-page .form-control::placeholder,
+html[data-bs-theme="dark"] body .settings-page .settings-textarea::placeholder{
+    color: #64748b !important;
+}

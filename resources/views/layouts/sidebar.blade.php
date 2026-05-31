@@ -4,14 +4,22 @@
     $sidebarUser = Auth::user();
     $sidebarRole = $sidebarUser?->roles->first()?->name ?? 'User';
     $sidebarAvatar = $sidebarUser?->avatar ? asset('storage/' . $sidebarUser->avatar) : 'https://i.pravatar.cc/120?u=' . urlencode($sidebarUser?->email ?? 'user');
+    $sidebarAppName = \App\Models\AppSetting::getValue('app_name', config('app.name', 'Starterkit'));
+    $sidebarLogo = \App\Models\AppSetting::getValue('app_logo');
 @endphp
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <a href="{{ route('dashboard') }}" class="sidebar-brand">
-            <span class="brand-mark"><i class="bi bi-command"></i></span>
-            <span class="brand-text">{{ config('app.name', 'Starterkit') }}</span>
+            <span class="brand-mark">
+                @if($sidebarLogo)
+                    <img src="{{ asset('storage/' . $sidebarLogo) }}" alt="{{ $sidebarAppName }}">
+                @else
+                    <i class="bi bi-command"></i>
+                @endif
+            </span>
+            <span class="brand-text">{{ $sidebarAppName }}</span>
         </a>
         <button class="btn btn-sm sidebar-close" onclick="closeSidebar()" aria-label="Close sidebar">
             <i class="bi bi-x-lg"></i>
@@ -56,7 +64,7 @@
         </li>
 
         <li>
-            <a href="#">
+            <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
                 <span class="menu-left">
                     <i class="bi bi-gear"></i>
                     <span class="menu-text">Pengaturan</span>

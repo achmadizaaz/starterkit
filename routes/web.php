@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionGroupController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\SettingController;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -70,6 +71,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.change.password');
+
+    Route::controller(SettingController::class)->prefix('settings')->group(function(){
+        Route::get('/', 'index')->name('settings.index');
+        Route::put('/', 'update')->name('settings.update');
+    });
 });
 
 require __DIR__.'/auth.php';

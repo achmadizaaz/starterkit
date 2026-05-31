@@ -3,12 +3,16 @@
 @section('title','Register')
 
 @section('content')
+    @php
+        $authBrandName = \App\Models\AppSetting::getValue('app_name', env('APP_NAME', config('app.name', 'Starterkit')));
+    @endphp
+
     <div class="auth-card">
         <div class="row g-0">
             <div class="col-lg-5 d-none d-lg-block">
                 <div class="auth-brand-panel">
                     <div class="auth-brand-mark"><i class="bi bi-person-plus"></i></div>
-                    <h1>{{ env('APP_NAME') }}</h1>
+                    <h1>{{ $authBrandName }}</h1>
                     <p>Buat akun baru untuk mulai mengakses dashboard dan fitur pengelolaan sistem.</p>
                 </div>
             </div>

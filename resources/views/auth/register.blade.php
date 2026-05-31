@@ -1,177 +1,100 @@
 @extends('layouts.auth')
 
-@section('title','Login')
+@section('title','Register')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center align-items-center m-auto">
-            <div class="col-lg-8 col-md-10">
-
-            <div class="card login-card shadow-lg">
-                <div class="row g-0">
-
-                    {{-- LEFT --}}
-                    <div class="col-md-6 d-none d-md-flex login-left align-items-center p-4">
-                        <div>
-                            <h3 class="fw-bold mb-3">{{ env('APP_NAME') }}</h3>
-                            <p class="opacity-75">
-                                {{ env('APP_DESCRIPTION') }}
-                            </p>
-                        </div>
-                    </div>
-
-                    {{-- RIGHT --}}
-                    <div class="col-md-6 p-4 position-relative">
-                        <h4 class="fw-bold mb-2 text-center">Register</h4>
-                        <p class="text-muted text-center mb-4 small">
-                            Silakan isi data pendaftaran akun
-                        </p>
-                        <hr>
-
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-                            <!-- Session Status -->
-                            <x-auth-session-status class="mb-4" :status="session('status')" />
-                            <!-- Errors -->
-                            @if($errors->any())
-                                <div class="text-center text-danger mb-3">
-                                    <small>{{ implode('', $errors->all(':message')) }}</small>
-                                </div>
-                            @endif
-
-                           <!-- Name -->
-                            <div class="mb-3">
-                                <label class="form-label small" for="name">Name</label>
-                                <div class="input-group">
-                                    <input type="text"
-                                    name="name"
-                                    class="form-control"
-                                    required autocomplete="off" placeholder="Masukan nama anda" id="name">
-                                </div>
-                            </div>
-                           <!--Username -->
-                            <div class="mb-3">
-                                <label class="form-label small" for="username">Username</label>
-                                <div class="input-group">
-                                    <input type="text"
-                                    name="username"
-                                    class="form-control"
-                                    required autocomplete="off" placeholder="Masukan nama pengguna" id="username">
-                                </div>
-                            </div>
-                           <!--Email -->
-                            <div class="mb-3">
-                                <label class="form-label small" for="email">Email</label>
-                                <div class="input-group">
-                                    <input type="email"
-                                    name="email"
-                                    class="form-control"
-                                    required autocomplete="off" placeholder="Masukan email anda" id="email">
-                                </div>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="mb-3">
-                                <label class="form-label small" for="password">Password</label>
-                                <div class="input-group">
-                                    <input type="password"
-                                           name="password"
-                                           id="password"
-                                           class="form-control"
-                                           placeholder="Masukan katasandi baru"
-                                           required>
-
-                                    <div onclick="togglePassword('password','icon-password')" style="cursor:pointer;" class="input-group-text show_password">
-                                        <i class="bi bi-lock-fill" id="icon-password" title="Tampilkan katasandi"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small" for="password_confirmation">Confirm Password</label>
-                                <div class="input-group">
-                                    <input type="password"
-                                           name="password_confirmation"
-                                           id="password_confirmation"
-                                           class="form-control"
-                                           placeholder="Ulangi katasandi baru"
-                                           required>
-
-                                    <div style="cursor:pointer;" class="input-group-text show_password">
-                                        <i class="bi bi-lock-fill" id="icon-password-confirmation"
-   onclick="togglePassword('password_confirmation','icon-password-confirmation')" title="Tampilkan katasandi"></i>
-                                    </div>
-                                </div>
-                                <small id="password_message" class="d-block mt-1"></small>
-                            </div>
-
-                            <button class="btn btn-primary w-100 py-2 mb-3">
-                                Register
-                            </button>
-                            
-                        </form>
-
-                        <div class="text-center mb-4">
-                            Sudah punya akun?
-                            <a href="{{ route('login') }}" class="text-decoration-none text-primary fst-italic">
-                                Login
-                            </a>
-                        </div>
-                    </div>
-
+    <div class="auth-card">
+        <div class="row g-0">
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="auth-brand-panel">
+                    <div class="auth-brand-mark"><i class="bi bi-person-plus"></i></div>
+                    <h1>{{ env('APP_NAME') }}</h1>
+                    <p>Buat akun baru untuk mulai mengakses dashboard dan fitur pengelolaan sistem.</p>
                 </div>
             </div>
 
+            <div class="col-lg-7">
+                <div class="auth-content">
+                    <span class="auth-kicker">Create Account</span>
+                    <h2 class="auth-title">Register</h2>
+                    <p class="auth-subtitle">Lengkapi data berikut untuk membuat akun baru.</p>
+
+                    <form method="POST" action="{{ route('register') }}" class="auth-form">
+                        @csrf
+
+                        @if($errors->any())
+                            <div class="auth-error p-3 mb-3">{{ implode(' ', $errors->all()) }}</div>
+                        @endif
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="name">Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" name="name" class="form-control" required autocomplete="name" placeholder="Nama lengkap" id="name" value="{{ old('name') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="username">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-at"></i></span>
+                                    <input type="text" name="username" class="form-control" required autocomplete="username" placeholder="Username" id="username" value="{{ old('username') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="email">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" name="email" class="form-control" required autocomplete="email" placeholder="email@domain.com" id="email" value="{{ old('email') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="password">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="Kata sandi" required autocomplete="new-password">
+                                    <button type="button" class="input-group-text auth-password-toggle" data-password-toggle="password"><i class="bi bi-eye"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="password_confirmation">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Ulangi kata sandi" required autocomplete="new-password">
+                                    <button type="button" class="input-group-text auth-password-toggle" data-password-toggle="password_confirmation"><i class="bi bi-eye"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn auth-primary-btn w-100 mt-4 mb-3">
+                            <i class="bi bi-person-plus"></i>
+                            Register
+                        </button>
+                    </form>
+
+                    <div class="text-center text-muted small">
+                        Sudah punya akun? <a href="{{ route('login') }}" class="auth-link">Login</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 @endsection
 
 @push('scripts')
     <script>
-
-        function togglePassword(inputId, iconId) {
-        const input = document.getElementById(inputId);
-        const icon = document.getElementById(iconId);
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace('bi-lock-fill', 'bi-unlock2-fill');
-                icon.title = "Sembunyikan katasandi";
-            } else {
-                input.type = "password";
-                icon.classList.replace('bi-unlock2-fill', 'bi-lock-fill');
-                icon.title = "Tampilkan katasandi";
-            }
-        }
-
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('password_confirmation');
-        const message = document.getElementById('password_message');
-
-        function checkPasswordMatch() {
-
-            if (confirmPassword.value.length === 0) {
-                message.innerHTML = "";
-                return;
-            }
-
-            if (password.value === confirmPassword.value) {
-                message.innerHTML = "✔ Password cocok";
-                message.classList.remove('text-danger');
-                message.classList.add('text-success');
-                confirmPassword.classList.remove('is-invalid');
-                confirmPassword.classList.add('is-valid');
-            } else {
-                message.innerHTML = "✖ Password tidak sesuai";
-                message.classList.remove('text-success');
-                message.classList.add('text-danger');
-                confirmPassword.classList.remove('is-valid');
-                confirmPassword.classList.add('is-invalid');
-            }
-        }
-
-        password.addEventListener('keyup', checkPasswordMatch);
-        confirmPassword.addEventListener('keyup', checkPasswordMatch);
+        document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const input = document.getElementById(button.dataset.passwordToggle);
+                const icon = button.querySelector('i');
+                input.type = input.type === 'password' ? 'text' : 'password';
+                icon.classList.toggle('bi-eye');
+                icon.classList.toggle('bi-eye-slash');
+            });
+        });
     </script>
 @endpush

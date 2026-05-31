@@ -1,27 +1,49 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+@extends('layouts.auth')
+
+@section('title','Confirm Password')
+
+@section('content')
+    <div class="auth-card auth-card-narrow">
+        <div class="auth-content-narrow">
+            <span class="auth-kicker">Secure Area</span>
+            <h2 class="auth-title">Confirm Password</h2>
+            <p class="auth-subtitle">Ini adalah area aman. Konfirmasi kata sandi Anda sebelum melanjutkan.</p>
+
+            <form method="POST" action="{{ route('password.confirm') }}" class="auth-form">
+                @csrf
+
+                @if($errors->any())
+                    <div class="auth-error p-3 mb-3">{{ implode(' ', $errors->all()) }}</div>
+                @endif
+
+                <div class="mb-4">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input id="password" class="form-control" type="password" name="password" required autocomplete="current-password" autofocus>
+                        <button type="button" class="input-group-text auth-password-toggle" data-password-toggle="password"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+
+                <button class="btn auth-primary-btn w-100">
+                    <i class="bi bi-shield-check"></i>
+                    Confirm
+                </button>
+            </form>
+        </div>
     </div>
+@endsection
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
-
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+@push('scripts')
+    <script>
+        document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const input = document.getElementById(button.dataset.passwordToggle);
+                const icon = button.querySelector('i');
+                input.type = input.type === 'password' ? 'text' : 'password';
+                icon.classList.toggle('bi-eye');
+                icon.classList.toggle('bi-eye-slash');
+            });
+        });
+    </script>
+@endpush

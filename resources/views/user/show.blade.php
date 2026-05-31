@@ -142,13 +142,7 @@
                                 <p>{{ $user->status ? 'Active' : 'Inactive' }}</p>
                             </div>
                         </div>
-                        <div class="profile-info-item">
-                            <span class="info-icon"><i class="bi bi-telephone"></i></span>
-                            <div>
-                                <small>Phone</small>
-                                <p>{{ $phone }}</p>
-                            </div>
-                        </div>
+                       
                         <div class="profile-info-item">
                             <span class="info-icon"><i class="bi bi-calendar3"></i></span>
                             <div>
@@ -163,13 +157,7 @@
                                 <p>{{ $profile?->gender ? ucfirst($profile->gender) : '-' }}</p>
                             </div>
                         </div>
-                        <div class="profile-info-item">
-                            <span class="info-icon"><i class="bi bi-geo"></i></span>
-                            <div>
-                                <small>Country</small>
-                                <p>{{ $profile?->country ?? '-' }}</p>
-                            </div>
-                        </div>
+                        
                         <div class="profile-info-item">
                             <span class="info-icon"><i class="bi bi-globe"></i></span>
                             <div>
@@ -188,6 +176,15 @@
                             <div>
                                 <small>Created</small>
                                 <p>{{ optional($user->created_at)->format('d M Y H:i') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-address-box">
+                        <div class="profile-card-header compact">
+                            <div>
+                                <h5>Address</h5>
+                                <p>{{ $address }}</p>
                             </div>
                         </div>
                     </div>
@@ -212,14 +209,7 @@
                         </div>
                     </div>
 
-                    <div class="profile-address-box">
-                        <div class="profile-card-header compact">
-                            <div>
-                                <h5>Address</h5>
-                                <p>{{ $address }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

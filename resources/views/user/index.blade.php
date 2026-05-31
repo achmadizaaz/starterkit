@@ -83,6 +83,9 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="action-buttons">
+                                            <a href="{{ route('user.show', $item->id) }}" class="btn-action btn-detail" title="Detail">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
                                             <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}" title="Edit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>

@@ -28,7 +28,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::controller(UserController::class)->prefix('user')->group(function(){
         Route::get('/', 'index')->name('user.index');
         Route::post('/', 'store')->name('user.store');
+        Route::get('/{id}', 'show')->name('user.show');
         Route::put('/{id}', 'update')->name('user.update');
+        Route::put('/{id}/password', 'updatePassword')->name('user.password.update');
+        Route::patch('/{id}/status', 'updateStatus')->name('user.status.update');
         Route::delete('/{id}', 'destroy')->name('user.destroy');
     });
 

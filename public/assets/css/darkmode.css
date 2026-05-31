@@ -295,6 +295,15 @@
     color: #bfdbfe;
 }
 
+[data-bs-theme="dark"] .btn-detail{
+    color: #67e8f9;
+}
+
+[data-bs-theme="dark"] .btn-detail:hover{
+    background: rgba(6, 182, 212, .16);
+    color: #a5f3fc;
+}
+
 [data-bs-theme="dark"] .btn-delete{
     color: #fca5a5;
 }
@@ -674,6 +683,11 @@ html[data-bs-theme="dark"] body .profile-badge.active{
     color: #86efac !important;
 }
 
+html[data-bs-theme="dark"] body .profile-badge.inactive{
+    background: rgba(148, 163, 184, .14) !important;
+    color: #cbd5e1 !important;
+}
+
 html[data-bs-theme="dark"] body .profile-title-row h1,
 html[data-bs-theme="dark"] body .profile-summary-body h2,
 html[data-bs-theme="dark"] body .profile-card-header h5,
@@ -717,6 +731,28 @@ html[data-bs-theme="dark"] body .btn-profile-password{
 html[data-bs-theme="dark"] body .btn-profile-password:hover{
     color: #ffffff !important;
     background: rgba(37, 99, 235, .28) !important;
+}
+
+html[data-bs-theme="dark"] body .btn-profile-status-danger{
+    color: #fca5a5 !important;
+    background: rgba(220, 38, 38, .13) !important;
+    border-color: rgba(248, 113, 113, .28) !important;
+}
+
+html[data-bs-theme="dark"] body .btn-profile-status-danger:hover{
+    color: #fecaca !important;
+    background: rgba(220, 38, 38, .2) !important;
+}
+
+html[data-bs-theme="dark"] body .btn-profile-status-success{
+    color: #86efac !important;
+    background: rgba(16, 185, 129, .16) !important;
+    border-color: rgba(52, 211, 153, .28) !important;
+}
+
+html[data-bs-theme="dark"] body .btn-profile-status-success:hover{
+    color: #d1fae5 !important;
+    background: rgba(16, 185, 129, .24) !important;
 }
 
 html[data-bs-theme="dark"] body .profile-contact-item,

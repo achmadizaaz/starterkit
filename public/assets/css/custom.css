@@ -263,6 +263,16 @@ body{
     border-color: transparent;
 }
 
+.btn-detail{
+    color: #0891b2;
+}
+
+.btn-detail:hover{
+    background: #ecfeff;
+    color: #0e7490;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
+}
+
 .btn-edit{
     color: #2563eb;
 }
@@ -1527,6 +1537,44 @@ body.sidebar-collapsed .main{
     box-shadow: 0 10px 18px rgba(37, 99, 235, .14);
 }
 
+.btn-profile-status-danger,
+.btn-profile-status-success{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 9px 16px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.btn-profile-status-danger{
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.btn-profile-status-danger:hover{
+    color: #b91c1c;
+    background: #fee2e2;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(220, 38, 38, .12);
+}
+
+.btn-profile-status-success{
+    color: #047857;
+    background: var(--emerald-soft);
+    border: 1px solid #a7f3d0;
+}
+
+.btn-profile-status-success:hover{
+    color: #065f46;
+    background: #d1fae5;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(16, 185, 129, .14);
+}
+
 .btn-profile-edit:hover{
     color: #ffffff;
     transform: translateY(-1px);
@@ -1580,6 +1628,10 @@ body.sidebar-collapsed .main{
     border: 3px solid #ffffff;
 }
 
+.profile-status-dot.inactive{
+    background: #94a3b8;
+}
+
 .profile-summary-body h2{
     margin: 0;
     color: var(--text-strong);
@@ -1629,6 +1681,11 @@ body.sidebar-collapsed .main{
 .profile-badge.active{
     background: var(--emerald-soft);
     color: #047857;
+}
+
+.profile-badge.inactive{
+    background: #f1f5f9;
+    color: #64748b;
 }
 
 .profile-contact-list{

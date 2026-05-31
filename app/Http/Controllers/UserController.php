@@ -28,6 +28,14 @@ class UserController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        return view('user.show', [
+            'user' => $this->user->with(['roles', 'profile', 'loginHistories'])->findOrFail($id),
+            'roles' => Role::orderBy('name')->get(),
+        ]);
+    }
+
 
     public function store(CreateUserRequest $request)
     {
@@ -79,6 +87,34 @@ class UserController extends Controller
         $user->syncRoles([$request->role]);
 
         return back()->with('success', 'User telah diperbarui!');
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:7', 'confirmed'],
+        ]);
+
+        $user = $this->user->findOrFail($id);
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('success', 'Kata sandi user telah diperbarui!');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => ['required', 'boolean'],
+        ]);
+
+        $user = $this->user->findOrFail($id);
+        $user->update([
+            'status' => $request->boolean('status'),
+        ]);
+
+        return back()->with('success', 'Status user telah diperbarui!');
     }
 
     public function destroy($id)

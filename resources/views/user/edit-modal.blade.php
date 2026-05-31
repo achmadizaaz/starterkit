@@ -1,7 +1,7 @@
 <div class="modal fade modern-modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content modern-modal-content">
-            <form action="{{ route('profile.update', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="editUserForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-header modern-modal-header">
@@ -78,7 +78,7 @@
                             <label for="editRole" class="form-label">Role</label>
                             <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
-                                <select name="role" id="editRole" class="form-select">
+                                <select name="role" id="editRole" class="form-select js-select2" data-placeholder="Pilih Role" data-dropdown-parent="#editUserModal">
                                     <option value="">Pilih Role</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>

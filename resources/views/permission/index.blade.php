@@ -101,6 +101,9 @@
 
                         document.getElementById('editName').value = permissionName;
                         document.getElementById('editPermissionGroupId').value = permissionGroupId || '';
+                        if (window.jQuery) {
+                            jQuery('#editPermissionGroupId').trigger('change');
+                        }
                         document.getElementById('editPermissionForm').action = '/dashboard/permission/' + permissionId;
                     });
 

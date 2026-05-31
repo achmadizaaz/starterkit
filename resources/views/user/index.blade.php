@@ -192,6 +192,9 @@
                         document.getElementById('editEmail').value = userEmail;
                         document.getElementById('editStatus').value = userStatus;
                         document.getElementById('editRole').value = userRole;
+                        if (window.jQuery) {
+                            jQuery('#editRole').trigger('change');
+                        }
                         document.getElementById('editUserForm').action = '/dashboard/user/' + userId;
 
                         // Set avatar preview

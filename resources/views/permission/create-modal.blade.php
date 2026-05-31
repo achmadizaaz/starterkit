@@ -30,7 +30,7 @@
                     <div class="mb-3">
                         <label for="permission_group_id" class="form-label">Permission Group</label>
                         <div class="input-group">
-                            <select name="permission_group_id" id="permission_group_id" class="form-select select2 @error('permission_group_id') is-invalid @enderror">
+                            <select name="permission_group_id" id="permission_group_id" class="form-select js-select2 @error('permission_group_id') is-invalid @enderror" data-placeholder="Pilih Permission Group" data-dropdown-parent="#createPermissionModal">
                                 <option value="">-- Pilih Permission Group --</option>
                                 @foreach ($permissionGroups as $group)
                                     <option value="{{ $group->id }}" {{ old('permission_group_id') == $group->id ? 'selected' : '' }}>

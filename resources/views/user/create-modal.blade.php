@@ -94,7 +94,7 @@
                             <label for="role" class="form-label">Role</label>
                             <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
-                                <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
+                                <select name="role" id="role" class="form-select js-select2 @error('role') is-invalid @enderror" data-placeholder="Pilih Role" data-dropdown-parent="#createUserModal">
                                     <option value="">Pilih Role</option>
                                     @foreach ($roles as $role)
                                         <option value="{{ $role->id }}" {{ old('role') === $role->id ? 'selected' : '' }}>{{ $role->name }}</option>

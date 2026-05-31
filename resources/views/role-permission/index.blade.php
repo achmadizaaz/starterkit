@@ -33,7 +33,7 @@
                 <div class="row mb-4 align-items-center">
                     <div class="col-md-6">
                         <label for="roleSelect" class="form-label fw-bold">Pilih Role</label>
-                        <select id="roleSelect" class="form-select" onchange="changeRole(this.value)">
+                        <select id="roleSelect" class="form-select js-select2" data-placeholder="Pilih Role" onchange="changeRole(this.value)">
                             <option value="">-- Pilih Role --</option>
                             @foreach ($roles as $role)
                                 <option value="{{ (string) $role->id }}" {{ $selectedRole && $selectedRole->id === $role->id ? 'selected' : '' }}>

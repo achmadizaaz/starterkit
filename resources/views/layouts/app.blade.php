@@ -23,6 +23,7 @@
         @yield('head')
         <!-- Select2 -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     </head>
@@ -62,6 +63,42 @@
                 document.getElementById('sidebar').classList.remove('mobile-show')
                 document.getElementById('sidebarBackdrop').classList.remove('show')
             }
+
+            function initSelect2(scope = document) {
+                if (!window.jQuery || !jQuery.fn.select2) {
+                    return;
+                }
+
+                jQuery(scope).find('select.js-select2').each(function () {
+                    const select = jQuery(this);
+
+                    if (select.hasClass('select2-hidden-accessible')) {
+                        return;
+                    }
+
+                    const dropdownParentSelector = select.data('dropdown-parent');
+                    const options = {
+                        theme: 'bootstrap-5',
+                        width: '100%',
+                        placeholder: select.data('placeholder') || select.attr('placeholder') || 'Pilih data',
+                        allowClear: select.data('allow-clear') !== false
+                    };
+
+                    if (dropdownParentSelector && jQuery(dropdownParentSelector).length) {
+                        options.dropdownParent = jQuery(dropdownParentSelector);
+                    }
+
+                    select.select2(options);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                initSelect2(document);
+            });
+
+            document.addEventListener('shown.bs.modal', function (event) {
+                initSelect2(event.target);
+            });
 
         </script>
 

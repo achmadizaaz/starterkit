@@ -27,7 +27,7 @@
                             <div class="mb-3">
                                 <label for="editPermissionGroupId" class="form-label">Permission Group</label>
                                 <div class="input-group">
-                                    <select name="permission_group_id" id="editPermissionGroupId" class="form-select">
+                                    <select name="permission_group_id" id="editPermissionGroupId" class="form-select js-select2" data-placeholder="Pilih Permission Group" data-dropdown-parent="#editPermissionModal">
                                         <option value="">-- Pilih Permission Group --</option>
                                         @foreach ($permissionGroups as $group)
                                             <option value="{{ $group->id }}">{{ $group->name }}</option>

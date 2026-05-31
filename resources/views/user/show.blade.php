@@ -284,7 +284,7 @@
                                 <label class="form-label" for="detailRole">Role</label>
                                 <div class="input-group input-group-modern">
                                     <span class="input-group-text"><i class="bi bi-shield-check"></i></span>
-                                    <select name="role" id="detailRole" class="form-select">
+                                    <select name="role" id="detailRole" class="form-select js-select2" data-placeholder="Pilih Role" data-dropdown-parent="#detailEditUserModal">
                                         <option value="">Pilih Role</option>
                                         @foreach($roles as $role)
                                             <option value="{{ $role->id }}" {{ $user->roles->first()?->id === $role->id ? 'selected' : '' }}>{{ $role->name }}</option>

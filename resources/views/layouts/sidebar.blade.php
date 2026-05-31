@@ -1,6 +1,9 @@
 @php
     $userMenuOpen = request()->routeIs('user.*', 'role.*', 'permission.*', 'permission-group.*', 'role-permission.*');
     $permissionMenuOpen = request()->routeIs('permission.*', 'permission-group.*', 'role-permission.*');
+    $sidebarUser = Auth::user();
+    $sidebarRole = $sidebarUser?->roles->first()?->name ?? 'User';
+    $sidebarAvatar = $sidebarUser?->avatar ? asset('storage/' . $sidebarUser->avatar) : 'https://i.pravatar.cc/120?u=' . urlencode($sidebarUser?->email ?? 'user');
 @endphp
 
 <!-- SIDEBAR -->
@@ -15,6 +18,7 @@
         </button>
     </div>
 
+    <div class="sidebar-content">
     <ul class="sidebar-menu list-unstyled m-0">
         <li>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -60,4 +64,19 @@
             </a>
         </li>
     </ul>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-user-mini">
+            <img src="{{ $sidebarAvatar }}" alt="{{ $sidebarUser?->name }}">
+            <div>
+                <strong>{{ $sidebarUser?->name }}</strong>
+                <span>{{ $sidebarRole }}</span>
+            </div>
+        </div>
+        <button type="button" class="sidebar-logout-btn" data-bs-toggle="modal" data-bs-target="#logoutConfirmModal">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="menu-text">Logout</span>
+        </button>
+    </div>
+    </div>
 </div>

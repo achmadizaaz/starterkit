@@ -22,9 +22,9 @@ return new class extends Migration
                 $table->enum('gender',['male','female'])->nullable();
 
                 $table->date('birth_date')->nullable();
-
+                $table->string('country')->nullable();
                 $table->text('address')->nullable();
-
+    
                 $table->string('province')->nullable();
                 $table->string('city')->nullable();
                 $table->string('district')->nullable();

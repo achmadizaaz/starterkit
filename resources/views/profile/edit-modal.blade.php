@@ -1,7 +1,7 @@
-<div class="modal fade modern-modal" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+<div class="modal fade modern-modal" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModal" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content modern-modal-content">
-            <form action="{{ route('profile.update', Auth::user()->id) }}" method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-header modern-modal-header">
@@ -10,8 +10,8 @@
                             <i class="bi bi-pencil-square"></i>
                         </span>
                         <div>
-                            <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
-                            <p>Perbarui profil anda.</p>
+                            <h5 class="modal-title" id="editProfileModal">Edit Profile</h5>
+                            <p>Perbarui profil, status, role, atau password pengguna.</p>
                         </div>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -8,7 +8,8 @@
     $primaryRole = $user->roles->first()?->name ?? 'User';
     $phone = $profile?->phone ?? '-';
     $address = $profile?->address ?? 'Alamat belum ditambahkan.';
-    $location = collect([$profile?->city, $profile?->province, $profile?->country])->filter()->implode(', ');
+    $location = $profile?->country;
+    $socialMedia = collect($profile?->social_media ?? [])->filter();
 @endphp
 
 @section('content')
@@ -140,11 +141,51 @@
                             </div>
                         </div>
                         <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-gender-ambiguous"></i></span>
+                            <div>
+                                <small>Gender</small>
+                                <p>{{ $profile?->gender ? ucfirst($profile->gender) : '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-geo"></i></span>
+                            <div>
+                                <small>Country</small>
+                                <p>{{ $profile?->country ?? '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
                             <span class="info-icon"><i class="bi bi-globe"></i></span>
                             <div>
                                 <small>Website</small>
-                                <p>{{ $profile?->website ?? '-' }}</p>
+                                <p>
+                                    @if($profile?->website)
+                                        <a href="{{ $profile->website }}" target="_blank" rel="noopener" class="profile-link">{{ $profile->website }}</a>
+                                    @else
+                                        -
+                                    @endif
+                                </p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-social-box">
+                        <div class="profile-card-header compact">
+                            <div>
+                                <h5>Media Social</h5>
+                                <p>Daftar media sosial tersimpan dalam format JSON di tabel profiles.</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-social-list">
+                            @forelse($socialMedia as $platform => $value)
+                                <a href="{{ str_starts_with($value, 'http') ? $value : '#' }}" target="_blank" rel="noopener" class="profile-social-link">
+                                    <i class="bi bi-{{ $platform === 'twitter' ? 'twitter-x' : $platform }}"></i>
+                                    <span>{{ ucfirst($platform) }}</span>
+                                </a>
+                            @empty
+                                <span class="profile-social-empty">Media sosial belum ditambahkan.</span>
+                            @endforelse
                         </div>
                     </div>
 

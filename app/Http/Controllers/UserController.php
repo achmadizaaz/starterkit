@@ -85,6 +85,20 @@ class UserController extends Controller
 
         $user->update($updateData);
         $user->syncRoles([$request->role]);
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'phone' => $request->input('phone'),
+                'gender' => $request->input('gender'),
+                'birth_date' => $request->input('birth_date'),
+                'country' => $request->input('country'),
+                'address' => $request->input('address'),
+                'website' => $request->input('website'),
+                'social_media' => collect($request->input('social_media', []))
+                    ->filter(fn ($value) => filled($value))
+                    ->all() ?: null,
+            ]
+        );
 
         return back()->with('success', 'User telah diperbarui!');
     }

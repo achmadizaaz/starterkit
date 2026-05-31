@@ -804,6 +804,7 @@ html[data-bs-theme="dark"] body .btn-profile-status-success:hover{
 html[data-bs-theme="dark"] body .profile-contact-item,
 html[data-bs-theme="dark"] body .profile-info-item,
 html[data-bs-theme="dark"] body .profile-address-box,
+html[data-bs-theme="dark"] body .profile-social-box,
 html[data-bs-theme="dark"] body .profile-updated{
     background: #172033 !important;
     border-color: #263244 !important;
@@ -814,6 +815,20 @@ html[data-bs-theme="dark"] body .info-icon,
 html[data-bs-theme="dark"] body .history-ip{
     background: rgba(37, 99, 235, .18) !important;
     color: #93c5fd !important;
+}
+
+html[data-bs-theme="dark"] body .profile-link,
+html[data-bs-theme="dark"] body .profile-social-link{
+    color: #bfdbfe !important;
+}
+
+html[data-bs-theme="dark"] body .profile-social-link{
+    background: rgba(37, 99, 235, .18) !important;
+    border-color: rgba(96, 165, 250, .28) !important;
+}
+
+html[data-bs-theme="dark"] body .profile-social-empty{
+    color: #94a3b8 !important;
 }
 
 html[data-bs-theme="dark"] body .role-name-cell{

@@ -8,7 +8,8 @@
     $primaryRole = $user->roles->first()?->name ?? 'User';
     $phone = $profile?->phone ?? '-';
     $address = $profile?->address ?? 'Alamat belum ditambahkan.';
-    $location = collect([$profile?->city, $profile?->province, $profile?->country])->filter()->implode(', ');
+    $location = $profile?->country;
+    $socialMedia = collect($profile?->social_media ?? [])->filter();
     $nextStatus = $user->status ? 0 : 1;
 @endphp
 
@@ -149,11 +150,65 @@
                             </div>
                         </div>
                         <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-calendar3"></i></span>
+                            <div>
+                                <small>Birth Date</small>
+                                <p>{{ $profile?->birth_date ? \Illuminate\Support\Carbon::parse($profile->birth_date)->format('d M Y') : '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-gender-ambiguous"></i></span>
+                            <div>
+                                <small>Gender</small>
+                                <p>{{ $profile?->gender ? ucfirst($profile->gender) : '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-geo"></i></span>
+                            <div>
+                                <small>Country</small>
+                                <p>{{ $profile?->country ?? '-' }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="info-icon"><i class="bi bi-globe"></i></span>
+                            <div>
+                                <small>Website</small>
+                                <p>
+                                    @if($profile?->website)
+                                        <a href="{{ $profile->website }}" target="_blank" rel="noopener" class="profile-link">{{ $profile->website }}</a>
+                                    @else
+                                        -
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
                             <span class="info-icon"><i class="bi bi-person-badge"></i></span>
                             <div>
                                 <small>Created</small>
                                 <p>{{ optional($user->created_at)->format('d M Y H:i') }}</p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-social-box">
+                        <div class="profile-card-header compact">
+                            <div>
+                                <h5>Media Social</h5>
+                                <p>Daftar media sosial user yang tersimpan dalam format JSON.</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-social-list">
+                            @forelse($socialMedia as $platform => $value)
+                                <a href="{{ str_starts_with($value, 'http') ? $value : '#' }}" target="_blank" rel="noopener" class="profile-social-link">
+                                    <i class="bi bi-{{ $platform === 'twitter' ? 'twitter-x' : $platform }}"></i>
+                                    <span>{{ ucfirst($platform) }}</span>
+                                </a>
+                            @empty
+                                <span class="profile-social-empty">Media sosial belum ditambahkan.</span>
+                            @endforelse
                         </div>
                     </div>
 
@@ -290,6 +345,101 @@
                                             <option value="{{ $role->id }}" {{ $user->roles->first()?->id === $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-title mt-4">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Informasi Profil</span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailPhone">Phone</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                    <input name="phone" id="detailPhone" type="text" value="{{ old('phone', $profile?->phone) }}" class="form-control" placeholder="Masukkan nomor telepon">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailBirthDate">Birth Date</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                                    <input name="birth_date" id="detailBirthDate" type="date" value="{{ old('birth_date', optional($profile?->birth_date)->format('Y-m-d') ?? $profile?->birth_date) }}" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailGender">Gender</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
+                                    <select name="gender" id="detailGender" class="form-select">
+                                        <option value="">Pilih Jenis Kelamin</option>
+                                        <option value="male" {{ old('gender', $profile?->gender) === 'male' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="female" {{ old('gender', $profile?->gender) === 'female' ? 'selected' : '' }}>Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailCountry">Country</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-geo"></i></span>
+                                    <input name="country" id="detailCountry" type="text" value="{{ old('country', $profile?->country) }}" class="form-control" placeholder="Indonesia">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailWebsite">Website</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                    <input name="website" id="detailWebsite" type="url" value="{{ old('website', $profile?->website) }}" class="form-control" placeholder="https://example.com">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="detailAddress">Address</label>
+                                <textarea name="address" id="detailAddress" class="form-control profile-textarea" rows="4" placeholder="Masukkan alamat user">{{ old('address', $profile?->address) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-section-title mt-4">
+                            <i class="bi bi-share"></i>
+                            <span>Media Sosial</span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailSocialInstagram">Instagram</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+                                    <input name="social_media[instagram]" id="detailSocialInstagram" type="text" value="{{ old('social_media.instagram', $profile?->social_media['instagram'] ?? '') }}" class="form-control" placeholder="https://instagram.com/username">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailSocialFacebook">Facebook</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                                    <input name="social_media[facebook]" id="detailSocialFacebook" type="text" value="{{ old('social_media.facebook', $profile?->social_media['facebook'] ?? '') }}" class="form-control" placeholder="https://facebook.com/username">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailSocialLinkedin">LinkedIn</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                                    <input name="social_media[linkedin]" id="detailSocialLinkedin" type="text" value="{{ old('social_media.linkedin', $profile?->social_media['linkedin'] ?? '') }}" class="form-control" placeholder="https://linkedin.com/in/username">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="detailSocialTwitter">X / Twitter</label>
+                                <div class="input-group input-group-modern">
+                                    <span class="input-group-text"><i class="bi bi-twitter-x"></i></span>
+                                    <input name="social_media[twitter]" id="detailSocialTwitter" type="text" value="{{ old('social_media.twitter', $profile?->social_media['twitter'] ?? '') }}" class="form-control" placeholder="https://x.com/username">
                                 </div>
                             </div>
                         </div>

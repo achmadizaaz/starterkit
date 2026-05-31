@@ -1834,6 +1834,59 @@ body.sidebar-collapsed .main{
     background: #f8fafc;
 }
 
+.profile-social-box{
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.profile-social-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.profile-social-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border: 1px solid #dbeafe;
+    border-radius: 999px;
+    color: var(--primary);
+    background: var(--primary-soft);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.profile-social-link:hover{
+    color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(37, 99, 235, .14);
+}
+
+.profile-social-empty{
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.profile-link{
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.profile-link:hover{
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
 .profile-history-table{
     --bs-table-bg: transparent;
     --bs-table-border-color: var(--border-soft);

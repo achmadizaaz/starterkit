@@ -51,7 +51,7 @@
                             <label class="form-label" for="username">Username</label>
                             <div class="input-group input-group-modern">
                                 <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                <input name="username" id="username" type="text" value="{{ old('username', $user->username) }}" class="form-control" disabled>
+                                <input name="username" id="username" type="text" value="{{ old('username', $user->username) }}" class="form-control">
                             </div>
                         </div>
 
@@ -103,9 +103,56 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6">
+                            <label class="form-label" for="country">Country</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-geo"></i></span>
+                                <input name="country" id="country" type="text" value="{{ old('country', $profile?->country) }}" class="form-control" placeholder="Indonesia">
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <label class="form-label" for="address">Address</label>
                             <textarea name="address" id="address" class="form-control profile-textarea" rows="4" placeholder="Masukkan alamat Anda">{{ old('address', $profile?->address) }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section-title mt-4">
+                        <i class="bi bi-share"></i>
+                        <span>Media Sosial</span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="socialInstagram">Instagram</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+                                <input name="social_media[instagram]" id="socialInstagram" type="text" value="{{ old('social_media.instagram', $profile?->social_media['instagram'] ?? '') }}" class="form-control" placeholder="https://instagram.com/username">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="socialFacebook">Facebook</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                                <input name="social_media[facebook]" id="socialFacebook" type="text" value="{{ old('social_media.facebook', $profile?->social_media['facebook'] ?? '') }}" class="form-control" placeholder="https://facebook.com/username">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="socialLinkedin">LinkedIn</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                                <input name="social_media[linkedin]" id="socialLinkedin" type="text" value="{{ old('social_media.linkedin', $profile?->social_media['linkedin'] ?? '') }}" class="form-control" placeholder="https://linkedin.com/in/username">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label" for="socialTwitter">X / Twitter</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-twitter-x"></i></span>
+                                <input name="social_media[twitter]" id="socialTwitter" type="text" value="{{ old('social_media.twitter', $profile?->social_media['twitter'] ?? '') }}" class="form-control" placeholder="https://x.com/username">
+                            </div>
                         </div>
                     </div>
                 </div>

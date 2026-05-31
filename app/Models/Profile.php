@@ -6,7 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'user_id',
+        'phone',
+        'gender',
+        'birth_date',
+        'country',
+        'address',
+        'website',
+        'social_media',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'birth_date' => 'date',
+            'social_media' => 'array',
+        ];
+    }
 
     public function user()
     {

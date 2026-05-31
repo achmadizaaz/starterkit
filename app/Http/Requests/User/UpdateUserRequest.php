@@ -34,6 +34,17 @@ class UpdateUserRequest extends FormRequest
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'status' => 'nullable|boolean',
             'role' => 'required|exists:roles,id',
+            'phone' => ['nullable', 'string', 'max:50'],
+            'gender' => ['nullable', Rule::in(['male', 'female'])],
+            'birth_date' => ['nullable', 'date'],
+            'country' => ['nullable', 'string', 'max:100'],
+            'address' => ['nullable', 'string', 'max:1000'],
+            'website' => ['nullable', 'url', 'max:255'],
+            'social_media' => ['nullable', 'array'],
+            'social_media.instagram' => ['nullable', 'string', 'max:255'],
+            'social_media.facebook' => ['nullable', 'string', 'max:255'],
+            'social_media.linkedin' => ['nullable', 'string', 'max:255'],
+            'social_media.twitter' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

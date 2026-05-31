@@ -57,6 +57,7 @@ class ProfileController extends Controller
 
         $user->fill([
             'name' => $validated['name'],
+            'username' => $validated['username'],
             'email' => $validated['email'],
             'avatar' => $validated['avatar'] ?? $user->avatar,
         ]);
@@ -71,7 +72,14 @@ class ProfileController extends Controller
             ['user_id' => $user->id],
             [
                 'phone' => $validated['phone'] ?? null,
+                'gender' => $validated['gender'] ?? null,
+                'birth_date' => $validated['birth_date'] ?? null,
+                'country' => $validated['country'] ?? null,
                 'address' => $validated['address'] ?? null,
+                'website' => $validated['website'] ?? null,
+                'social_media' => collect($validated['social_media'] ?? [])
+                    ->filter(fn ($value) => filled($value))
+                    ->all() ?: null,
             ]
         );
 

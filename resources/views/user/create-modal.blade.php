@@ -28,7 +28,12 @@
                         <div class="avatar-upload-content">
                             <label for="avatar" class="form-label">Avatar</label>
                             <input type="file" name="avatar" id="avatar" accept="image/*" class="form-control @error('avatar') is-invalid @enderror">
-                            <div class="form-text">Gunakan gambar persegi agar tampilan avatar tetap rapi.</div>
+                            <div class="form-text">
+                                <ul class="mb-0">
+                                    <li>Ukuran file maks 2MB Format file: .jpg, .jpeg, .png. </li>
+                                    <li>Gunakan gambar persegi agar tampilan avatar tetap rapi.</li>
+                                </ul>   
+                            </div>
                             @error('avatar')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

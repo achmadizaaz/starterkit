@@ -378,6 +378,9 @@
                                 <div class="input-group input-group-modern">
                                     <span class="input-group-text"><i class="bi bi-geo"></i></span>
                                     <input name="country" id="detailCountry" type="text" value="{{ old('country', $profile?->country) }}" class="form-control" placeholder="Indonesia">
+                                    <datalist id="detailCountry">
+                                        <option value="Indonesia">
+                                    </datalist>
                                 </div>
                             </div>
 

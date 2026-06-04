@@ -51,8 +51,9 @@
                             <label class="form-label" for="username">Username</label>
                             <div class="input-group input-group-modern">
                                 <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                <input name="username" id="username" type="text" value="{{ old('username', $user->username) }}" class="form-control">
+                                <input id="username" type="text" value="{{ $user->username }}" class="form-control" disabled>
                             </div>
+                            <div class="form-text">Username tidak dapat diubah dari halaman profil.</div>
                         </div>
 
                         <div class="col-md-6">

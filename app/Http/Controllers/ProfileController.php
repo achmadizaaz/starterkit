@@ -59,7 +59,6 @@ class ProfileController extends Controller
 
         $user->fill([
             'name' => $validated['name'],
-            'username' => $validated['username'],
             'email' => $validated['email'],
             'avatar' => $validated['avatar'] ?? $user->avatar,
         ]);

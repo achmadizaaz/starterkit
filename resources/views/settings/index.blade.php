@@ -159,8 +159,8 @@
                             </div>
                             <div>
                                 <label for="app_logo" class="form-label">Logo aplikasi</label>
-                                <input type="file" id="app_logo" name="app_logo" class="form-control @error('app_logo') is-invalid @enderror" accept=".jpg,.jpeg,.png,.webp,.svg">
-                                <div class="form-text">Maks 2MB. Format: jpg, jpeg, png, webp, svg.</div>
+                                <input type="file" id="app_logo" name="app_logo" class="form-control @error('app_logo') is-invalid @enderror" accept=".jpg,.jpeg,.png,.webp">
+                                <div class="form-text">Maks 2MB. Format: jpg, jpeg, png, webp.</div>
                                 @error('app_logo')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                             </div>
                             <div>
                                 <label for="favicon" class="form-label">Favicon</label>
-                                <input type="file" id="favicon" name="favicon" class="form-control @error('favicon') is-invalid @enderror" accept=".ico,.png,.jpg,.jpeg,.svg,.webp">
+                                <input type="file" id="favicon" name="favicon" class="form-control @error('favicon') is-invalid @enderror" accept=".ico,.png,.jpg,.jpeg,.webp">
                                 <div class="form-text">Maks 1MB. Gunakan ikon persegi agar terlihat rapi.</div>
                                 @error('favicon')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                             </div>

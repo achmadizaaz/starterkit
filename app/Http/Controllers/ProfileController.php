@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -97,6 +99,12 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->hasRole('Super Administrator')) {
+            throw ValidationException::withMessages([
+                'password' => 'Akun Super Administrator tidak dapat dihapus dari halaman profil.',
+            ]);
+        }
+
         Auth::logout();
 
         $user->delete();
@@ -111,7 +119,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'confirmed'],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         Auth::user()->password = Hash::make($request->input('password'));

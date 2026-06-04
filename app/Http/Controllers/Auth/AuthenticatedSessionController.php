@@ -8,6 +8,7 @@ use App\Models\LoginHistory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -32,8 +33,8 @@ class AuthenticatedSessionController extends Controller
         LoginHistory::create([
             'user_id' => auth()->id(),
             'ip_address' => request()->ip(),
-            'device' => request()->header('User-Agent'),
-            'browser' => request()->header('User-Agent'),
+            'device' => Str::limit((string) request()->userAgent(), 255, ''),
+            'browser' => Str::limit((string) request()->userAgent(), 255, ''),
             'login_at' => now()
         ]);
 

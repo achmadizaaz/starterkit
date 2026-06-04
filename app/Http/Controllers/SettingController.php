@@ -31,10 +31,10 @@ class SettingController extends Controller
             'institution_address' => ['nullable', 'string', 'max:1000'],
             'phone_number' => ['nullable', 'string', 'max:50'],
             'official_email' => ['nullable', 'email', 'max:150'],
-            'official_website' => ['nullable', 'url', 'max:200'],
+            'official_website' => ['nullable', 'url:http,https', 'max:200'],
             'footer_copyright' => ['nullable', 'string', 'max:255'],
-            'app_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'favicon' => ['nullable', 'file', 'mimes:ico,png,jpg,jpeg,svg,webp', 'max:1024'],
+            'app_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'favicon' => ['nullable', 'file', 'mimes:ico,png,jpg,jpeg,webp', 'max:1024'],
         ]);
 
         $textFields = [

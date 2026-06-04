@@ -112,7 +112,7 @@
                                             @endphp
                                             <td class="text-center">
                                                 @if ($otherPermissions->isNotEmpty())
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#otherPermissionModal" data-group-id="{{ $group['id'] }}" data-group-name="{{ $group['name'] }}" data-permissions='@json($group['permissions'])'>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#otherPermissionModal" data-group-id="{{ $group['id'] }}" data-group-name="{{ $group['name'] }}">
                                                         <i class="bi bi-three-dots"></i>
                                                     </button>
                                                 @else
@@ -175,6 +175,8 @@
 
         @push('scripts')
             <script>
+                const groupedPermissionsPayload = {{ Illuminate\Support\Js::from($groupedPermissions) }};
+
                 function changeRole(roleId) {
                     if (roleId) {
                         window.location.href = "{{ url('/dashboard/role-permission') }}/" + encodeURIComponent(roleId);
@@ -230,7 +232,7 @@
                         const button = e.relatedTarget;
                         const groupId = button.getAttribute('data-group-id');
                         const groupName = button.getAttribute('data-group-name');
-                        const permissionsData = JSON.parse(button.getAttribute('data-permissions'));
+                        const permissionsData = groupedPermissionsPayload[groupId]?.permissions ?? [];
 
                         document.getElementById('groupName').textContent = groupName;
 
@@ -255,7 +257,7 @@
                                     <div class="form-check mb-2">
                                         <input class="form-check-input permission-checkbox" type="checkbox" name="permissions[]" value="${perm.id}" id="modal_perm_${perm.id}" ${isChecked}>
                                         <label class="form-check-label" for="modal_perm_${perm.id}">
-                                            ${perm.name}
+                                            ${escapeHtml(perm.name)}
                                         </label>
                                     </div>
                                 `;
@@ -280,6 +282,12 @@
                             updateSelectAllCheckbox();
                         }
                     });
+
+                    function escapeHtml(value) {
+                        const element = document.createElement('div');
+                        element.textContent = String(value ?? '');
+                        return element.innerHTML;
+                    }
                 });
             </script>
         @endpush

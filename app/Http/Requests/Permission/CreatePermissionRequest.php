@@ -14,7 +14,7 @@ class CreatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:permissions,name',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:permissions,name'],
             'permission_group_id' => 'nullable|exists:permission_groups,id',
         ];
     }

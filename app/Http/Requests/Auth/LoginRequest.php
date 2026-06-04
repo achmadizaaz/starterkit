@@ -27,8 +27,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'login' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'max:255'],
         ];
     }
 
@@ -49,7 +49,11 @@ class LoginRequest extends FormRequest
             $loginType => $this->input('login')
         ]);
 
-        if (! Auth::attempt($this->only($loginType, 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt([
+            $loginType => $this->input($loginType),
+            'password' => $this->input('password'),
+            'status' => true,
+        ], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey(), 120);
             throw ValidationException::withMessages([
                 'login' => trans('auth.failed'),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class RolePermissionController extends Controller
 {
@@ -74,17 +75,21 @@ class RolePermissionController extends Controller
 
     public function update(Request $request, $roleId)
     {
+        $validated = $request->validate([
+            'permissions' => ['nullable', 'array'],
+            'permissions.*' => ['string', 'distinct', 'exists:permissions,id'],
+        ]);
+
         $role = Role::findOrFail($roleId);
 
-        // Hapus semua permissions yang dimiliki role
-        $role->syncPermissions([]);
-
-        // Sync dengan permissions yang dipilih
-        if ($request->has('permissions')) {
-            $permissionIds = $request->input('permissions');
-            $permissions = Permission::whereIn('id', $permissionIds)->get();
-            $role->syncPermissions($permissions);
+        if ($role->code === 'super-administrator') {
+            throw ValidationException::withMessages([
+                'role' => 'Permission Super Administrator tidak dapat diubah.',
+            ]);
         }
+
+        $permissions = Permission::whereIn('id', $validated['permissions'] ?? [])->get();
+        $role->syncPermissions($permissions);
 
         return back()->with('success', 'Permission role telah diperbarui!');
     }

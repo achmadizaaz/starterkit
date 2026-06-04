@@ -36,12 +36,12 @@ class ProfileUpdateRequest extends FormRequest
             'birth_date' => ['nullable', 'date'],
             'country' => ['nullable', 'string', 'max:100'],
             'address' => ['nullable', 'string', 'max:1000'],
-            'website' => ['nullable', 'url', 'max:255'],
+            'website' => ['nullable', 'url:http,https', 'max:255'],
             'social_media' => ['nullable', 'array'],
-            'social_media.instagram' => ['nullable', 'string', 'max:255'],
-            'social_media.facebook' => ['nullable', 'string', 'max:255'],
-            'social_media.linkedin' => ['nullable', 'string', 'max:255'],
-            'social_media.twitter' => ['nullable', 'string', 'max:255'],
+            'social_media.instagram' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.facebook' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.linkedin' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.twitter' => ['nullable', 'url:http,https', 'max:255'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -26,11 +27,11 @@ class UpdateUserRequest extends FormRequest
         $userId = $this->route('id');
 
         return [
-            'name' => 'required|string',
-            'username' => ['required', 'string', Rule::unique('users', 'username')->ignore($userId)],
-            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($userId)],
-            'password' => 'nullable|min:7|confirmed',
-            'password_confirmation' => 'nullable|min:7',
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'password_confirmation' => ['nullable'],
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'status' => 'nullable|boolean',
             'role' => 'required|exists:roles,id',
@@ -39,12 +40,12 @@ class UpdateUserRequest extends FormRequest
             'birth_date' => ['nullable', 'date'],
             'country' => ['nullable', 'string', 'max:100'],
             'address' => ['nullable', 'string', 'max:1000'],
-            'website' => ['nullable', 'url', 'max:255'],
+            'website' => ['nullable', 'url:http,https', 'max:255'],
             'social_media' => ['nullable', 'array'],
-            'social_media.instagram' => ['nullable', 'string', 'max:255'],
-            'social_media.facebook' => ['nullable', 'string', 'max:255'],
-            'social_media.linkedin' => ['nullable', 'string', 'max:255'],
-            'social_media.twitter' => ['nullable', 'string', 'max:255'],
+            'social_media.instagram' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.facebook' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.linkedin' => ['nullable', 'url:http,https', 'max:255'],
+            'social_media.twitter' => ['nullable', 'url:http,https', 'max:255'],
         ];
     }
 }

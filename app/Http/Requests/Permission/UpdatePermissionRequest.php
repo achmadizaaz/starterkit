@@ -14,7 +14,7 @@ class UpdatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:permissions,name,' . $this->route('id'),
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'unique:permissions,name,' . $this->route('id')],
             'permission_group_id' => 'nullable|exists:permission_groups,id',
         ];
     }

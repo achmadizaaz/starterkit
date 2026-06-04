@@ -17,18 +17,10 @@ class FileService
      */
     public function upload(object $file, string $directory, ?string $disk = 'local'): string
     {
-         // Get Nama File besertan ekstensi file
-        $filenameWithExt = $file->getClientOriginalName();
-         // Get Nama File tanpa ekstensi file
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-         // Get Ekstensi File
-        $extension = $file->getClientOriginalExtension();
-         // Filename To store
-        $fileNameToStore = strtolower(Str::ulid().'-'. Str::random(8)) . '.' . $extension;;
-         // Upload file dan simpan ke direktori tertentu
-        $filePath = $file->storeAs($directory, $fileNameToStore, $disk);
-        
-        return $filePath;
+        $extension = $file->extension();
+        $fileNameToStore = strtolower(Str::ulid().'-'.Str::random(8)).'.'.$extension;
+
+        return $file->storeAs($directory, $fileNameToStore, $disk);
     }
 
     /**

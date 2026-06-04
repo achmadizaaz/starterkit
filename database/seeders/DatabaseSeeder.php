@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,12 +25,23 @@ class DatabaseSeeder extends Seeder
 
         // User::factory(10)->create();
 
-        $user = User::factory()->create([
-            'name' => 'Administrator',
-            'username' => 'administrator',
-            'slug' => 'admin',
-            'email' => 'administrator@gmail.com',
-        ]);
+        $administratorPassword = env('ADMIN_PASSWORD');
+
+        if (blank($administratorPassword)) {
+            throw new RuntimeException('ADMIN_PASSWORD wajib diatur sebelum menjalankan DatabaseSeeder.');
+        }
+
+        $user = User::updateOrCreate(
+            ['email' => env('ADMIN_EMAIL', 'administrator@gmail.com')],
+            [
+                'name' => 'Administrator',
+                'username' => env('ADMIN_USERNAME', 'administrator'),
+                'slug' => 'admin',
+                'password' => Hash::make($administratorPassword),
+                'email_verified_at' => now(),
+                'status' => true,
+            ]
+        );
 
         $user->assignRole('Super Administrator');
     }

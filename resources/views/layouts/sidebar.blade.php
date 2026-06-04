@@ -6,6 +6,7 @@
     $sidebarAvatar = $sidebarUser?->avatar ? asset('storage/' . $sidebarUser->avatar) : 'https://i.pravatar.cc/120?u=' . urlencode($sidebarUser?->email ?? 'user');
     $sidebarAppName = \App\Models\AppSetting::getValue('app_name', config('app.name', 'Starterkit'));
     $sidebarLogo = \App\Models\AppSetting::getValue('app_logo');
+    $sidebarCanManageSystem = $sidebarUser?->hasAnyRole(['Super Administrator', 'Administrator']) ?? false;
 @endphp
 
 <!-- SIDEBAR -->
@@ -36,6 +37,7 @@
                 </span>
             </a>
         </li>
+        @if($sidebarCanManageSystem)
         <hr class="sidebar-divider">
         <li>
             <a data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="{{ $userMenuOpen ? 'true' : 'false' }}" aria-controls="menuUser" class="{{ $userMenuOpen ? '' : 'collapsed' }}">
@@ -71,6 +73,7 @@
                 </span>
             </a>
         </li>
+        @endif
     </ul>
 
     <div class="sidebar-footer">

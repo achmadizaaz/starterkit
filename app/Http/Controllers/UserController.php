@@ -9,6 +9,8 @@ use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -39,6 +41,8 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
+        $this->ensureRoleCanBeAssigned($request, $request->input('role'));
+
         $avatarPath = null;
 
         if ($request->hasFile('avatar')) {
@@ -50,7 +54,7 @@ class UserController extends Controller
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'email'    => $request->email,
-            'status'   => $request->status,
+            'status'   => $request->boolean('status'),
             'avatar'   => $avatarPath,
         ]);
 
@@ -62,6 +66,20 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = $this->user->findOrFail($id);
+
+        $this->ensureUserCanBeManaged($request, $user);
+        $this->ensureRoleCanBeAssigned($request, $request->input('role'));
+
+        if ($user->is($request->user()) && (
+            $request->boolean('status') !== (bool) $user->status
+            || (string) $request->input('role') !== (string) $user->roles->first()?->id
+            || $request->filled('password')
+        )) {
+            throw ValidationException::withMessages([
+                'user' => 'Role, status, dan password akun yang sedang digunakan tidak dapat diubah dari modul User.',
+            ]);
+        }
+
         $avatarPath = $user->avatar;
 
         if ($request->hasFile('avatar')) {
@@ -75,12 +93,16 @@ class UserController extends Controller
             'name'     => $request->name,
             'username' => $request->username,
             'email'    => $request->email,
-            'status'   => $request->status,
+            'status'   => $request->boolean('status'),
             'avatar'   => $avatarPath,
         ];
 
         if ($request->filled('password')) {
             $updateData['password'] = Hash::make($request->password);
+        }
+
+        if ($user->email !== $request->email) {
+            $updateData['email_verified_at'] = null;
         }
 
         $user->update($updateData);
@@ -106,10 +128,18 @@ class UserController extends Controller
     public function updatePassword(Request $request, $id)
     {
         $request->validate([
-            'password' => ['required', 'string', 'min:7', 'confirmed'],
+            'password' => ['required', 'string', Password::defaults(), 'confirmed'],
         ]);
 
         $user = $this->user->findOrFail($id);
+        $this->ensureUserCanBeManaged($request, $user);
+
+        if ($user->is($request->user())) {
+            throw ValidationException::withMessages([
+                'password' => 'Gunakan halaman profil untuk mengganti password akun sendiri.',
+            ]);
+        }
+
         $user->update([
             'password' => Hash::make($request->password),
         ]);
@@ -124,6 +154,14 @@ class UserController extends Controller
         ]);
 
         $user = $this->user->findOrFail($id);
+        $this->ensureUserCanBeManaged($request, $user);
+
+        if ($user->is($request->user())) {
+            throw ValidationException::withMessages([
+                'status' => 'Anda tidak dapat mengubah status akun yang sedang digunakan.',
+            ]);
+        }
+
         $user->update([
             'status' => $request->boolean('status'),
         ]);
@@ -134,6 +172,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = $this->user->findOrFail($id);
+        $this->ensureUserCanBeManaged(request(), $user);
+
+        if ($user->is(request()->user())) {
+            throw ValidationException::withMessages([
+                'user' => 'Anda tidak dapat menghapus akun yang sedang digunakan.',
+            ]);
+        }
 
         if ($user->avatar) {
             $this->fileService->delete($user->avatar, 'public');
@@ -142,5 +187,25 @@ class UserController extends Controller
         $user->delete();
 
         return back()->with('success', 'User telah dihapus!');
+    }
+
+    private function ensureUserCanBeManaged(Request $request, User $user): void
+    {
+        if ($user->hasRole('Super Administrator')) {
+            throw ValidationException::withMessages([
+                'user' => 'Akun Super Administrator tidak dapat dikelola dari modul User.',
+            ]);
+        }
+    }
+
+    private function ensureRoleCanBeAssigned(Request $request, mixed $roleId): void
+    {
+        $role = Role::findOrFail($roleId);
+
+        if ($role->code === 'super-administrator' && ! $request->user()->hasRole('Super Administrator')) {
+            throw ValidationException::withMessages([
+                'role' => 'Hanya Super Administrator yang dapat memberikan role Super Administrator.',
+            ]);
+        }
     }
 }

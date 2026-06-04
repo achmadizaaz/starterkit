@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 use Throwable;
 
 class AppSetting extends Model
@@ -18,7 +19,9 @@ class AppSetting extends Model
 
     public static function getValue(string $key, ?string $default = null): ?string
     {
-        return self::cached()->get($key) ?: $default;
+        $value = self::cached()->get($key);
+
+        return filled($value) ? (string) $value : $default;
     }
 
     public static function setValue(string $key, mixed $value): void
@@ -47,5 +50,23 @@ class AppSetting extends Model
         });
 
         return self::$settingsCache;
+    }
+
+    public static function isPublicRegistrationOpen(): bool
+    {
+        if (self::getValue('registration_enabled', '1') !== '1') {
+            return false;
+        }
+
+        try {
+            $now = now();
+            $startsAt = self::getValue('registration_starts_at');
+            $endsAt = self::getValue('registration_ends_at');
+
+            return (! $startsAt || $now->greaterThanOrEqualTo(Carbon::parse($startsAt)))
+                && (! $endsAt || $now->lessThanOrEqualTo(Carbon::parse($endsAt)));
+        } catch (Throwable) {
+            return false;
+        }
     }
 }

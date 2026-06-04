@@ -18,6 +18,10 @@
         $footerCopyright = old('footer_copyright', $settings->get('footer_copyright'));
         $appLogo = $settings->get('app_logo');
         $favicon = $settings->get('favicon');
+        $registrationEnabled = old('registration_enabled', $settings->get('registration_enabled', '1')) === '1';
+        $registrationStartsAt = old('registration_starts_at', $settings->get('registration_starts_at'));
+        $registrationEndsAt = old('registration_ends_at', $settings->get('registration_ends_at'));
+        $registrationIsOpen = \App\Models\AppSetting::isPublicRegistrationOpen();
     @endphp
 
     <div class="container-fluid settings-page">
@@ -99,6 +103,45 @@
                                 <label for="app_description" class="form-label">Deskripsi aplikasi</label>
                                 <textarea id="app_description" name="app_description" rows="3" class="form-control settings-textarea @error('app_description') is-invalid @enderror" placeholder="Tuliskan deskripsi singkat aplikasi">{{ $appDescription }}</textarea>
                                 @error('app_description')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+
+                        <div class="form-section-title mt-4">
+                            <i class="bi bi-person-plus"></i>
+                            Registrasi Publik
+                        </div>
+
+                        <div class="border rounded-2 p-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                <div>
+                                    <strong>Izinkan registrasi akun publik</strong>
+                                    <div class="form-text">Registrasi hanya tersedia ketika status aktif dan berada dalam periode yang ditentukan.</div>
+                                </div>
+                                <span class="status-badge {{ $registrationIsOpen ? 'status-active' : 'status-inactive' }}">
+                                    <span class="status-dot"></span>
+                                    {{ $registrationIsOpen ? 'Registrasi Dibuka' : 'Registrasi Ditutup' }}
+                                </span>
+                            </div>
+
+                            <div class="form-check form-switch mb-3">
+                                <input type="hidden" name="registration_enabled" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" name="registration_enabled" id="registration_enabled" value="1" {{ $registrationEnabled ? 'checked' : '' }}>
+                                <label class="form-check-label" for="registration_enabled">Aktifkan registrasi publik</label>
+                            </div>
+
+                            <div class="row g-3" id="registrationPeriodFields">
+                                <div class="col-md-6">
+                                    <label for="registration_starts_at" class="form-label">Tanggal mulai registrasi</label>
+                                    <input type="datetime-local" id="registration_starts_at" name="registration_starts_at" value="{{ $registrationStartsAt }}" class="form-control @error('registration_starts_at') is-invalid @enderror">
+                                    <div class="form-text">Kosongkan agar dapat dimulai segera.</div>
+                                    @error('registration_starts_at')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="registration_ends_at" class="form-label">Tanggal tutup registrasi</label>
+                                    <input type="datetime-local" id="registration_ends_at" name="registration_ends_at" value="{{ $registrationEndsAt }}" class="form-control @error('registration_ends_at') is-invalid @enderror">
+                                    <div class="form-text">Kosongkan jika tidak memiliki batas waktu.</div>
+                                    @error('registration_ends_at')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                </div>
                             </div>
                         </div>
 
@@ -193,3 +236,22 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('registration_enabled');
+            const fields = document.querySelectorAll('#registrationPeriodFields input');
+
+            function syncRegistrationFields() {
+                fields.forEach(field => {
+                    field.readOnly = !toggle.checked;
+                });
+                document.getElementById('registrationPeriodFields').style.opacity = toggle.checked ? '1' : '.55';
+            }
+
+            toggle?.addEventListener('change', syncRegistrationFields);
+            syncRegistrationFields();
+        });
+    </script>
+@endpush

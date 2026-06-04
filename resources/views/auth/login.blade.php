@@ -68,9 +68,11 @@
                         </button>
                     </form>
 
-                    <div class="text-center text-muted small">
-                        Tidak memiliki akun? <a href="{{ route('register') }}" class="auth-link">Register</a>
-                    </div>
+                    @if(\App\Models\AppSetting::isPublicRegistrationOpen())
+                        <div class="text-center text-muted small">
+                            Tidak memiliki akun? <a href="{{ route('register') }}" class="auth-link">Register</a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -6,6 +6,7 @@ use App\Models\AppSetting;
 use App\Services\FileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class SettingController extends Controller
@@ -35,6 +36,13 @@ class SettingController extends Controller
             'footer_copyright' => ['nullable', 'string', 'max:255'],
             'app_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'favicon' => ['nullable', 'file', 'mimes:ico,png,jpg,jpeg,webp', 'max:1024'],
+            'registration_enabled' => ['nullable', 'boolean'],
+            'registration_starts_at' => ['nullable', 'date'],
+            'registration_ends_at' => [
+                'nullable',
+                'date',
+                Rule::when($request->filled('registration_starts_at'), 'after_or_equal:registration_starts_at'),
+            ],
         ]);
 
         $textFields = [
@@ -50,6 +58,10 @@ class SettingController extends Controller
         foreach ($textFields as $field) {
             AppSetting::setValue($field, $validated[$field] ?? null);
         }
+
+        AppSetting::setValue('registration_enabled', $request->boolean('registration_enabled') ? '1' : '0');
+        AppSetting::setValue('registration_starts_at', $validated['registration_starts_at'] ?? null);
+        AppSetting::setValue('registration_ends_at', $validated['registration_ends_at'] ?? null);
 
         if ($request->hasFile('app_logo')) {
             $oldLogo = AppSetting::getValue('app_logo');

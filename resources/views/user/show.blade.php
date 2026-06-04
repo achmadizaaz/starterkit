@@ -67,6 +67,10 @@
                                 <i class="bi {{ $user->status ? 'bi-check2-circle' : 'bi-x-circle' }}"></i>
                                 {{ $user->status ? 'Active' : 'Inactive' }}
                             </span>
+                            <span class="profile-badge {{ $user->email_verified_at ? 'verified' : 'unverified' }}">
+                                <i class="bi {{ $user->email_verified_at ? 'bi-patch-check-fill' : 'bi-envelope-exclamation' }}"></i>
+                                {{ $user->email_verified_at ? 'Verified' : 'Unverified' }}
+                            </span>
                             <button type="button" class="profile-badge profile-badge-button" data-bs-toggle="modal" data-bs-target="#detailRolesModal">
                                 <i class="bi bi-shield-check"></i>
                                 {{ $user->roles->count() }} Role
@@ -319,7 +323,7 @@
                                 <div class="form-check form-switch border rounded-2 px-3 py-2">
                                     <input type="hidden" name="email_verified" value="0">
                                     <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" name="email_verified" id="detailEmailVerified" value="1" {{ $user->email_verified_at ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="detailEmailVerified">Tandai email sudah terverifikasi</label>
+                                    <label class="form-check-label small" for="detailEmailVerified">Tandai email sudah terverifikasi</label>
                                 </div>
                             </div>
 

@@ -185,6 +185,33 @@ body{
     font-size: 13px;
 }
 
+.user-email-cell{
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+}
+
+.email-verification-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.email-verification-badge.verified{
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.email-verification-badge.unverified{
+    background: #fff7ed;
+    color: #c2410c;
+}
+
 /* BADGES */
 .badge-modern{
     display: inline-block;
@@ -1728,6 +1755,16 @@ body.sidebar-collapsed .main{
 .profile-badge.inactive{
     background: #f1f5f9;
     color: #64748b;
+}
+
+.profile-badge.verified{
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.profile-badge.unverified{
+    background: #fff7ed;
+    color: #c2410c;
 }
 
 .profile-contact-list{

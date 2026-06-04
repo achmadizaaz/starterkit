@@ -79,7 +79,7 @@
                             <div class="form-check form-switch border rounded-2 px-3 py-2">
                                 <input type="hidden" name="email_verified" value="0">
                                 <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" name="email_verified" id="editEmailVerified" value="1">
-                                <label class="form-check-label" for="editEmailVerified">Tandai email sudah terverifikasi</label>
+                                <label class="form-check-label small" for="editEmailVerified">Tandai email sudah terverifikasi</label>
                             </div>
                         </div>
 

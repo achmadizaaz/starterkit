@@ -58,6 +58,10 @@
 
                         <div class="profile-badges">
                             <span class="profile-badge active"><i class="bi bi-check2-circle"></i> Active</span>
+                            <span class="profile-badge {{ $user->email_verified_at ? 'verified' : 'unverified' }}">
+                                <i class="bi {{ $user->email_verified_at ? 'bi-patch-check-fill' : 'bi-envelope-exclamation' }}"></i>
+                                {{ $user->email_verified_at ? 'Verified' : 'Unverified' }}
+                            </span>
                             <button type="button" class="profile-badge profile-badge-button" data-bs-toggle="modal" data-bs-target="#profileRolesModal">
                                 <i class="bi bi-shield-check"></i>
                                 {{ $user->roles->count() }} Role

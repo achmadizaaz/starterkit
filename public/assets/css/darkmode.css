@@ -326,6 +326,16 @@
     color: #cbd5e1;
 }
 
+[data-bs-theme="dark"] .email-verification-badge.verified{
+    background: rgba(16, 185, 129, .16);
+    color: #86efac;
+}
+
+[data-bs-theme="dark"] .email-verification-badge.unverified{
+    background: rgba(249, 115, 22, .16);
+    color: #fdba74;
+}
+
 [data-bs-theme="dark"] .btn-action{
     background: #151515;
     border-color: #252525;
@@ -732,6 +742,16 @@ html[data-bs-theme="dark"] body .profile-badge.active{
 html[data-bs-theme="dark"] body .profile-badge.inactive{
     background: rgba(148, 163, 184, .14) !important;
     color: #cbd5e1 !important;
+}
+
+html[data-bs-theme="dark"] body .profile-badge.verified{
+    background: rgba(16, 185, 129, .16) !important;
+    color: #86efac !important;
+}
+
+html[data-bs-theme="dark"] body .profile-badge.unverified{
+    background: rgba(249, 115, 22, .16) !important;
+    color: #fdba74 !important;
 }
 
 html[data-bs-theme="dark"] body .profile-title-row h1,

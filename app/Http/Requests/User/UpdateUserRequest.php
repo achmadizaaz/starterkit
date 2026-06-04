@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
+            'username' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9._-]+$/', Rule::unique('users', 'username')->ignore($userId)],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'password' => ['nullable', 'confirmed', Password::defaults()],
             'password_confirmation' => ['nullable'],
@@ -47,6 +47,13 @@ class UpdateUserRequest extends FormRequest
             'social_media.facebook' => ['nullable', 'url:http,https', 'max:255'],
             'social_media.linkedin' => ['nullable', 'url:http,https', 'max:255'],
             'social_media.twitter' => ['nullable', 'url:http,https', 'max:255'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'username.regex' => 'Username tidak boleh menggunakan spasi dan hanya boleh berisi huruf, angka, titik, garis bawah, atau tanda minus.',
         ];
     }
 }

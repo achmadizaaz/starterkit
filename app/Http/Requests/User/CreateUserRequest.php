@@ -25,7 +25,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
+            'username' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9._-]+$/', 'unique:users,username'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'password_confirmation' => ['required'],
@@ -33,6 +33,13 @@ class CreateUserRequest extends FormRequest
             'status' => 'nullable|boolean',
             'email_verified' => ['nullable', 'boolean'],
             'role' => 'required|exists:roles,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'username.regex' => 'Username tidak boleh menggunakan spasi dan hanya boleh berisi huruf, angka, titik, garis bawah, atau tanda minus.',
         ];
     }
 }

@@ -61,7 +61,7 @@
                             <label for="username" class="form-label">Username</label>
                             <div class="input-group ">
                                 <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                <input type="text" name="username" id="username" value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" placeholder="username">
+                                <input type="text" name="username" id="username" value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" placeholder="username" pattern="[A-Za-z0-9._-]+" title="Tanpa spasi. Gunakan huruf, angka, titik, garis bawah, atau tanda minus.">
                             </div>
                             @error('username')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>

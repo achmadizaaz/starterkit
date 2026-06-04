@@ -32,7 +32,9 @@ Route::middleware(['auth', EnsureUserIsActive::class, 'verified'])->prefix('dash
         Route::controller(UserController::class)->prefix('user')->whereUlid('id')->group(function(){
             Route::get('/', 'index')->name('user.index');
             Route::post('/', 'store')->name('user.store');
-            Route::get('/{id}', 'show')->name('user.show');
+            Route::get('/{username}', 'show')
+                ->where('username', '[A-Za-z0-9._-]+')
+                ->name('user.show');
             Route::put('/{id}', 'update')->name('user.update');
             Route::put('/{id}/password', 'updatePassword')->name('user.password.update');
             Route::patch('/{id}/status', 'updateStatus')->name('user.status.update');

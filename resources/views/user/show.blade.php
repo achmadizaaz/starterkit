@@ -264,6 +264,7 @@
                 <form method="POST" action="{{ route('user.update', $user->id) }}" id="detailEditUserForm" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="redirect_to" value="detail">
 
                     <div class="modal-header profile-modal-header">
                         <div class="modal-heading">
@@ -306,7 +307,7 @@
                                 <label class="form-label" for="detailUsername">Username</label>
                                 <div class="input-group input-group-modern">
                                     <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                    <input name="username" id="detailUsername" type="text" value="{{ old('username', $user->username) }}" class="form-control">
+                                    <input name="username" id="detailUsername" type="text" value="{{ old('username', $user->username) }}" class="form-control" pattern="[A-Za-z0-9._-]+" title="Tanpa spasi. Gunakan huruf, angka, titik, garis bawah, atau tanda minus.">
                                 </div>
                             </div>
 

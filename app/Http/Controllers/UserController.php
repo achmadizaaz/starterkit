@@ -30,10 +30,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(string $username)
     {
         return view('user.show', [
-            'user' => $this->user->with(['roles', 'profile', 'loginHistories'])->findOrFail($id),
+            'user' => $this->user
+                ->with(['roles', 'profile', 'loginHistories'])
+                ->where('username', $username)
+                ->firstOrFail(),
             'roles' => Role::orderBy('name')->get(),
         ]);
     }
@@ -127,6 +130,12 @@ class UserController extends Controller
                     ->all() ?: null,
             ]
         );
+
+        if ($request->input('redirect_to') === 'detail') {
+            return redirect()
+                ->route('user.show', $user->username)
+                ->with('success', 'User telah diperbarui!');
+        }
 
         return back()->with('success', 'User telah diperbarui!');
     }

@@ -43,7 +43,7 @@
                                 <label class="form-label" for="username">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                    <input type="text" name="username" class="form-control" required autocomplete="username" placeholder="Username" id="username" value="{{ old('username') }}">
+                                    <input type="text" name="username" class="form-control" required autocomplete="username" placeholder="Username" id="username" value="{{ old('username') }}" pattern="[A-Za-z0-9._-]+" title="Tanpa spasi. Gunakan huruf, angka, titik, garis bawah, atau tanda minus.">
                                 </div>
                             </div>
 

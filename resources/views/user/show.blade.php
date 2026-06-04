@@ -315,6 +315,15 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label class="form-label" for="detailEmailVerified">Validasi Email</label>
+                                <div class="form-check form-switch border rounded-2 px-3 py-2">
+                                    <input type="hidden" name="email_verified" value="0">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" role="switch" name="email_verified" id="detailEmailVerified" value="1" {{ $user->email_verified_at ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="detailEmailVerified">Tandai email sudah terverifikasi</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label" for="detailStatus">Status</label>
                                 <div class="input-group input-group-modern">
                                     <span class="input-group-text"><i class="bi bi-toggle-on"></i></span>

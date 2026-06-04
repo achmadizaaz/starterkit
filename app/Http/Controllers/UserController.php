@@ -58,6 +58,10 @@ class UserController extends Controller
             'avatar'   => $avatarPath,
         ]);
 
+        if ($request->boolean('email_verified')) {
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
+
         $user->syncRoles([$request->role]);
 
         return back()->with('success', 'User telah ditambahkan!');
@@ -66,6 +70,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = $this->user->findOrFail($id);
+        $emailChanged = $user->email !== $request->email;
 
         $this->ensureUserCanBeManaged($request, $user);
         $this->ensureRoleCanBeAssigned($request, $request->input('role'));
@@ -101,11 +106,12 @@ class UserController extends Controller
             $updateData['password'] = Hash::make($request->password);
         }
 
-        if ($user->email !== $request->email) {
-            $updateData['email_verified_at'] = null;
-        }
-
         $user->update($updateData);
+        $user->forceFill([
+            'email_verified_at' => $request->boolean('email_verified')
+                ? ($emailChanged || ! $user->email_verified_at ? now() : $user->email_verified_at)
+                : null,
+        ])->save();
         $user->syncRoles([$request->role]);
         $user->profile()->updateOrCreate(
             ['user_id' => $user->id],

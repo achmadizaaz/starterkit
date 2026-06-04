@@ -86,7 +86,7 @@
                                             <a href="{{ route('user.show', $item->id) }}" class="btn-action btn-detail" title="Detail">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}" title="Edit">
+                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-email-verified="{{ $item->email_verified_at ? '1' : '0' }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}" title="Edit">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
                                             <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" title="Hapus">
@@ -183,6 +183,7 @@
                         const userName = button.getAttribute('data-user-name');
                         const userUsername = button.getAttribute('data-user-username');
                         const userEmail = button.getAttribute('data-user-email');
+                        const userEmailVerified = button.getAttribute('data-user-email-verified');
                         const userStatus = button.getAttribute('data-user-status');
                         const userRole = button.getAttribute('data-user-role');
                         const userAvatar = button.getAttribute('data-user-avatar');
@@ -190,6 +191,7 @@
                         document.getElementById('editName').value = userName;
                         document.getElementById('editUsername').value = userUsername;
                         document.getElementById('editEmail').value = userEmail;
+                        document.getElementById('editEmailVerified').checked = userEmailVerified === '1';
                         document.getElementById('editStatus').value = userStatus;
                         document.getElementById('editRole').value = userRole;
                         if (window.jQuery) {

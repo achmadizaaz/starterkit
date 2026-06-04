@@ -31,6 +31,7 @@ class CreateUserRequest extends FormRequest
             'password_confirmation' => ['required'],
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'status' => 'nullable|boolean',
+            'email_verified' => ['nullable', 'boolean'],
             'role' => 'required|exists:roles,id',
         ];
     }

@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
             'password_confirmation' => ['nullable'],
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
             'status' => 'nullable|boolean',
+            'email_verified' => ['nullable', 'boolean'],
             'role' => 'required|exists:roles,id',
             'phone' => ['nullable', 'string', 'max:50'],
             'gender' => ['nullable', Rule::in(['male', 'female'])],

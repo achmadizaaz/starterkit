@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', EnsureUserIsActive::class, 'verified'])->prefix('dashboard')->group(function () {
 
     Route::middleware(EnsureUserCanManageSystem::class)->group(function () {
-        Route::controller(UserController::class)->prefix('user')->whereNumber('id')->group(function(){
+        Route::controller(UserController::class)->prefix('user')->whereUlid('id')->group(function(){
             Route::get('/', 'index')->name('user.index');
             Route::post('/', 'store')->name('user.store');
             Route::get('/{id}', 'show')->name('user.show');

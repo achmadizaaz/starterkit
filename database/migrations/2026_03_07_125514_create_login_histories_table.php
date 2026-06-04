@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('login_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
             $table->ipAddress('ip_address')->nullable();
             $table->string('device')->nullable();
             $table->string('browser')->nullable();

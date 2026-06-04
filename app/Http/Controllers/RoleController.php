@@ -12,8 +12,15 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
+        $roles = Role::with([
+            'permissions' => fn ($query) => $query
+                ->with('permissionGroup')
+                ->orderBy('permission_group_id')
+                ->orderBy('name'),
+        ])->paginate(10);
+
         return view('role.index', [
-            'roles' => Role::paginate(10)
+            'roles' => $roles,
         ]);
     }
 

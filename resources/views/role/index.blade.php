@@ -49,9 +49,9 @@
                                     <td><code>{{ $item->code }}</code></td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <span class="badge badge-modern badge-role" data-bs-toggle="modal" data-bs-target="#permissionListModal" data-group-id="{{ $item->id }}">
+                                        <button type="button" class="badge badge-modern badge-role border-0" data-bs-toggle="modal" data-bs-target="#permissionListModal" data-role-id="{{ $item->id }}" data-role-name="{{ $item->name }}">
                                             {{ $item->permissions->count() }} Permission
-                                        </span>
+                                        </button>
                                         
                                     </td>
                                     <td>
@@ -94,9 +94,22 @@
         @include('role.edit-modal')
         <!-- Delete Role Modal -->
         @include('role.delete-modal')
+        @include('role.permission-list-modal')
 
         @push('scripts')
             <script>
+                const rolePermissionsPayload = {{ Illuminate\Support\Js::from(
+                    $roles->getCollection()->mapWithKeys(fn ($role) => [
+                        (string) $role->id => $role->permissions
+                            ->groupBy(fn ($permission) => $permission->permissionGroup?->name ?? 'Tanpa Group')
+                            ->map(fn ($permissions, $groupName) => [
+                                'name' => $groupName,
+                                'permissions' => $permissions->pluck('name')->values(),
+                            ])
+                            ->values(),
+                    ])
+                ) }};
+
                 document.addEventListener('DOMContentLoaded', function () {
                     // Edit Role Modal Handler
                     document.getElementById('editRoleModal')?.addEventListener('show.bs.modal', function (e) {
@@ -119,6 +132,47 @@
                         document.getElementById('deleteRoleName').textContent = roleName;
                         document.getElementById('deleteRoleForm').action = '/dashboard/role/' + roleId;
                     });
+
+                    document.getElementById('permissionListModal')?.addEventListener('show.bs.modal', function (e) {
+                        const button = e.relatedTarget;
+                        const roleId = button.getAttribute('data-role-id');
+                        const roleName = button.getAttribute('data-role-name');
+                        const groups = rolePermissionsPayload[roleId] ?? [];
+                        const container = document.getElementById('permissionGroupList');
+
+                        document.getElementById('permissionListDescription').textContent = `Daftar permission yang dimiliki role ${roleName}.`;
+
+                        if (!groups.length) {
+                            container.innerHTML = '<div class="empty-state py-5"><i class="bi bi-shield-x"></i><p>Role belum memiliki permission.</p></div>';
+                            return;
+                        }
+
+                        container.innerHTML = groups.map(group => `
+                            <div class="mb-4">
+                                <div class="form-section-title mb-2">
+                                    <i class="bi bi-folder2-open"></i>
+                                    <span>${escapeHtml(group.name)}</span>
+                                    <span class="badge bg-secondary ms-auto">${group.permissions.length}</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table modern-table align-middle mb-0">
+                                        <thead><tr><th style="width: 70px">#</th><th>Nama Permission</th></tr></thead>
+                                        <tbody>
+                                            ${group.permissions.map((permission, index) => `
+                                                <tr><td>${index + 1}</td><td><code>${escapeHtml(permission)}</code></td></tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `).join('');
+                    });
+
+                    function escapeHtml(value) {
+                        const element = document.createElement('div');
+                        element.textContent = String(value ?? '');
+                        return element.innerHTML;
+                    }
 
                     @if ($errors->any())
                         var modal = new bootstrap.Modal(document.getElementById('createRoleModal'));

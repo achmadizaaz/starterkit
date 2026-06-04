@@ -23,11 +23,13 @@ class DatabaseSeeder extends Seeder
 
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Administrator',
             'username' => 'administrator',
             'slug' => 'admin',
             'email' => 'administrator@gmail.com',
         ]);
+
+        $user->assignRole('Super Administrator');
     }
 }

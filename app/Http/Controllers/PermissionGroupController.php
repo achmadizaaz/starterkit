@@ -7,6 +7,7 @@ use App\Http\Requests\PermissionGroup\CreatePermissionGroupRequest;
 use App\Http\Requests\PermissionGroup\UpdatePermissionGroupRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\ActivityLogger;
 
 class PermissionGroupController extends Controller
 {
@@ -36,10 +37,11 @@ class PermissionGroupController extends Controller
 
     public function store(CreatePermissionGroupRequest $request)
     {
-        PermissionGroup::create([
+        $permissionGroup = PermissionGroup::create([
             'name' => $request->name,
             'sort_at' => $request->sort_at,
         ]);
+        ActivityLogger::log('Menambahkan permission group '.$permissionGroup->name);
 
         return back()->with('success', 'Permission Group telah ditambahkan!');
     }
@@ -52,6 +54,7 @@ class PermissionGroupController extends Controller
             'name' => $request->name,
             'sort_at' => $request->sort_at,
         ]);
+        ActivityLogger::log('Memperbarui permission group '.$permissionGroup->name);
 
         return back()->with('success', 'Permission Group telah diperbarui!');
     }
@@ -68,6 +71,7 @@ class PermissionGroupController extends Controller
         }
 
         $this->swapSortOrder($permissionGroup, $targetGroup);
+        ActivityLogger::log('Menaikkan urutan permission group '.$permissionGroup->name);
 
         return back()->with('success', 'Urutan Permission Group telah dinaikkan!');
     }
@@ -84,6 +88,7 @@ class PermissionGroupController extends Controller
         }
 
         $this->swapSortOrder($permissionGroup, $targetGroup);
+        ActivityLogger::log('Menurunkan urutan permission group '.$permissionGroup->name);
 
         return back()->with('success', 'Urutan Permission Group telah diturunkan!');
     }
@@ -104,7 +109,9 @@ class PermissionGroupController extends Controller
     public function destroy($id)
     {
         $permissionGroup = PermissionGroup::findOrFail($id);
+        $permissionGroupName = $permissionGroup->name;
         $permissionGroup->delete();
+        ActivityLogger::log('Menghapus permission group '.$permissionGroupName);
 
         return back()->with('success', 'Permission Group telah dihapus!');
     }

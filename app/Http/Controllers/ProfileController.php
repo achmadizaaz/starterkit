@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use App\Services\ActivityLogger;
 
 class ProfileController extends Controller
 {
@@ -83,6 +84,7 @@ class ProfileController extends Controller
                     ->all() ?: null,
             ]
         );
+        ActivityLogger::log('Memperbarui profil pribadi');
 
         return Redirect::route('profile.show')->with('success', 'Profil berhasil diperbarui!');
     }
@@ -123,6 +125,7 @@ class ProfileController extends Controller
 
         Auth::user()->password = Hash::make($request->input('password'));
         Auth::user()->save();
+        ActivityLogger::log('Mengubah kata sandi pribadi');
         
         return back()->with('success', 'Katasandi berhasil diubah!');
     }

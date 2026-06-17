@@ -7,6 +7,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PermissionGroupController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Middleware\EnsureUserCanManageSystem;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Models\Permission;
@@ -73,6 +74,11 @@ Route::middleware(['auth', EnsureUserIsActive::class, 'verified'])->prefix('dash
         Route::controller(SettingController::class)->prefix('settings')->group(function(){
             Route::get('/', 'index')->name('settings.index');
             Route::put('/', 'update')->name('settings.update');
+        });
+
+        Route::controller(AuditLogController::class)->prefix('audit-log')->group(function(){
+            Route::get('/', 'index')->name('audit-log.index');
+            Route::get('/export', 'export')->name('audit-log.export');
         });
     });
 

@@ -52,10 +52,10 @@
                     <i class="bi bi-database"></i>
                     <span>Backup Database</span>
                 </button>
-                <button class="settings-tab" type="button" disabled>
+                <a class="settings-tab text-decoration-none" href="{{ route('audit-log.index') }}">
                     <i class="bi bi-activity"></i>
                     <span>Audit Log</span>
-                </button>
+                </a>
             </div>
 
             <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" class="settings-panel">

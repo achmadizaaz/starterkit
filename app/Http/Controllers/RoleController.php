@@ -7,6 +7,7 @@ use App\Http\Requests\Role\CreateRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Services\ActivityLogger;
 
 class RoleController extends Controller
 {
@@ -26,11 +27,12 @@ class RoleController extends Controller
 
     public function store(CreateRoleRequest $request)
     {
-        Role::create([
+        $role = Role::create([
             'code' => $request->code,
             'name' => $request->name,
             'guard_name' => 'web',
         ]);
+        ActivityLogger::log('Menambahkan role '.$role->name);
 
         return back()->with('success', 'Role telah ditambahkan!');
     }
@@ -52,6 +54,7 @@ class RoleController extends Controller
             'code' => $request->code,
             'name' => $request->name,
         ]);
+        ActivityLogger::log('Memperbarui role '.$role->name);
 
         return back()->with('success', 'Role telah diperbarui!');
     }
@@ -66,7 +69,9 @@ class RoleController extends Controller
             ]);
         }
 
+        $roleName = $role->name;
         $role->delete();
+        ActivityLogger::log('Menghapus role '.$roleName);
 
         return back()->with('success', 'Role telah dihapus!');
     }

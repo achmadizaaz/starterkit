@@ -7,6 +7,7 @@ use App\Models\PermissionGroup;
 use App\Http\Requests\Permission\CreatePermissionRequest;
 use App\Http\Requests\Permission\UpdatePermissionRequest;
 use Illuminate\Http\Request;
+use App\Services\ActivityLogger;
 
 class PermissionController extends Controller
 {
@@ -20,11 +21,12 @@ class PermissionController extends Controller
 
     public function store(CreatePermissionRequest $request)
     {
-        Permission::create([
+        $permission = Permission::create([
             'name' => $request->name,
             'guard_name' => 'web',
             'permission_group_id' => $request->permission_group_id,
         ]);
+        ActivityLogger::log('Menambahkan permission '.$permission->name);
 
         return back()->with('success', 'Permission telah ditambahkan!');
     }
@@ -37,6 +39,7 @@ class PermissionController extends Controller
             'name' => $request->name,
             'permission_group_id' => $request->permission_group_id,
         ]);
+        ActivityLogger::log('Memperbarui permission '.$permission->name);
 
         return back()->with('success', 'Permission telah diperbarui!');
     }
@@ -44,7 +47,9 @@ class PermissionController extends Controller
     public function destroy($id)
     {
         $permission = Permission::findOrFail($id);
+        $permissionName = $permission->name;
         $permission->delete();
+        ActivityLogger::log('Menghapus permission '.$permissionName);
 
         return back()->with('success', 'Permission telah dihapus!');
     }

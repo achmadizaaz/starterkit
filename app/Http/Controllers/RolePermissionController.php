@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Services\ActivityLogger;
 
 class RolePermissionController extends Controller
 {
@@ -90,6 +91,7 @@ class RolePermissionController extends Controller
 
         $permissions = Permission::whereIn('id', $validated['permissions'] ?? [])->get();
         $role->syncPermissions($permissions);
+        ActivityLogger::log('Memperbarui permission untuk role '.$role->name);
 
         return back()->with('success', 'Permission role telah diperbarui!');
     }

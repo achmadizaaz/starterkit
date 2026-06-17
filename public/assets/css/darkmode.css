@@ -598,6 +598,21 @@ html[data-bs-theme="dark"] body .modern-table .email-text{
     color: #cbd5e1 !important;
 }
 
+html[data-bs-theme="dark"] body .audit-time strong,
+html[data-bs-theme="dark"] body .audit-activity{
+    color: #f8fafc !important;
+}
+
+html[data-bs-theme="dark"] body .audit-time span,
+html[data-bs-theme="dark"] body .audit-agent{
+    color: #cbd5e1 !important;
+}
+
+html[data-bs-theme="dark"] body .history-ip{
+    background: rgba(37, 99, 235, .22) !important;
+    color: #bfdbfe !important;
+}
+
 html[data-bs-theme="dark"] body .pagination-modern{
     /* background: linear-gradient(180deg, #111827 0%, #151515 100%) !important; */
     background: #171717;

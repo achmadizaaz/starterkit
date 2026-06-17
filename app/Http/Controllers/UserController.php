@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use App\Services\ActivityLogger;
 
 class UserController extends Controller
 {
@@ -66,6 +67,7 @@ class UserController extends Controller
         }
 
         $user->syncRoles([$request->role]);
+        ActivityLogger::log('Menambahkan user '.$user->username);
 
         return back()->with('success', 'User telah ditambahkan!');
     }
@@ -130,6 +132,7 @@ class UserController extends Controller
                     ->all() ?: null,
             ]
         );
+        ActivityLogger::log('Memperbarui user '.$user->username);
 
         if ($request->input('redirect_to') === 'detail') {
             return redirect()
@@ -158,6 +161,7 @@ class UserController extends Controller
         $user->update([
             'password' => Hash::make($request->password),
         ]);
+        ActivityLogger::log('Mengubah kata sandi user '.$user->username);
 
         return back()->with('success', 'Kata sandi user telah diperbarui!');
     }
@@ -180,6 +184,7 @@ class UserController extends Controller
         $user->update([
             'status' => $request->boolean('status'),
         ]);
+        ActivityLogger::log('Mengubah status user '.$user->username.' menjadi '.($user->status ? 'Active' : 'Inactive'));
 
         return back()->with('success', 'Status user telah diperbarui!');
     }
@@ -200,6 +205,7 @@ class UserController extends Controller
         }
 
         $user->delete();
+        ActivityLogger::log('Menghapus user '.$user->username);
 
         return back()->with('success', 'User telah dihapus!');
     }

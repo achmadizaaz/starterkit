@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use App\Services\ActivityLogger;
 
 class SettingController extends Controller
 {
@@ -82,6 +83,8 @@ class SettingController extends Controller
 
             AppSetting::setValue('favicon', $this->fileService->upload($request->file('favicon'), 'settings', 'public'));
         }
+
+        ActivityLogger::log('Memperbarui pengaturan umum aplikasi');
 
         return back()->with('success', 'Pengaturan umum berhasil diperbarui!');
     }

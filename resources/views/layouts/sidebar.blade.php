@@ -1,5 +1,6 @@
 @php
     $userMenuOpen = request()->routeIs('user.*', 'role.*', 'permission.*', 'permission-group.*', 'role-permission.*');
+    $monitoringMenuOpen = request()->routeIs('audit-log.*');
     $permissionMenuOpen = request()->routeIs('permission.*', 'permission-group.*', 'role-permission.*');
     $sidebarUser = Auth::user();
     $sidebarRole = $sidebarUser?->roles->first()?->name ?? 'User';
@@ -63,6 +64,15 @@
                     </ul>
                 </li>
             </ul>
+        </li>
+
+        <li>
+            <a href="{{ route('audit-log.index') }}" class="{{ $monitoringMenuOpen ? 'active' : '' }}">
+                <span class="menu-left">
+                    <i class="bi bi-activity"></i>
+                    <span class="menu-text">Audit Log</span>
+                </span>
+            </a>
         </li>
 
         <li>

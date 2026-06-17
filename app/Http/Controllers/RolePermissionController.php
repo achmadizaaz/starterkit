@@ -7,6 +7,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Services\ActivityLogger;
+use App\Services\AdminNotifier;
 
 class RolePermissionController extends Controller
 {
@@ -92,6 +93,7 @@ class RolePermissionController extends Controller
         $permissions = Permission::whereIn('id', $validated['permissions'] ?? [])->get();
         $role->syncPermissions($permissions);
         ActivityLogger::log('Memperbarui permission untuk role '.$role->name);
+        AdminNotifier::notify('Permission role berubah', 'Permission untuk role '.$role->name.' telah diperbarui.', 'warning', route('role-permission.show', $role->id, false));
 
         return back()->with('success', 'Permission role telah diperbarui!');
     }

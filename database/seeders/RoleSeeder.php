@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Permission;
 use App\Models\Role;
 
 class RoleSeeder extends Seeder
@@ -23,6 +24,31 @@ class RoleSeeder extends Seeder
                 $role
             );
         }
+
+        $allPermissions = Permission::pluck('name')->all();
+
+        Role::where('code', 'super-administrator')->first()?->syncPermissions($allPermissions);
+        Role::where('code', 'administrator')->first()?->syncPermissions(
+            Permission::whereNotIn('name', [
+                'restore-backup-database',
+                'impersonate-user',
+            ])->pluck('name')->all()
+        );
+        Role::where('code', 'editor')->first()?->syncPermissions([
+            'read-dashboard',
+            'access-dashboard',
+            'read-user',
+            'read-role',
+            'read-permission',
+            'read-profile',
+            'update-profile',
+        ]);
+        Role::where('code', 'user')->first()?->syncPermissions([
+            'read-dashboard',
+            'access-dashboard',
+            'read-profile',
+            'update-profile',
+        ]);
 
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');

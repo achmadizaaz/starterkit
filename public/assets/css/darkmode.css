@@ -613,6 +613,30 @@ html[data-bs-theme="dark"] body .history-ip{
     color: #bfdbfe !important;
 }
 
+html[data-bs-theme="dark"] body .health-card h5,
+html[data-bs-theme="dark"] body .notification-item strong,
+html[data-bs-theme="dark"] body .notification-dropdown-header strong{
+    color: #f8fafc !important;
+}
+
+html[data-bs-theme="dark"] body .health-card p,
+html[data-bs-theme="dark"] body .notification-dropdown-item span,
+html[data-bs-theme="dark"] body .notification-item small,
+html[data-bs-theme="dark"] body .notification-item em{
+    color: #cbd5e1 !important;
+}
+
+html[data-bs-theme="dark"] body .notification-item button{
+    background: #171717 !important;
+    border-color: #252525 !important;
+    color: #f8fafc !important;
+}
+
+html[data-bs-theme="dark"] body .notification-item.unread button{
+    background: rgba(37, 99, 235, .18) !important;
+    border-color: rgba(96, 165, 250, .28) !important;
+}
+
 html[data-bs-theme="dark"] body .pagination-modern{
     /* background: linear-gradient(180deg, #111827 0%, #151515 100%) !important; */
     background: #171717;
@@ -1008,4 +1032,14 @@ html[data-bs-theme="dark"] body .settings-page .settings-textarea{
 html[data-bs-theme="dark"] body .settings-page .form-control::placeholder,
 html[data-bs-theme="dark"] body .settings-page .settings-textarea::placeholder{
     color: #64748b !important;
+}
+
+html[data-bs-theme="dark"] body .impersonation-return-btn{
+    color: #fde68a !important;
+    background: rgba(245, 158, 11, .16) !important;
+    border-color: rgba(245, 158, 11, .32) !important;
+}
+
+html[data-bs-theme="dark"] body .impersonation-return-btn small{
+    color: #fcd34d !important;
 }

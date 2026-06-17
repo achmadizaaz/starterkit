@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\LoginHistory;
+use App\Services\ActivityLogger;
+use App\Services\MfaCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +26,23 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, MfaCodeService $mfaCodeService): RedirectResponse
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $user = Auth::user();
 
+        if ($user->mfa_enabled) {
+            $mfaCodeService->send($user);
+            Auth::guard('web')->logout();
+            $request->session()->put('mfa:user_id', $user->id);
+            $request->session()->put('mfa:remember', $request->boolean('remember'));
+            $request->session()->regenerate();
+
+            return redirect()->route('mfa.challenge')->with('status', 'Kode MFA telah dikirim ke email Anda.');
+        }
+
+        $request->session()->regenerate();
         LoginHistory::create([
             'user_id' => auth()->id(),
             'ip_address' => request()->ip(),
@@ -37,6 +50,7 @@ class AuthenticatedSessionController extends Controller
             'browser' => Str::limit((string) request()->userAgent(), 255, ''),
             'login_at' => now()
         ]);
+        ActivityLogger::log('Login berhasil');
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
@@ -46,6 +60,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $userId = Auth::id();
+
+        if ($userId) {
+            LoginHistory::where('user_id', $userId)
+                ->whereNull('logout_at')
+                ->latest('login_at')
+                ->first()
+                ?->update(['logout_at' => now()]);
+
+            ActivityLogger::log('Logout berhasil');
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

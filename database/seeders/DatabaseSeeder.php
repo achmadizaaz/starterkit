@@ -44,5 +44,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $user->assignRole('Super Administrator');
+
+        $this->call(DummyDataSeeder::class);
     }
 }

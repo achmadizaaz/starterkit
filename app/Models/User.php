@@ -50,6 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
+            'mfa_enabled' => 'boolean',
+            'mfa_expires_at' => 'datetime',
+            'mfa_confirmed_at' => 'datetime',
+            'mfa_recovery_codes' => 'array',
         ];
     }
 
@@ -75,5 +79,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function loginHistories()
     {
         return $this->hasMany(LoginHistory::class);
+    }
+
+    public function adminNotifications()
+    {
+        return $this->hasMany(AdminNotification::class);
     }
 }

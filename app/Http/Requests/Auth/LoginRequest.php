@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Services\AdminNotifier;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,12 @@ class LoginRequest extends FormRequest
             'status' => true,
         ], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey(), 120);
+            AdminNotifier::notify(
+                'Percobaan login gagal',
+                'Login gagal untuk '.$this->input('login').' dari IP '.$this->ip().'.',
+                'warning',
+                route('audit-log.index', absolute: false)
+            );
             throw ValidationException::withMessages([
                 'login' => trans('auth.failed'),
             ]);

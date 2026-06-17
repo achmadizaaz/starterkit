@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\AppSetting;
 use App\Models\User;
+use App\Services\AdminNotifier;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -62,6 +63,12 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        AdminNotifier::notify(
+            'User baru terdaftar',
+            $user->name.' mendaftar menggunakan email '.$user->email.'.',
+            'info',
+            route('user.show', $user->username, false)
+        );
 
         Auth::login($user);
 

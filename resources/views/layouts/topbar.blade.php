@@ -2,6 +2,10 @@
     $topbarUser = Auth::user();
     $topbarRole = $topbarUser?->roles->first()?->name ?? 'User';
     $topbarAvatar = $topbarUser?->avatar ? asset('storage/' . $topbarUser->avatar) : 'https://i.pravatar.cc/120?u=' . urlencode($topbarUser?->email ?? 'user');
+    $topbarCanReadNotifications = $topbarUser?->can('read-notification') ?? false;
+    $topbarNotifications = $topbarCanReadNotifications ? $topbarUser?->adminNotifications()->latest()->limit(5)->get() : collect();
+    $topbarUnreadNotifications = $topbarCanReadNotifications ? $topbarUser?->adminNotifications()->whereNull('read_at')->count() : 0;
+    $isImpersonating = session()->has('impersonator_id');
 @endphp
 
 <!-- TOPBAR -->
@@ -20,7 +24,54 @@
 
     </div>
 
-    <div class="dropdown topbar-user-dropdown">
+    <div class="topbar-actions">
+        @if($isImpersonating)
+            <form method="POST" action="{{ route('impersonate.destroy') }}" class="m-0">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="impersonation-return-btn">
+                    <i class="bi bi-arrow-left-circle"></i>
+                    <span>
+                        <strong>Kembali</strong>
+                        <small>{{ session('impersonator_name', 'Akun utama') }}</small>
+                    </span>
+                </button>
+            </form>
+        @endif
+
+        @if($topbarCanReadNotifications)
+            <div class="dropdown topbar-notification-dropdown">
+                <button class="btn btn-toggle-menu position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifikasi admin">
+                    <i class="bi bi-bell" style="font-size:18px"></i>
+                    @if($topbarUnreadNotifications > 0)
+                        <span class="notification-count">{{ $topbarUnreadNotifications > 9 ? '9+' : $topbarUnreadNotifications }}</span>
+                    @endif
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end notification-dropdown-menu">
+                    <li class="notification-dropdown-header">
+                        <strong>Notifikasi Admin</strong>
+                        <a href="{{ route('notifications.index') }}">Lihat semua</a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    @forelse($topbarNotifications as $notification)
+                        <li>
+                            <form method="POST" action="{{ route('notifications.read', $notification) }}">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="dropdown-item notification-dropdown-item {{ $notification->read_at ? '' : 'unread' }}">
+                                    <strong>{{ $notification->title }}</strong>
+                                    <span>{{ \Illuminate\Support\Str::limit($notification->message, 70) }}</span>
+                                </button>
+                            </form>
+                        </li>
+                    @empty
+                        <li><span class="dropdown-item text-muted small">Belum ada notifikasi.</span></li>
+                    @endforelse
+                </ul>
+            </div>
+        @endif
+
+        <div class="dropdown topbar-user-dropdown">
 
         <button class="user-box" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="{{ $topbarAvatar }}" alt="{{ $topbarUser?->name }}">
@@ -55,6 +106,7 @@
             </li>
         </ul>
 
+        </div>
     </div>
 
 </div>

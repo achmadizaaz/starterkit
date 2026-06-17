@@ -198,6 +198,78 @@
         <div class="profile-detail-card mt-4">
             <div class="profile-card-header">
                 <div>
+                    <h5>Multi-Factor Authentication</h5>
+                    <p>Tambahkan lapisan keamanan saat login menggunakan kode OTP email.</p>
+                </div>
+                <span class="profile-badge {{ $user->mfa_enabled ? 'verified' : 'inactive' }}">
+                    <i class="bi {{ $user->mfa_enabled ? 'bi-shield-check' : 'bi-shield' }}"></i>
+                    {{ $user->mfa_enabled ? 'MFA Aktif' : 'MFA Nonaktif' }}
+                </span>
+            </div>
+            <form method="POST" action="{{ $user->mfa_enabled ? route('profile.mfa.disable') : route('profile.mfa.enable') }}" class="row g-3 align-items-end">
+                @csrf
+                @method('PUT')
+                <div class="col-md-8">
+                    <label for="mfa_password" class="form-label">Konfirmasi password</label>
+                    <div class="input-group input-group-modern">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" name="password" id="mfa_password" class="form-control" autocomplete="current-password">
+                    </div>
+                    @error('password')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" class="btn {{ $user->mfa_enabled ? 'btn-danger-modern' : 'btn-primary-modern' }}">
+                        <i class="bi {{ $user->mfa_enabled ? 'bi-shield-x' : 'bi-shield-check' }}"></i>
+                        {{ $user->mfa_enabled ? 'Nonaktifkan MFA' : 'Aktifkan MFA' }}
+                    </button>
+                </div>
+            </form>
+
+            @if(session('mfa_recovery_codes'))
+                <div class="alert alert-warning mt-4 mb-0">
+                    <div class="fw-semibold mb-2">Simpan recovery codes berikut. Kode ini hanya ditampilkan sekali.</div>
+                    <div class="row g-2">
+                        @foreach(session('mfa_recovery_codes') as $code)
+                            <div class="col-sm-6 col-lg-3">
+                                <code class="d-block bg-white border rounded px-2 py-2 text-center">{{ $code }}</code>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            @if($user->mfa_enabled)
+                <div class="border-top mt-4 pt-4">
+                    <div class="profile-card-header compact">
+                        <div>
+                            <h5>Recovery Codes</h5>
+                            <p>{{ count($user->mfa_recovery_codes ?? []) }} kode recovery tersedia untuk akses darurat.</p>
+                        </div>
+                    </div>
+                    <form method="POST" action="{{ route('profile.mfa.recovery-codes.regenerate') }}" class="row g-3 align-items-end">
+                        @csrf
+                        @method('PUT')
+                        <div class="col-md-8">
+                            <label for="mfa_recovery_password" class="form-label">Konfirmasi password</label>
+                            <div class="input-group input-group-modern">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" name="password" id="mfa_recovery_password" class="form-control" autocomplete="current-password">
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-grid">
+                            <button type="submit" class="btn btn-light-modern">
+                                <i class="bi bi-arrow-repeat"></i>
+                                Buat Ulang Codes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @endif
+        </div>
+
+        <div class="profile-detail-card mt-4">
+            <div class="profile-card-header">
+                <div>
                     <h5>Login History</h5>
                     <p>10 aktivitas login terakhir akun Anda.</p>
                 </div>

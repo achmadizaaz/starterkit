@@ -12,6 +12,7 @@ use App\Models\Role;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use App\Services\ActivityLogger;
+use App\Services\AdminNotifier;
 
 class UserController extends Controller
 {
@@ -25,9 +26,39 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'status' => ['nullable', 'in:active,inactive'],
+            'role' => ['nullable', 'exists:roles,id'],
+            'email_verified' => ['nullable', 'in:verified,unverified'],
+            'registered_from' => ['nullable', 'date'],
+            'registered_to' => ['nullable', 'date', 'after_or_equal:registered_from'],
+        ]);
+
+        $users = $this->user
+            ->with('roles')
+            ->when($filters['search'] ?? null, function ($query, string $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('username', 'like', '%'.$search.'%')
+                        ->orWhere('email', 'like', '%'.$search.'%');
+                });
+            })
+            ->when(($filters['status'] ?? null) === 'active', fn ($query) => $query->where('status', true))
+            ->when(($filters['status'] ?? null) === 'inactive', fn ($query) => $query->where('status', false))
+            ->when($filters['role'] ?? null, fn ($query, string $roleId) => $query->whereHas('roles', fn ($query) => $query->where('roles.id', $roleId)))
+            ->when(($filters['email_verified'] ?? null) === 'verified', fn ($query) => $query->whereNotNull('email_verified_at'))
+            ->when(($filters['email_verified'] ?? null) === 'unverified', fn ($query) => $query->whereNull('email_verified_at'))
+            ->when($filters['registered_from'] ?? null, fn ($query, string $date) => $query->whereDate('created_at', '>=', $date))
+            ->when($filters['registered_to'] ?? null, fn ($query, string $date) => $query->whereDate('created_at', '<=', $date))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
         return view('user.index', [
-            'users' => $this->user->with('roles')->paginate(10),
+            'users' => $users,
             'roles' => Role::orderBy('name')->get(),
+            'filters' => $filters,
         ]);
     }
 
@@ -68,6 +99,7 @@ class UserController extends Controller
 
         $user->syncRoles([$request->role]);
         ActivityLogger::log('Menambahkan user '.$user->username);
+        AdminNotifier::notify('User baru dibuat', 'Admin menambahkan user '.$user->username.'.', 'info', route('user.show', $user->username, false));
 
         return back()->with('success', 'User telah ditambahkan!');
     }
@@ -133,6 +165,7 @@ class UserController extends Controller
             ]
         );
         ActivityLogger::log('Memperbarui user '.$user->username);
+        AdminNotifier::notify('User diperbarui', 'Data user '.$user->username.' diperbarui.', 'info', route('user.show', $user->username, false));
 
         if ($request->input('redirect_to') === 'detail') {
             return redirect()

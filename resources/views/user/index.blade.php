@@ -22,12 +22,71 @@
                 <h4 class="mb-1">User Management</h4>
                 <p class="text-muted mb-0">Kelola dan kontrol semua pengguna sistem.</p>
             </div>
+             @can('create-user')
              <button type="button" class="btn btn-add-modern" data-bs-toggle="modal" data-bs-target="#createUserModal">
                     <i class="bi bi-plus-lg"></i> Tambah User
             </button>
+             @endcan
             
         </div>
         
+
+        <div class="card card-modern mb-3">
+            <div class="card-body">
+                <form method="GET" action="{{ route('user.index') }}" class="row g-3 align-items-end">
+                    <div class="col-lg-3 col-md-6">
+                        <label for="filterSearch" class="form-label">Cari User</label>
+                        <div class="input-group input-group-modern">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="search" id="filterSearch" class="form-control" value="{{ request('search') }}" placeholder="Nama, username, email">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="filterStatus" class="form-label">Status</label>
+                        <select name="status" id="filterStatus" class="form-select">
+                            <option value="">Semua Status</option>
+                            <option value="active" @selected(request('status') === 'active')>Active</option>
+                            <option value="inactive" @selected(request('status') === 'inactive')>Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="filterRole" class="form-label">Role</label>
+                        <select name="role" id="filterRole" class="form-select js-select2" data-placeholder="Semua Role">
+                            <option value="">Semua Role</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}" @selected(request('role') === $role->id)>{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="filterEmailVerified" class="form-label">Email</label>
+                        <select name="email_verified" id="filterEmailVerified" class="form-select">
+                            <option value="">Semua Email</option>
+                            <option value="verified" @selected(request('email_verified') === 'verified')>Terverifikasi</option>
+                            <option value="unverified" @selected(request('email_verified') === 'unverified')>Belum Verifikasi</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <label class="form-label">Tanggal Daftar</label>
+                        <div class="input-group input-group-modern">
+                            <input type="date" name="registered_from" class="form-control" value="{{ request('registered_from') }}">
+                            <span class="input-group-text px-2">s/d</span>
+                            <input type="date" name="registered_to" class="form-control" value="{{ request('registered_to') }}">
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end gap-2">
+                        <a href="{{ route('user.index') }}" class="btn btn-light-modern">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                            Reset
+                        </a>
+                        <button type="submit" class="btn btn-primary-modern">
+                            <i class="bi bi-funnel"></i>
+                            Terapkan Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="card card-modern">
             <div class="card-body">
@@ -83,15 +142,31 @@
                                     </td>
                                     <td class="text-end">
                                         <div class="action-buttons">
-                                            <a href="{{ route('user.show', $item->username) }}" class="btn-action btn-detail" title="Detail">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-email-verified="{{ $item->email_verified_at ? '1' : '0' }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}" title="Edit">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" title="Hapus">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
+                                            @can('read-user')
+                                                <a href="{{ route('user.show', $item->username) }}" class="btn-action btn-detail" title="Detail">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            @endcan
+                                            @can('impersonate-user')
+                                                @if(auth()->user()?->hasRole('Super Administrator') && ! auth()->user()->is($item) && $item->status)
+                                                    <form method="POST" action="{{ route('impersonate.store', $item) }}">
+                                                        @csrf
+                                                        <button type="submit" class="btn-action btn-edit" title="Login as">
+                                                            <i class="bi bi-person-check"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @endcan
+                                            @can('update-user')
+                                                <button class="btn-action btn-edit" data-bs-toggle="modal" data-bs-target="#editUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" data-user-username="{{ $item->username }}" data-user-email="{{ $item->email }}" data-user-email-verified="{{ $item->email_verified_at ? '1' : '0' }}" data-user-status="{{ $item->status }}" data-user-role="{{ $item->roles->first()?->id }}" data-user-avatar="{{ $item->avatar ? asset('storage/' . $item->avatar) : '' }}" title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                            @endcan
+                                            @can('delete-user')
+                                                <button class="btn-action btn-delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="{{ $item->id }}" data-user-name="{{ $item->name }}" title="Hapus">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

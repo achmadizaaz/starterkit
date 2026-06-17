@@ -25,6 +25,7 @@ class PermissionSeeder extends Seeder
                 'update-user',
                 'delete-user',
                 'export-user',
+                'impersonate-user',
             ],
             'Role' => [
                 'read-role',
@@ -38,6 +39,16 @@ class PermissionSeeder extends Seeder
                 'update-permission',
                 'delete-permission',
             ],
+            'Permission Group' => [
+                'read-permission-group',
+                'create-permission-group',
+                'update-permission-group',
+                'delete-permission-group',
+            ],
+            'Role Permission' => [
+                'read-role-permission',
+                'update-role-permission',
+            ],
             'Dashboard' => [
                 'read-dashboard',
                 'access-dashboard',
@@ -47,9 +58,34 @@ class PermissionSeeder extends Seeder
                 'update-profile',
                 'delete-profile',
             ],
+            'Settings' => [
+                'read-settings',
+                'update-settings',
+            ],
             'Activity Log' => [
                 'read-activity-log',
                 'export-activity-log',
+            ],
+            'Backup Database' => [
+                'read-backup-database',
+                'create-backup-database',
+                'download-backup-database',
+                'delete-backup-database',
+                'update-backup-policy',
+                'restore-backup-database',
+            ],
+            'System Health' => [
+                'read-system-health',
+            ],
+            'Notification' => [
+                'read-notification',
+                'update-notification',
+            ],
+            'Report' => [
+                'read-user-report',
+                'read-login-activity-report',
+                'export-user-report',
+                'export-login-activity-report',
             ],
         ];
 
@@ -77,4 +113,3 @@ class PermissionSeeder extends Seeder
         }
     }
 }
-

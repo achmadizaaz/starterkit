@@ -48,13 +48,17 @@
                     <i class="bi bi-sliders"></i>
                     <span>General</span>
                 </button>
-                <button class="settings-tab" type="button" disabled>
+                <a class="settings-tab text-decoration-none" href="{{ route('backup.index') }}">
                     <i class="bi bi-database"></i>
                     <span>Backup Database</span>
-                </button>
+                </a>
                 <a class="settings-tab text-decoration-none" href="{{ route('audit-log.index') }}">
                     <i class="bi bi-activity"></i>
                     <span>Audit Log</span>
+                </a>
+                <a class="settings-tab text-decoration-none" href="{{ route('system-health.index') }}">
+                    <i class="bi bi-heart-pulse"></i>
+                    <span>System Health</span>
                 </a>
             </div>
 

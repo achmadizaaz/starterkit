@@ -32,6 +32,18 @@
                         <p>Kelola detail profil, kata sandi, dan status akses user.</p>
                     </div>
                     <div class="profile-actions">
+                        @can('impersonate-user')
+                            @if(auth()->user()?->hasRole('Super Administrator') && ! auth()->user()->is($user) && $user->status)
+                                <form method="POST" action="{{ route('impersonate.store', $user) }}" class="m-0">
+                                    @csrf
+                                    <button type="submit" class="btn btn-profile-password">
+                                        <i class="bi bi-person-check"></i>
+                                        Login as
+                                    </button>
+                                </form>
+                            @endif
+                        @endcan
+                        @can('update-user')
                         <button type="button" class="btn btn-profile-password" data-bs-toggle="modal" data-bs-target="#detailPasswordModal">
                             <i class="bi bi-key"></i>
                             Ubah Kata Sandi
@@ -44,6 +56,7 @@
                             <i class="bi bi-pencil-square"></i>
                             Edit Profile
                         </button>
+                        @endcan
                     </div>
                 </div>
             </div>

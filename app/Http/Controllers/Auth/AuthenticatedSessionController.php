@@ -10,6 +10,7 @@ use App\Services\MfaCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -62,15 +63,15 @@ class AuthenticatedSessionController extends Controller
     {
         $userId = Auth::id();
 
-        if ($userId) {
+        if ($userId && Schema::hasColumn('login_histories', 'logout_at')) {
             LoginHistory::where('user_id', $userId)
                 ->whereNull('logout_at')
                 ->latest('login_at')
                 ->first()
                 ?->update(['logout_at' => now()]);
-
-            ActivityLogger::log('Logout berhasil');
         }
+
+        ActivityLogger::log('Logout berhasil');
 
         Auth::guard('web')->logout();
 

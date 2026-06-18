@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppSetting;
 use App\Models\DatabaseBackup;
+use App\Models\User;
 use App\Services\ActivityLogger;
 use App\Services\DatabaseBackupService;
 use Illuminate\Http\RedirectResponse;
@@ -100,10 +101,11 @@ class DatabaseBackupController extends Controller
             ]);
         }
 
+        $restoredBy = $request->user()->id;
         $inspection = $this->backupService->restore($backup);
         $backup->forceFill([
             'restored_at' => now(),
-            'restored_by' => $request->user()->id,
+            'restored_by' => User::whereKey($restoredBy)->exists() ? $restoredBy : null,
         ])->save();
         ActivityLogger::log('Melakukan restore database dari backup '.$backup->filename);
 

@@ -32,6 +32,49 @@
     color: #64748b;
 }
 
+[data-bs-theme="dark"] .global-search-shortcut{
+    color: #94a3b8;
+    background: #202020;
+    border-color: #343434;
+}
+
+[data-bs-theme="dark"] .global-search-results{
+    color: #f8fafc;
+    background: #171717;
+    border-color: #2f2f2f;
+    box-shadow: 0 22px 55px rgba(0, 0, 0, .48);
+}
+
+[data-bs-theme="dark"] .global-search-state,
+[data-bs-theme="dark"] .global-search-result-content small{
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .global-search-result{
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .global-search-result:hover,
+[data-bs-theme="dark"] .global-search-result.active{
+    color: #ffffff;
+    background: rgba(37, 99, 235, .2);
+}
+
+[data-bs-theme="dark"] .global-search-result-icon{
+    color: #93c5fd;
+    background: rgba(37, 99, 235, .18);
+}
+
+[data-bs-theme="dark"] .global-search-result-badge{
+    color: #86efac;
+    background: rgba(16, 185, 129, .16);
+}
+
+[data-bs-theme="dark"] .global-search-result-badge.inactive{
+    color: #cbd5e1;
+    background: rgba(148, 163, 184, .14);
+}
+
 [data-bs-theme="dark"] .btn-toggle-menu{
     color: #f8fafc;
     background: #171717;

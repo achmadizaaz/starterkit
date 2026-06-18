@@ -7,6 +7,7 @@ use App\Models\DatabaseBackup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -14,6 +15,12 @@ use RuntimeException;
 class DatabaseBackupService
 {
     private string $disk = 'local';
+
+    private array $protectedRestoreTables = [
+        'database_backups',
+        'migrations',
+        'sessions',
+    ];
 
     public function create(): DatabaseBackup
     {
@@ -82,7 +89,10 @@ class DatabaseBackupService
             throw new RuntimeException('Format backup tidak valid untuk aplikasi ini.');
         }
 
-        $statements = $this->splitSqlStatements($this->decryptedContent($backup));
+        $statements = collect($this->splitSqlStatements($this->decryptedContent($backup)))
+            ->reject(fn (string $statement) => $this->targetsProtectedTable($statement))
+            ->values()
+            ->all();
         $driver = DB::connection()->getDriverName();
 
         if (in_array($driver, ['mysql', 'mariadb'], true)) {
@@ -102,6 +112,11 @@ class DatabaseBackupService
                 DB::statement('PRAGMA foreign_keys = ON');
             }
         }
+
+        $this->ensureOperationalColumns();
+
+        $inspection['statements'] = count($statements);
+        $inspection['protected_tables'] = $this->protectedRestoreTables;
 
         return $inspection;
     }
@@ -239,6 +254,30 @@ class DatabaseBackupService
         }
 
         return $statements;
+    }
+
+    private function targetsProtectedTable(string $statement): bool
+    {
+        $normalized = trim($statement);
+
+        foreach ($this->protectedRestoreTables as $table) {
+            $quotedTable = preg_quote($table, '/');
+
+            if (preg_match('/^(DROP TABLE IF EXISTS|CREATE TABLE|INSERT INTO)\s+[`"]?'.$quotedTable.'[`"]?\b/i', $normalized)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function ensureOperationalColumns(): void
+    {
+        if (Schema::hasTable('login_histories') && ! Schema::hasColumn('login_histories', 'logout_at')) {
+            Schema::table('login_histories', function ($table) {
+                $table->timestamp('logout_at')->nullable()->after('login_at');
+            });
+        }
     }
 
     private function prune(): void

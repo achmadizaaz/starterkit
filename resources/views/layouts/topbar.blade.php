@@ -17,9 +17,25 @@
             <i class="bi bi-list" style="font-size:20px"></i>
         </button>
 
-        <div class="topbar-search">
+        <div class="topbar-search" id="globalSearchContainer">
             <i class="bi bi-search"></i>
-            <input id="menuSearch" class="form-control global-search" placeholder="Search...">
+            <input
+                id="menuSearch"
+                class="form-control global-search"
+                type="search"
+                placeholder="Cari menu atau user..."
+                autocomplete="off"
+                aria-label="Pencarian global"
+                aria-controls="globalSearchResults"
+                aria-expanded="false"
+            >
+            <kbd class="global-search-shortcut">Ctrl K</kbd>
+            <div class="global-search-results" id="globalSearchResults" role="listbox" hidden>
+                <div class="global-search-state">
+                    <i class="bi bi-search"></i>
+                    <span>Ketik minimal 2 karakter untuk mencari.</span>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -110,6 +126,183 @@
     </div>
 
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('globalSearchContainer');
+            const input = document.getElementById('menuSearch');
+            const panel = document.getElementById('globalSearchResults');
+
+            if (!container || !input || !panel) {
+                return;
+            }
+
+            const endpoint = @json(route('global-search'));
+            let debounceTimer;
+            let activeIndex = -1;
+            let requestController;
+
+            function setPanel(open) {
+                panel.hidden = !open;
+                input.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+
+            function renderState(icon, message, loading = false) {
+                panel.replaceChildren();
+                const state = document.createElement('div');
+                state.className = 'global-search-state';
+
+                const iconElement = document.createElement('i');
+                iconElement.className = loading ? 'spinner-border spinner-border-sm' : `bi ${icon}`;
+                iconElement.setAttribute('aria-hidden', 'true');
+
+                const text = document.createElement('span');
+                text.textContent = message;
+                state.append(iconElement, text);
+                panel.append(state);
+                activeIndex = -1;
+                setPanel(true);
+            }
+
+            function setActiveResult(index) {
+                const items = Array.from(panel.querySelectorAll('.global-search-result'));
+                if (!items.length) {
+                    return;
+                }
+
+                activeIndex = Math.max(0, Math.min(index, items.length - 1));
+                items.forEach((item, itemIndex) => {
+                    const active = itemIndex === activeIndex;
+                    item.classList.toggle('active', active);
+                    item.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                items[activeIndex].scrollIntoView({ block: 'nearest' });
+            }
+
+            function renderResults(results) {
+                panel.replaceChildren();
+                activeIndex = -1;
+
+                if (!results.length) {
+                    renderState('bi-search', 'Tidak ada hasil yang ditemukan.');
+                    return;
+                }
+
+                results.forEach(function (result, index) {
+                    const link = document.createElement('a');
+                    link.href = result.url;
+                    link.className = 'global-search-result';
+                    link.setAttribute('role', 'option');
+                    link.setAttribute('aria-selected', 'false');
+
+                    const icon = document.createElement('span');
+                    icon.className = 'global-search-result-icon';
+                    const iconElement = document.createElement('i');
+                    iconElement.className = `bi ${result.icon}`;
+                    icon.append(iconElement);
+
+                    const content = document.createElement('span');
+                    content.className = 'global-search-result-content';
+                    const title = document.createElement('strong');
+                    title.textContent = result.title;
+                    const description = document.createElement('small');
+                    description.textContent = result.description;
+                    content.append(title, description);
+
+                    const badge = document.createElement('span');
+                    badge.className = `global-search-result-badge ${result.badge === 'Inactive' ? 'inactive' : ''}`;
+                    badge.textContent = result.badge;
+
+                    link.append(icon, content, badge);
+                    link.addEventListener('mouseenter', () => setActiveResult(index));
+                    panel.append(link);
+                });
+
+                setPanel(true);
+            }
+
+            async function search(query) {
+                requestController?.abort();
+                requestController = new AbortController();
+                renderState('', 'Mencari...', true);
+
+                try {
+                    const response = await fetch(`${endpoint}?q=${encodeURIComponent(query)}`, {
+                        headers: { Accept: 'application/json' },
+                        signal: requestController.signal,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Search request failed');
+                    }
+
+                    const payload = await response.json();
+                    renderResults(payload.results || []);
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        renderState('bi-exclamation-circle', 'Pencarian gagal. Silakan coba lagi.');
+                    }
+                }
+            }
+
+            input.addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                const query = input.value.trim();
+
+                if (query.length < 2) {
+                    requestController?.abort();
+                    if (query.length) {
+                        renderState('bi-search', 'Ketik minimal 2 karakter untuk mencari.');
+                    } else {
+                        setPanel(false);
+                    }
+                    return;
+                }
+
+                debounceTimer = setTimeout(() => search(query), 250);
+            });
+
+            input.addEventListener('focus', function () {
+                if (input.value.trim().length >= 2 || panel.querySelector('.global-search-result')) {
+                    setPanel(true);
+                }
+            });
+
+            input.addEventListener('keydown', function (event) {
+                const items = panel.querySelectorAll('.global-search-result');
+
+                if (event.key === 'ArrowDown' && items.length) {
+                    event.preventDefault();
+                    setActiveResult(activeIndex + 1);
+                } else if (event.key === 'ArrowUp' && items.length) {
+                    event.preventDefault();
+                    setActiveResult(activeIndex <= 0 ? items.length - 1 : activeIndex - 1);
+                } else if (event.key === 'Enter' && activeIndex >= 0 && items[activeIndex]) {
+                    event.preventDefault();
+                    window.location.href = items[activeIndex].href;
+                } else if (event.key === 'Escape') {
+                    setPanel(false);
+                    input.blur();
+                }
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+                    event.preventDefault();
+                    input.focus();
+                    input.select();
+                }
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!container.contains(event.target)) {
+                    setPanel(false);
+                }
+            });
+        });
+    </script>
+@endpush
 
 <!-- Change Password Modal -->
     @include('profile.change-password-modal')

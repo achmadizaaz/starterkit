@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\MfaController;
 use App\Http\Controllers\ImpersonationController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\GlobalSearchController;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Models\Permission;
 use App\Models\Role;
@@ -33,6 +34,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', EnsureUserIsActive::class])->name('dashboard');
 
 Route::middleware(['auth', EnsureUserIsActive::class])->prefix('dashboard')->group(function () {
+    Route::get('/global-search', GlobalSearchController::class)
+        ->middleware('throttle:60,1')
+        ->name('global-search');
 
     Route::controller(UserController::class)->prefix('user')->whereUlid('id')->group(function(){
             Route::get('/', 'index')->middleware('can:read-user')->name('user.index');

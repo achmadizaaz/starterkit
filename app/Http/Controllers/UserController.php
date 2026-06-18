@@ -13,6 +13,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use App\Services\ActivityLogger;
 use App\Services\AdminNotifier;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -69,6 +70,38 @@ class UserController extends Controller
                 ->with(['roles', 'profile', 'loginHistories'])
                 ->where('username', $username)
                 ->firstOrFail(),
+            'roles' => Role::orderBy('name')->get(),
+        ]);
+    }
+
+    public function deleted(Request $request)
+    {
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'role' => ['nullable', 'exists:roles,id'],
+            'deleted_from' => ['nullable', 'date'],
+            'deleted_to' => ['nullable', 'date', 'after_or_equal:deleted_from'],
+        ]);
+
+        $users = $this->user
+            ->onlyTrashed()
+            ->with('roles')
+            ->when($filters['search'] ?? null, function ($query, string $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('username', 'like', '%'.$search.'%')
+                        ->orWhere('email', 'like', '%'.$search.'%');
+                });
+            })
+            ->when($filters['role'] ?? null, fn ($query, string $roleId) => $query->whereHas('roles', fn ($query) => $query->where('roles.id', $roleId)))
+            ->when($filters['deleted_from'] ?? null, fn ($query, string $date) => $query->whereDate('deleted_at', '>=', $date))
+            ->when($filters['deleted_to'] ?? null, fn ($query, string $date) => $query->whereDate('deleted_at', '<=', $date))
+            ->latest('deleted_at')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('user.deleted', [
+            'users' => $users,
             'roles' => Role::orderBy('name')->get(),
         ]);
     }
@@ -233,14 +266,49 @@ class UserController extends Controller
             ]);
         }
 
-        if ($user->avatar) {
-            $this->fileService->delete($user->avatar, 'public');
+        $user->delete();
+        ActivityLogger::log('Memindahkan user '.$user->username.' ke data terhapus');
+
+        return back()->with('success', 'User dipindahkan ke data terhapus dan masih dapat direstore.');
+    }
+
+    public function restore(string $id)
+    {
+        $user = $this->user->onlyTrashed()->with('roles')->findOrFail($id);
+        $this->ensureUserCanBeManaged(request(), $user);
+        $user->restore();
+
+        ActivityLogger::log('Merestore user '.$user->username);
+        AdminNotifier::notify('User direstore', 'User '.$user->username.' telah dikembalikan.', 'info', route('user.show', $user->username, false));
+
+        return back()->with('success', 'User '.$user->name.' berhasil direstore.');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $user = $this->user->onlyTrashed()->with('roles')->findOrFail($id);
+        $this->ensureUserCanBeManaged(request(), $user);
+        request()->validate([
+            'confirmation' => ['required', 'string', 'in:'.$user->username],
+        ], [
+            'confirmation.in' => 'Konfirmasi username tidak sesuai.',
+        ]);
+        $username = $user->username;
+        $avatar = $user->avatar;
+
+        DB::transaction(function () use ($user) {
+            $user->syncRoles([]);
+            $user->syncPermissions([]);
+            $user->forceDelete();
+        });
+
+        if ($avatar) {
+            $this->fileService->delete($avatar, 'public');
         }
 
-        $user->delete();
-        ActivityLogger::log('Menghapus user '.$user->username);
+        ActivityLogger::log('Menghapus permanen user '.$username);
 
-        return back()->with('success', 'User telah dihapus!');
+        return back()->with('success', 'User '.$username.' telah dihapus secara permanen.');
     }
 
     private function ensureUserCanBeManaged(Request $request, User $user): void

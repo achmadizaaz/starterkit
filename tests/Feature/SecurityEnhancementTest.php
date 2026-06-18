@@ -8,6 +8,7 @@ use Database\Seeders\PermissionGroupSeeder;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
@@ -139,4 +140,78 @@ test('global search hides menu without required permission', function () {
         ->assertOk();
 
     expect(collect($response->json('results'))->pluck('title'))->not->toContain('Backup Database');
+});
+
+test('authorized user can view and restore soft deleted user', function () {
+    seedSecurityPermissions();
+
+    $role = Role::create([
+        'code' => 'user-recovery',
+        'name' => 'User Recovery',
+        'guard_name' => 'web',
+    ]);
+    $role->givePermissionTo(['read-deleted-user', 'restore-user']);
+
+    $actor = User::factory()->create(['status' => true]);
+    $target = User::factory()->create([
+        'name' => 'Deleted User Target',
+        'username' => 'deleted.target',
+        'status' => true,
+    ]);
+    $actor->assignRole($role);
+    $target->delete();
+
+    $this->actingAs($actor)
+        ->get(route('user.deleted.index'))
+        ->assertOk()
+        ->assertSee('Deleted User Target');
+
+    $this->actingAs($actor)
+        ->patch(route('user.deleted.restore', $target->id))
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect($target->fresh())->not->toBeNull()
+        ->and($target->fresh()->deleted_at)->toBeNull();
+});
+
+test('force delete requires confirmation and removes avatar', function () {
+    Storage::fake('public');
+    seedSecurityPermissions();
+
+    $role = Role::create([
+        'code' => 'user-purge',
+        'name' => 'User Purge',
+        'guard_name' => 'web',
+    ]);
+    $role->givePermissionTo('force-delete-user');
+
+    $actor = User::factory()->create(['status' => true]);
+    $target = User::factory()->create([
+        'username' => 'purge.target',
+        'avatar' => 'avatars/purge-target.jpg',
+        'status' => true,
+    ]);
+    $actor->assignRole($role);
+    Storage::disk('public')->put($target->avatar, 'avatar');
+    $target->delete();
+
+    $this->actingAs($actor)
+        ->delete(route('user.deleted.force-delete', $target->id), [
+            'confirmation' => 'incorrect',
+        ])
+        ->assertSessionHasErrors('confirmation');
+
+    expect(User::withTrashed()->find($target->id))->not->toBeNull();
+    Storage::disk('public')->assertExists($target->avatar);
+
+    $this->actingAs($actor)
+        ->delete(route('user.deleted.force-delete', $target->id), [
+            'confirmation' => $target->username,
+        ])
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect(User::withTrashed()->find($target->id))->toBeNull();
+    Storage::disk('public')->assertMissing($target->avatar);
 });

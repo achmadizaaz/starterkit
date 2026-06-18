@@ -10,6 +10,7 @@
     $sidebarLogo = \App\Models\AppSetting::getValue('app_logo');
     $sidebarCanSeeUserManagement = $sidebarUser?->canAny([
         'read-user',
+        'read-deleted-user',
         'read-role',
         'read-permission',
         'read-permission-group',
@@ -70,7 +71,10 @@
 
             <ul class="collapse submenu list-unstyled {{ $userMenuOpen ? 'show' : '' }}" id="menuUser">
                 @can('read-user')
-                    <li><a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">Users</a></li>
+                    <li><a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.index', 'user.show') ? 'active' : '' }}">Users</a></li>
+                @endcan
+                @can('read-deleted-user')
+                    <li><a href="{{ route('user.deleted.index') }}" class="{{ request()->routeIs('user.deleted.*') ? 'active' : '' }}">User Terhapus</a></li>
                 @endcan
                 @can('read-role')
                     <li><a href="{{ route('role.index') }}" class="{{ request()->routeIs('role.*') ? 'active' : '' }}">Roles</a></li>

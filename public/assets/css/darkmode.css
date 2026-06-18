@@ -249,6 +249,11 @@
     background: rgba(220, 38, 38, .18);
 }
 
+[data-bs-theme="dark"] .logout-modal-icon.restore-user-icon{
+    color: #86efac;
+    background: rgba(16, 185, 129, .18);
+}
+
 [data-bs-theme="dark"] .logout-modal-body .modal-title{
     color: #f8fafc;
 }

@@ -32,6 +32,7 @@ class RoleSeeder extends Seeder
             Permission::whereNotIn('name', [
                 'restore-backup-database',
                 'impersonate-user',
+                'force-delete-user',
             ])->pluck('name')->all()
         );
         Role::where('code', 'editor')->first()?->syncPermissions([

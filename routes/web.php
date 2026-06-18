@@ -40,6 +40,9 @@ Route::middleware(['auth', EnsureUserIsActive::class])->prefix('dashboard')->gro
 
     Route::controller(UserController::class)->prefix('user')->whereUlid('id')->group(function(){
             Route::get('/', 'index')->middleware('can:read-user')->name('user.index');
+            Route::get('/deleted', 'deleted')->middleware('can:read-deleted-user')->name('user.deleted.index');
+            Route::patch('/deleted/{id}/restore', 'restore')->middleware('can:restore-user')->name('user.deleted.restore');
+            Route::delete('/deleted/{id}', 'forceDelete')->middleware('can:force-delete-user')->name('user.deleted.force-delete');
             Route::post('/', 'store')->middleware('can:create-user')->name('user.store');
             Route::get('/{username}', 'show')
                 ->where('username', '[A-Za-z0-9._-]+')

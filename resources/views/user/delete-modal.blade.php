@@ -14,7 +14,7 @@
                     </div>
                     <h5 class="modal-title" id="deleteUserModalLabel">Hapus User?</h5>
                     <p class="delete-copy">
-                        User <strong id="deleteUserName"></strong> akan dihapus dari sistem. Tindakan ini tidak dapat dibatalkan.
+                        User <strong id="deleteUserName"></strong> akan dipindahkan ke data terhapus dan masih dapat direstore.
                     </p>
                 </div>
 
@@ -22,7 +22,7 @@
                     <button type="button" class="btn btn-light-modern" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-danger-modern">
                         <i class="bi bi-trash3"></i>
-                        Hapus User
+                        Pindahkan ke Data Terhapus
                     </button>
                 </div>
             </form>

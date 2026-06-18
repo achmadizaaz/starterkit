@@ -53,6 +53,7 @@ class GlobalSearchController extends Controller
         $items = collect([
             ['title' => 'Dashboard', 'description' => 'Ringkasan aplikasi', 'route' => 'dashboard', 'icon' => 'bi-grid-1x2', 'permission' => null],
             ['title' => 'Users', 'description' => 'Kelola data pengguna', 'route' => 'user.index', 'icon' => 'bi-people', 'permission' => 'read-user'],
+            ['title' => 'User Terhapus', 'description' => 'Restore atau hapus permanen user', 'route' => 'user.deleted.index', 'icon' => 'bi-trash3', 'permission' => 'read-deleted-user'],
             ['title' => 'Roles', 'description' => 'Kelola role pengguna', 'route' => 'role.index', 'icon' => 'bi-shield-check', 'permission' => 'read-role'],
             ['title' => 'Permission List', 'description' => 'Daftar permission aplikasi', 'route' => 'permission.index', 'icon' => 'bi-key', 'permission' => 'read-permission'],
             ['title' => 'Permission Groups', 'description' => 'Kelola grup permission', 'route' => 'permission-group.index', 'icon' => 'bi-collection', 'permission' => 'read-permission-group'],
